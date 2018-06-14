@@ -28,6 +28,7 @@ var schema = {
     end_user_id: {
         type: String,
         required: true,
+        match: /^[a-zA-Z0-9-_]+$/,
         length: {
             min: 12,
             max: 64
@@ -37,19 +38,19 @@ var schema = {
     digital_currency: {
         type: String,
         required: true,
-        enum: ['BTC', 'ETH'],
+        enum: _config.simplex.validDigital,
         message: "digital_currency required"
     },
     fiat_currency: {
         type: String,
         required: true,
-        enum: ['USD', 'EUR'],
+        enum: _config.simplex.validFiat,
         message: "fiat_currency required"
     },
     requested_currency: {
         type: String,
         required: true,
-        enum: ['BTC', 'ETH'],
+        enum: _config.simplex.validDigital,
         message: "requested_currency required"
     },
     requested_amount: {

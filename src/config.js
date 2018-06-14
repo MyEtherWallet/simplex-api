@@ -7,9 +7,11 @@ let db = {
     name: "gonano"
 }
 let simplex = {
-	walletID: process.env.WALLET_ID || "",
+    walletID: process.env.WALLET_ID || "",
     quoteEP: process.env.QUOTE_EP || "",
-    apiKey: process.env.SIMPLEX_APIKEY || ""
+    apiKey: process.env.SIMPLEX_APIKEY || "",
+    validFiat: ["EUR", "USD"],
+    validDigital: ["BTC", "ETH"]
 }
 export {
     network,

@@ -16,15 +16,14 @@ var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
 
-var _config = require('./config');
-
 var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
 
+var _config = require('./config');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-require('dotenv').config();
 var logger = (0, _logging2.default)('index.js');
 var app = (0, _express2.default)();
 

@@ -2,11 +2,8 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import createLogger from 'logging'
 import cors from 'cors'
-import {
-    network
-} from './config'
 import routes from './routes'
-require('dotenv').config()
+import {network} from './config'
 const logger = createLogger('index.js')
 let app = express()
 

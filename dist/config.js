@@ -14,7 +14,9 @@ var db = {
 var simplex = {
     walletID: process.env.WALLET_ID || "",
     quoteEP: process.env.QUOTE_EP || "",
-    apiKey: process.env.SIMPLEX_APIKEY || ""
+    apiKey: process.env.SIMPLEX_APIKEY || "",
+    validFiat: ["EUR", "USD"],
+    validDigital: ["BTC", "ETH"]
 };
 exports.network = network;
 exports.db = db;
