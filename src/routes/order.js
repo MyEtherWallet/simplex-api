@@ -21,42 +21,6 @@ let schema = {
                 max: 64
             },
             message: "app_end_user_id required min:12 max:64"
-        },
-        signup_login: {
-            uaid: {
-                type: String,
-                required: true,
-                match: /^[a-zA-Z0-9-_]+$/,
-                length: {
-                    min: 12,
-                    max: 128
-                },
-                message: "uaid required min:64 max:128"
-            },
-            accept_language: {
-                type: String,
-                required: true,
-                match: /^[a-zA-Z0-9-_,=.;]+$/,
-                message: "accept_language required"
-            },
-            http_accept_language: {
-                type: String,
-                required: true,
-                match: /^[a-zA-Z0-9-_,=.;]+$/,
-                message: "http_accept_language required"
-            },
-            user_agent: {
-                type: String,
-                required: true,
-                match: /^[a-zA-Z0-9-_,=.;/ :()]+$/,
-                message: "user_agent required"
-            },
-            cookie_session_id: {
-                type: String,
-                required: true,
-                match: /^[a-zA-Z0-9-_]+$/,
-                message: "cookie_session_id required"
-            }
         }
     },
     transaction_details: {
@@ -130,19 +94,16 @@ export default (app) => {
             response.error(res, errors.map(_err => _err.message))
         } else {
             let reqObj = {
-                ...req.body,
                 account_details: {
                     ...req.body.account_details,
                     app_provider_id: simplex.walletID,
                     app_version_id: "1",
                     signup_login: {
-                        ...req.body.account_details.signup_login,
                         ip: '141.145.165.137',
                         timestamp: new Date().toISOString()
                     }
                 },
                 transaction_details: {
-                    ...req.body.transaction_details,
                     payment_details: {
                         ...req.body.transaction_details.payment_details,
                         original_http_ref_url: req.header('Referer')

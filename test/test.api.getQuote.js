@@ -45,17 +45,9 @@ describe('API getQuote Test', () => {
     }).timeout(5000)
 
     it('should initiate an order', (done) => {
-        console.log(quoteResponse)
         let reqObject = {
             account_details: {
                 app_end_user_id: quoteResponse.user_id,
-                signup_login: {
-                    uaid: quoteResponse.user_id,
-                    accept_language: "de,en-US;q=0.7,en;q=0.3",
-                    http_accept_language: "de,en-US;q=0.7,en;q=0.3",
-                    user_agent: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0",
-                    cookie_session_id: quoteResponse.user_id
-                }
             },
             transaction_details: {
                 payment_details: {
