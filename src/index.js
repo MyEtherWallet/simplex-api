@@ -14,3 +14,4 @@ routes(app)
 let server = app.listen(network.port, () => {
     logger.info(`app running on port: ${server.address().port}`)
 })
+export default server

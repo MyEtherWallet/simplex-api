@@ -3,6 +3,7 @@ import {
     getQuote
 } from '../simplex'
 import Validator from '../validator'
+import uuidv4 from 'uuid/v4'
 import response from '../response'
 import {
     simplex
@@ -11,16 +12,6 @@ import {
 const logger = createLogger('quote.js')
 
 let schema = {
-    end_user_id: {
-        type: String,
-        required: true,
-        match:/^[a-zA-Z0-9-_]+$/,
-        length: {
-            min: 12,
-            max: 64
-        },
-        message: "end_user_id required min:12 max:64"
-    },
     digital_currency: {
         type: String,
         required: true,
@@ -54,6 +45,7 @@ export default (app) => {
             response.error(res, errors.map(_err => _err.message))
         } else {
             let reqObj = Object.assign(req.body, {
+                "end_user_id": uuidv4(),
                 "wallet_id": simplex.walletID,
                 "client_ip": '141.145.165.137'
             })

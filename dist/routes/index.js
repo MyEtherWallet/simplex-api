@@ -12,9 +12,14 @@ var _order = require('./order');
 
 var _order2 = _interopRequireDefault(_order);
 
+var _info = require('./info');
+
+var _info2 = _interopRequireDefault(_info);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (app) {
     (0, _quote2.default)(app);
     (0, _order2.default)(app);
+    (0, _info2.default)(app);
 };

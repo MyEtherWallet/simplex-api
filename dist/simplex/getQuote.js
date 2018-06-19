@@ -13,6 +13,5 @@ var _config = require('../config');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (reqObject) {
-    console.log(reqObject);
     return (0, _call2.default)(reqObject, _config.simplex.quoteEP);
 };

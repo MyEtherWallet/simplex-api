@@ -14,6 +14,10 @@ var _validator = require('../validator');
 
 var _validator2 = _interopRequireDefault(_validator);
 
+var _v = require('uuid/v4');
+
+var _v2 = _interopRequireDefault(_v);
+
 var _response = require('../response');
 
 var _response2 = _interopRequireDefault(_response);
@@ -25,16 +29,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var logger = (0, _logging2.default)('quote.js');
 
 var schema = {
-    end_user_id: {
-        type: String,
-        required: true,
-        match: /^[a-zA-Z0-9-_]+$/,
-        length: {
-            min: 12,
-            max: 64
-        },
-        message: "end_user_id required min:12 max:64"
-    },
     digital_currency: {
         type: String,
         required: true,
@@ -71,6 +65,7 @@ exports.default = function (app) {
             }));
         } else {
             var reqObj = Object.assign(req.body, {
+                "end_user_id": (0, _v2.default)(),
                 "wallet_id": _config.simplex.walletID,
                 "client_ip": '141.145.165.137'
             });

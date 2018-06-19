@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -34,3 +38,4 @@ app.use((0, _cors2.default)());
 var server = app.listen(_config.network.port, function () {
     logger.info('app running on port: ' + server.address().port);
 });
+exports.default = server;
