@@ -9,6 +9,7 @@ let db = {
 let simplex = {
     walletID: process.env.WALLET_ID || "",
     quoteEP: process.env.QUOTE_EP || "",
+    orderEP: process.env.ORDER_EP || "",
     apiKey: process.env.SIMPLEX_APIKEY || "",
     validFiat: ["EUR", "USD"],
     validDigital: ["BTC", "ETH"]

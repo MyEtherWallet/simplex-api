@@ -17,6 +17,8 @@ export default (body, path) => {
         let callback = (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 resolve(body)
+            } else if (response.statusCode == 400) {
+                reject(body)
             } else {
                 reject(error)
             }

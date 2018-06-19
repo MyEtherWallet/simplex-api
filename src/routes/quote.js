@@ -50,7 +50,6 @@ export default (app) => {
                 "client_ip": '141.145.165.137'
             })
             getQuote(reqObj).then((result) => {
-                logger.info(result)
                 response.success(res, result)
             }).catch((error) => {
                 logger.error(error)

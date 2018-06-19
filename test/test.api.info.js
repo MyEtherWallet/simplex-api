@@ -2,11 +2,10 @@ import app from '../src'
 import chai from 'chai'
 import request from 'supertest'
 
-var expect = chai.expect
-
+const expect = chai.expect
 describe('API Info Test', function() {
-    it('should return version number', function(done) {
-        var packageInfo = require('../package.json')
+    it('should return correct version number', function(done) {
+        const packageInfo = require('../package.json')
         request(app)
             .get('/info')
             .end(function(err, res) {

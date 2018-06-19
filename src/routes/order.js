@@ -1,7 +1,7 @@
 import createLogger from 'logging'
-// import {
-//     getQuote
-// } from '../simplex'
+import {
+    getOrder
+} from '../simplex'
 import Validator from '../validator'
 import response from '../response'
 import {
@@ -28,7 +28,7 @@ let schema = {
                 required: true,
                 match: /^[a-zA-Z0-9-_]+$/,
                 length: {
-                    min: 64,
+                    min: 12,
                     max: 128
                 },
                 message: "uaid required min:64 max:128"
@@ -57,8 +57,10 @@ let schema = {
                 match: /^[a-zA-Z0-9-_]+$/,
                 message: "cookie_session_id required"
             }
-        },
-        transaction_details: {
+        }
+    },
+    transaction_details: {
+        payment_details: {
             quote_id: {
                 type: String,
                 required: true,
@@ -117,7 +119,6 @@ let schema = {
                 }
             }
         }
-
     }
 }
 let validator = Validator(schema)
@@ -128,28 +129,33 @@ export default (app) => {
             logger.error(errors)
             response.error(res, errors.map(_err => _err.message))
         } else {
-            let reqObj = Object.assign(req.body, {
-                    account_details: {
-                        app_provider_id: simplex.walletID,
-                        app_version_id: "1",
-                        signup_login: {
-                            ip: '141.145.165.137',
-                            timestamp: new Date().toISOString()
-                        }
-                    },
-                    transaction_details: {
-                        payment_details: {
-                            original_http_ref_url: req.header('Referer')
-                        }
+            let reqObj = {
+                ...req.body,
+                account_details: {
+                    ...req.body.account_details,
+                    app_provider_id: simplex.walletID,
+                    app_version_id: "1",
+                    signup_login: {
+                        ...req.body.account_details.signup_login,
+                        ip: '141.145.165.137',
+                        timestamp: new Date().toISOString()
                     }
-                })
-                // getQuote(reqObj).then((result) => {
-                //     logger.info(result)
-                //     response.success(res, result)
-                // }).catch((error) => {
-                //     logger.error(error)
-                //     response.error(res, error)
-                // })
+                },
+                transaction_details: {
+                    ...req.body.transaction_details,
+                    payment_details: {
+                        ...req.body.transaction_details.payment_details,
+                        original_http_ref_url: req.header('Referer')
+                    }
+                }
+            }
+            getOrder(reqObj).then((result) => {
+                logger.info(result)
+                response.success(res, result)
+            }).catch((error) => {
+                logger.error(error)
+                response.error(res, error)
+            })
         }
     })
 }
