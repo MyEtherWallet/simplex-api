@@ -24,6 +24,8 @@ var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
 
+var _mangodb = require('./mangodb');
+
 var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -34,7 +36,11 @@ var app = (0, _express2.default)();
 app.use(_bodyParser2.default.json());
 app.use((0, _cors2.default)());
 (0, _routes2.default)(app);
-
+(0, _mangodb.connect)().then(function () {
+    logger.info('mangodb running on port: ' + _config.mangodb.host + ':' + _config.mangodb.port);
+}).catch(function (err) {
+    logger.error('mangodb error: ' + err);
+});
 var server = app.listen(_config.network.port, function () {
     logger.info('app running on port: ' + server.address().port);
 });

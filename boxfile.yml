@@ -12,6 +12,6 @@ run.config:
     - npm run build
 
 data.mongodb:
-  image: nanobox/mongodb:3.0
+  image: nanobox/mongodb:3.4
 web.app:
-  start: "npm run prod"
+  start: "npm run dev"

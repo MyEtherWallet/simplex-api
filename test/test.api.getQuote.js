@@ -6,6 +6,7 @@ import {
 } from '../src/config'
 import uuidv4 from 'uuid/v4'
 const assert = chai.assert
+const expect = chai.expect
 const testAddress = {
     BTC: '1DECAF2uSpFTP4L1fAHR8GCLrPqdwdLse9',
     ETH: '0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D'
@@ -16,6 +17,8 @@ describe('API getQuote Test', () => {
         const packageInfo = require('../package.json')
         const _digital = simplex.validDigital[Math.floor(Math.random() * simplex.validDigital.length)]
         const _fiat = simplex.validFiat[Math.floor(Math.random() * simplex.validFiat.length)]
+        const _pair = [_digital, _fiat]
+        const _requested = _pair[Math.floor(Math.random() * _pair.length)]
         const _amount = Math.floor(Math.random() * 3) + 1
         request(app)
             .post('/quote')
@@ -32,7 +35,7 @@ describe('API getQuote Test', () => {
                 let body = res.body
                 assert.typeOf(body, 'Object')
                 assert.equal(body.error, false)
-                let response = body.msg
+                let response = body.result
                 assert.typeOf(response.user_id, 'string')
                 assert.typeOf(response.quote_id, 'string')
                 assert.equal(response.wallet_id, simplex.walletID)
@@ -51,12 +54,9 @@ describe('API getQuote Test', () => {
             },
             transaction_details: {
                 payment_details: {
-                    quote_id: quoteResponse.quote_id,
-                    payment_id: uuidv4(),
-                    order_id: uuidv4(),
                     fiat_total_amount: {
                         currency: quoteResponse.fiat_money.currency,
-                        amount: quoteResponse.fiat_money.base_amount
+                        amount: quoteResponse.fiat_money.total_amount
                     },
                     requested_digital_amount: {
                         currency: quoteResponse.digital_money.currency,
@@ -76,10 +76,16 @@ describe('API getQuote Test', () => {
             .set('Accept', 'application/json')
             .expect(200)
             .end((err, res) => {
-                //let body = res
-                // console.log(reqObject)
-                console.log(res.body)
-                    //console.log(body)
+                let body = res.body
+                assert.equal(body.error, false)
+                let result = body.result
+                assert.equal(result.version, simplex.apiVersion)
+                assert.equal(result.destination_wallet_address, testAddress[quoteResponse.digital_money.currency])
+                assert.equal(result.destination_wallet_currency, quoteResponse.digital_money.currency)
+                assert.equal(result.fiat_total_amount_amount, quoteResponse.fiat_money.total_amount)
+                assert.equal(result.fiat_total_amount_currency, quoteResponse.fiat_money.currency)
+                assert.equal(result.digital_total_amount_amount, quoteResponse.digital_money.amount)
+                assert.equal(result.digital_total_amount_currency, quoteResponse.digital_money.currency)
                 done();
             })
     }).timeout(5000)

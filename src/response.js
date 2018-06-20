@@ -3,14 +3,14 @@ export default {
         res.setHeader('Content-Type', 'application/json')
         res.send(JSON.stringify({
             error: true,
-            msg: msg
+            result: msg
         }, null, 3))
     },
     success: (res, msg) => {
         res.setHeader('Content-Type', 'application/json')
         res.send(JSON.stringify({
             error: false,
-            msg: msg
+            result: msg
         }, null, 3))
 
     }

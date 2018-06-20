@@ -24,6 +24,8 @@ var _response2 = _interopRequireDefault(_response);
 
 var _config = require('../config');
 
+var _mangodb = require('../mangodb');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('quote.js');
@@ -44,7 +46,7 @@ var schema = {
     requested_currency: {
         type: String,
         required: true,
-        enum: _config.simplex.validDigital,
+        enum: _config.simplex.validDigital.concat(_config.simplex.validFiat),
         message: "requested_currency required"
     },
     requested_amount: {
@@ -64,13 +66,28 @@ exports.default = function (app) {
                 return _err.message;
             }));
         } else {
+            var newUserId = (0, _v2.default)();
             var reqObj = Object.assign(req.body, {
-                "end_user_id": (0, _v2.default)(),
+                "end_user_id": newUserId,
                 "wallet_id": _config.simplex.walletID,
                 "client_ip": '141.145.165.137'
             });
             (0, _simplex.getQuote)(reqObj).then(function (result) {
-                logger.info(result);
+                (0, _mangodb.Order)({
+                    user_id: newUserId,
+                    quote_id: result.quote_id,
+                    fiat_total_amount: {
+                        currency: result.fiat_money.currency,
+                        amount: result.fiat_money.total_amount
+                    },
+                    requested_digital_amount: {
+                        currency: result.digital_money.currency,
+                        amount: result.digital_money.amount
+                    },
+                    status: _config.simplex.status.initiated
+                }).save().catch(function (err) {
+                    logger.error(err);
+                });
                 _response2.default.success(res, result);
             }).catch(function (error) {
                 logger.error(error);

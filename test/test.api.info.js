@@ -10,7 +10,7 @@ describe('API Info Test', function() {
             .get('/info')
             .end(function(err, res) {
                 expect(res.body.error).to.equal(false)
-                expect(res.body.msg.version).to.equal(packageInfo.version)
+                expect(res.body.result.version).to.equal(packageInfo.version)
                 expect(res.statusCode).to.equal(200)
                 done();
             })
