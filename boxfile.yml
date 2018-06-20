@@ -9,9 +9,8 @@ run.config:
     - node_modules
   extra_steps:
     - npm install
-    - npm run build
 
 data.mongodb:
   image: nanobox/mongodb:3.4
 web.app:
-  start: "npm run dev"
+  start: "npm start"
