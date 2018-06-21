@@ -35,7 +35,7 @@ var getOrderById = function getOrderById(_userId) {
     });
 };
 var findAndUpdate = function findAndUpdate(_userId, _newVals) {
-    return User.findOneAndUpdate({
+    return _schema2.default.findOneAndUpdate({
         user_id: _userId
     }, _newVals);
 };

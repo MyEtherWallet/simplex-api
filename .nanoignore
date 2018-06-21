@@ -1,0 +1,6 @@
+api/.env
+api/.babelrc
+api/.gitignore
+api/node_modules/
+api/src/
+api/test/

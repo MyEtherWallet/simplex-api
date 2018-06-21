@@ -17,11 +17,11 @@ var simplex = {
     orderEP: process.env.ORDER_EP || "",
     paymentEP: process.env.PAYMENT_EP || "",
     apiKey: process.env.SIMPLEX_APIKEY || "",
+    apiVersion: "1",
     validFiat: ["EUR", "USD"],
     validDigital: ["BTC", "ETH"],
     status: {
         initiated: "INITIATED",
-        initiatedQuote: "INITIATED_QUOTE",
         sentToSimplex: "SENT_TO_SIMPLEX",
         deniedSimplex: "DENIED_SIMPLEX",
         processingSimplex: "PROCESSING_SIMPPLEX",

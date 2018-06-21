@@ -105,13 +105,13 @@ exports.default = function (app) {
         } else {
             var user_id = req.body.account_details.app_end_user_id;
             (0, _mangodb.getOrderById)(user_id).then(function (savedOrder) {
-                var quote_id = savedOrder.quote_id;
+                var quote_id = savedOrder[0].quote_id;
                 var payment_id = (0, _v2.default)();
                 var order_id = (0, _v2.default)();
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
                         app_provider_id: _config.simplex.walletID,
-                        app_version_id: "1",
+                        app_version_id: _config.simplex.apiVersion,
                         signup_login: {
                             ip: '141.145.165.137',
                             timestamp: new Date().toISOString()
@@ -128,17 +128,38 @@ exports.default = function (app) {
                 };
                 (0, _mangodb.findAndUpdate)(user_id, {
                     payment_id: payment_id,
-                    order_id: order_id
+                    order_id: order_id,
+                    status: _config.simplex.status.sentToSimplex
                 }).catch(function (err) {
                     logger.error(err);
                 });
                 (0, _simplex.getOrder)(reqObj).then(function (result) {
-                    _response2.default.success(res, result);
+                    if ("is_kyc_update_required" in result) {
+                        _response2.default.success(res, {
+                            payment_post_url: _config.simplex.paymentEP,
+                            version: _config.simplex.apiVersion,
+                            partner: _config.simplex.walletID,
+                            return_url: "https://www.myetherwallet.com",
+                            quote_id: quote_id,
+                            payment_id: payment_id,
+                            user_id: user_id,
+                            destination_wallet_address: reqObj.transaction_details.payment_details.destination_wallet.address,
+                            destination_wallet_currency: reqObj.transaction_details.payment_details.destination_wallet.currency,
+                            fiat_total_amount_amount: reqObj.transaction_details.payment_details.fiat_total_amount.amount,
+                            fiat_total_amount_currency: reqObj.transaction_details.payment_details.fiat_total_amount.currency,
+                            digital_total_amount_amount: reqObj.transaction_details.payment_details.requested_digital_amount.amount,
+                            digital_total_amount_currency: reqObj.transaction_details.payment_details.requested_digital_amount.currency
+                        });
+                    } else {
+                        logger.error(result);
+                        _response2.default.error(res, result);
+                    }
                 }).catch(function (error) {
                     logger.error(error);
                     _response2.default.error(res, error);
                 });
-            }).catch(function () {
+            }).catch(function (err) {
+                logger.error(err);
                 _response2.default.error(res, "Invalid user_id");
             });
         }

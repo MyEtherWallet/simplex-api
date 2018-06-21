@@ -8,9 +8,10 @@ run.config:
   cache_dirs:
     - node_modules
   extra_steps:
-    - npm install
+    - cd api && npm install
+    - cd api && npm run build
 
 data.mongodb:
   image: nanobox/mongodb:3.4
-web.app:
-  start: "npm start"
+web.api:
+  start: "cd api && npm run prod"
