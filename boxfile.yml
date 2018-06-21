@@ -3,6 +3,8 @@ run.config:
   engine.config:
     runtime: nodejs-8.9
     dep_manager: npm
+  extra_packages:
+    - bash
   build_triggers:
     - package.json
   cache_dirs:
@@ -14,4 +16,7 @@ run.config:
 data.mongodb:
   image: nanobox/mongodb:3.4
 web.api:
-  start: "cd api && npm run prod"
+  start: 
+    - bash -c 'cd api && npm run prod'
+  routes:
+    - 'api:/'
