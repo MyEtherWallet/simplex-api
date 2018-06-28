@@ -68,6 +68,7 @@ export default (app) => {
                     status: simplex.status.initiated
                 }).save().catch((err) => {
                     logger.error(err)
+                    response.error(res,error)
                 })
                 response.success(res, result)
             }).catch((error) => {

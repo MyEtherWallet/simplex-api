@@ -15,6 +15,7 @@ run.config:
 
 data.mongodb:
   image: nanobox/mongodb:3.4
+  
 web.api:
   start: 
     - bash -c 'cd api && npm run prod'

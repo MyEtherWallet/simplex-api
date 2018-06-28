@@ -7,10 +7,6 @@ require('dotenv').config();
 var network = {
     port: process.env.PORT || 8080
 };
-var db = {
-    host: process.env.DATA_MONGODB_HOST || "",
-    name: "gonano"
-};
 var simplex = {
     walletID: process.env.WALLET_ID || "",
     quoteEP: process.env.QUOTE_EP || "",
@@ -35,6 +31,5 @@ var mangodb = {
     name: 'gonano'
 };
 exports.network = network;
-exports.db = db;
 exports.simplex = simplex;
 exports.mangodb = mangodb;
