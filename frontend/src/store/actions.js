@@ -19,34 +19,49 @@ let updateValues = (qChange, {
   dispatch,
   commit
 }) => {
-  let onSuccess = (result) => {
-    console.log(result)
-  }
-  let onError = (err) => {
-    console.log(err)
-  }
-  if (canQuote(state)) {
-    switch (qChange) {
-      case quoteChanges.fiat_amount:
-      case quoteChanges.fiat_currency:
-        getQuote({
-          digital_currency: state.orderInfo.digitalCurrency,
-          fiat_currency: state.orderInfo.fiatCurrency,
-          requested_currency: state.orderInfo.fiatCurrency,
-          requested_amount: state.orderInfo.fiatAmount
-        }).then(onSuccess).catch(onError)
-        break
-      case quoteChanges.digital_amount:
-      case quoteChanges.digital_currency:
-        getQuote({
-          digital_currency: state.orderInfo.digitalCurrency,
-          fiat_currency: state.orderInfo.fiatCurrency,
-          requested_currency: state.orderInfo.digitalCurrency,
-          requested_amount: state.orderInfo.digitalAmount
-        }).then(onSuccess).catch(onError)
-        break
+  return new Promise((resolve, reject) => {
+    let onSuccess = (result) => {
+      const resp = result.data
+      if (!resp.error) {
+        commit('setDigitalAmount', resp.result.digital_money.amount)
+        commit('setFiatAmount', resp.result.fiat_money.base_amount)
+        commit('setInvalidDigitalAmount', false)
+        commit('setInvalidFiatAmount', false)
+        resolve()
+      } else {
+        console.log(resp.result)
+        reject(resp)
+      }
     }
-  }
+    let onError = (err) => {
+      console.log(err)
+      reject(err)
+    }
+    if (canQuote(state)) {
+      switch (qChange) {
+        case quoteChanges.fiat_amount:
+        case quoteChanges.fiat_currency:
+          getQuote({
+            digital_currency: state.orderInfo.digitalCurrency,
+            fiat_currency: state.orderInfo.fiatCurrency,
+            requested_currency: state.orderInfo.fiatCurrency,
+            requested_amount: state.orderInfo.fiatAmount
+          }).then(onSuccess).catch(onError)
+          break
+        case quoteChanges.digital_amount:
+        case quoteChanges.digital_currency:
+          getQuote({
+            digital_currency: state.orderInfo.digitalCurrency,
+            fiat_currency: state.orderInfo.fiatCurrency,
+            requested_currency: state.orderInfo.digitalCurrency,
+            requested_amount: state.orderInfo.digitalAmount
+          }).then(onSuccess).catch(onError)
+          break
+      }
+    } else {
+      reject('canQuote false')
+    }
+  })
 }
 export default {
   setDigitalAddress ({
@@ -68,12 +83,13 @@ export default {
     commit('setFiatAmount', amount)
     if (amount >= simplex.minFiat && amount <= simplex.maxFiat) {
       commit('setInvalidFiatAmount', false)
-      updateValues(quoteChanges.fiat_amount, {
+      return updateValues(quoteChanges.fiat_amount, {
         commit,
         state
       })
     } else {
       commit('setInvalidFiatAmount', true)
+      return Promise.resolve()
     }
   },
   setDigitalAmount ({
@@ -83,12 +99,13 @@ export default {
     commit('setDigitalAmount', amount)
     if (amount > 0) {
       commit('setInvalidDigitalAmount', false)
-      updateValues(quoteChanges.digital_amount, {
+      return updateValues(quoteChanges.digital_amount, {
         commit,
         state
       })
     } else {
       commit('setInvalidDigitalAmount', true)
+      return Promise.resolve()
     }
   },
   setFiatCurrency ({

@@ -13,7 +13,7 @@
             </div>
             <div class="footer-container">
                 <div class="terms">
-                    <p>Terms of Service | Privacy Policy</p>
+                    <p></p>
                 </div>
                 <div class="copyright">
                     <p>© 2018 MyEtherWallet Inc.</p>

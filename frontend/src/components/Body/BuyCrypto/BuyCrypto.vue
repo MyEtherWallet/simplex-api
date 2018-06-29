@@ -27,7 +27,7 @@
                                 <h4>Price</h4>
                                 <div class="input-form">
                                     <div>
-                                        <input v-model.number="fiatAmount" type="number" name="fiat_amount" :class="{'invalid-field': isInvalidFiatAmount}">
+                                        <input v-model.number.lazy="fiatAmount" type="number" min="0" name="fiat_amount" :class="{'invalid-field': isInvalidFiatAmount}">
                                     </div>
                                     <div>
                                         <select v-model="fiatCurrency">
@@ -41,7 +41,7 @@
                                 <h4>Amount</h4>
                                 <div class="input-form">
                                     <div>
-                                        <input v-model.number="digitalAmount" type="number" name="digital_amount" :class="{'invalid-field': isInvalidDigitalAmount}">
+                                        <input v-model.number.lazy="digitalAmount" type="number" min="0" name="digital_amount" :class="{'invalid-field': isInvalidDigitalAmount}">
                                     </div>
                                     <div>
                                         <select v-model="digitalCurrency">
@@ -110,7 +110,9 @@ export default {
         return this.$store.state.orderInfo.fiatAmount
       },
       set (value) {
-        this.$store.dispatch('setFiatAmount', value)
+        this.$store.dispatch('setFiatAmount', value).finally(() => {
+          console.log('fiat done')
+        })
       }
     },
     digitalAmount: {
@@ -118,7 +120,9 @@ export default {
         return this.$store.state.orderInfo.digitalAmount
       },
       set (value) {
-        this.$store.dispatch('setDigitalAmount', value)
+        this.$store.dispatch('setDigitalAmount', value).finally(() => {
+          console.log('digital done')
+        })
       }
     },
     fiatCurrency: {
