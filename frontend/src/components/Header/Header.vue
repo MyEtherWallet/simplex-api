@@ -1,20 +1,17 @@
 <template>
-  <div class="header">
-    <div class="page-container">
+    <div class="header">
+        <div class="page-container">
+        </div>
     </div>
-  </div>
 </template>
-
 <script>
 export default {
   name: 'Header',
   data () {
-    return {
-    }
+    return {}
   }
 }
 </script>
-
 <style lang="scss" scoped>
-  @import 'Header.scss'
+@import 'Header.scss'
 </style>
