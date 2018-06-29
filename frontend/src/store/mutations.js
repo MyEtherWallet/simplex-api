@@ -22,5 +22,11 @@ export default {
   },
   setInvalidDigitalAmount (state, _isInvalid) {
     state.status.invalidDigitalAmount = _isInvalid
+  },
+  setRequestedCurrency (state, _currency) {
+    state.orderInfo.requestedCurrency = _currency
+  },
+  setUserId (state, _id) {
+    state.orderInfo.userId = _id
   }
 }

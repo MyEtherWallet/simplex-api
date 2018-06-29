@@ -27,7 +27,7 @@
                                 <h4>Price</h4>
                                 <div class="input-form">
                                     <div>
-                                        <input v-model.number.lazy="fiatAmount" type="number" min="0" name="fiat_amount" :class="{'invalid-field': isInvalidFiatAmount}">
+                                        <input v-model.number="fiatAmount" type="number" min="0" name="fiat_amount" :class="{'invalid-field': isInvalidFiatAmount}">
                                     </div>
                                     <div>
                                         <select v-model="fiatCurrency">
@@ -41,7 +41,7 @@
                                 <h4>Amount</h4>
                                 <div class="input-form">
                                     <div>
-                                        <input v-model.number.lazy="digitalAmount" type="number" min="0" name="digital_amount" :class="{'invalid-field': isInvalidDigitalAmount}">
+                                        <input v-model.number="digitalAmount" type="number" min="0" name="digital_amount" :class="{'invalid-field': isInvalidDigitalAmount}">
                                     </div>
                                     <div>
                                         <select v-model="digitalCurrency">
@@ -58,10 +58,11 @@
                             <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span>Do you have one?</span></h4>
                             <input v-model="digitalAddress" type="text" name="" placeholder="Please enter the address" :class="{'invalid-field': isInvalidAddress}">
                         </div>
+                        <div v-show="loading">Loading</div>
                         <!-- .btc-address -->
                         <!--{{activateForm}}-->
+                        <checkout-form :continueAction='order' :formData="formData" />
                         <div class="submit-button-container">
-                            <div v-if="canOrder" class="button-1 disable">Continue<i class="fa fa-long-arrow-right" aria-hidden="true"></i></div>
                             <p>You will be redirected to the partner's site</p>
                         </div>
                     </div>
@@ -83,18 +84,68 @@
     </div>
 </template>
 <script>
+import _ from 'lodash'
+import {
+  getOrder
+} from '@/simplex-api'
+import {
+  simplex
+} from '@/config'
 export default {
   name: 'BuyCrypto',
   data () {
     return {
-      // enableForm: false
+      loading: false,
+      formData: null
+    }
+  },
+  methods: {
+    order (cb) {
+      let success = () => {
+        const orderInfo = this.$store.state.orderInfo
+        getOrder({
+          account_details: {
+            app_end_user_id: orderInfo.userId
+          },
+          transaction_details: {
+            payment_details: {
+              fiat_total_amount: {
+                currency: orderInfo.fiatCurrency,
+                amount: orderInfo.fiatAmount
+              },
+              requested_digital_amount: {
+                currency: orderInfo.digitalCurrency,
+                amount: orderInfo.digitalAmount
+              },
+              destination_wallet: {
+                currency: orderInfo.digitalCurrency,
+                address: orderInfo.digitalAddress
+              }
+            }
+          }
+        }).then((resp) => {
+          console.log(resp)
+          resp = resp.data
+          if (!resp.error) {
+            this.formData = resp.result
+            this.$nextTick(() => {
+              cb()
+            })
+          } else console.log(resp)
+        })
+      }
+      let failed = (err) => console.log(err)
+      if (this.canOrder) {
+        if (simplex.validFiat.includes(this.$store.state.orderInfo.requestedCurrency)) {
+          this.$store.dispatch('setFiatAmount', this.$store.state.orderInfo.fiatAmount).then(success).catch(failed)
+        } else {
+          this.$store.dispatch('setDigitalAmount', this.$store.state.orderInfo.digitalAmount).then(success).catch(failed)
+        }
+      }
     }
   },
   mounted () {
     this.$store.dispatch('setDigitalAmount', 1)
-  },
-  watch: {
-    'activateForm': (newVal, oldVal) => {}
   },
   computed: {
     digitalAddress: {
@@ -109,21 +160,23 @@ export default {
       get () {
         return this.$store.state.orderInfo.fiatAmount
       },
-      set (value) {
+      set: _.debounce(function (value) {
+        this.loading = true
         this.$store.dispatch('setFiatAmount', value).finally(() => {
-          console.log('fiat done')
+          this.loading = false
         })
-      }
+      }, 500)
     },
     digitalAmount: {
       get () {
         return this.$store.state.orderInfo.digitalAmount
       },
-      set (value) {
+      set: _.debounce(function (value) {
+        this.loading = true
         this.$store.dispatch('setDigitalAmount', value).finally(() => {
-          console.log('digital done')
+          this.loading = false
         })
-      }
+      }, 500)
     },
     fiatCurrency: {
       get () {

@@ -87,6 +87,7 @@ exports.default = function (app) {
                     status: _config.simplex.status.initiated
                 }).save().catch(function (err) {
                     logger.error(err);
+                    _response2.default.error(res, error);
                 });
                 _response2.default.success(res, result);
             }).catch(function (error) {

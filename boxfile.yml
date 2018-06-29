@@ -6,12 +6,16 @@ run.config:
   extra_packages:
     - bash
   build_triggers:
-    - package.json
+    - api/package.json
+    - frontend/package.json
   cache_dirs:
-    - node_modules
+    - api/node_modules
+    - frontend/node_modules
   extra_steps:
     - cd api && npm install
     - cd api && npm run build
+    - cd frontend && npm install
+    - cd frontend && npm run build
 
 data.mongodb:
   image: nanobox/mongodb:3.4
@@ -21,3 +25,9 @@ web.api:
     - bash -c 'cd api && npm run prod'
   routes:
     - 'api:/'
+
+web.frontend:
+  start: 
+    - bash -c 'cd frontend && npm run prod'
+  routes:
+    - '/'

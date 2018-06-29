@@ -7,8 +7,10 @@ export default {
   orderInfo: {
     fiatCurrency: 'USD',
     digitalCurrency: 'ETH',
-    fiatAmount: '',
+    requestedCurrency: 'ETH',
+    fiatAmount: 0,
     digitalAmount: 1,
-    digitalAddress: ''
+    digitalAddress: '',
+    userId: ''
   }
 }

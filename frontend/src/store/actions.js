@@ -13,7 +13,6 @@ var quoteChanges = Object.freeze({
   digital_currency: 4
 })
 let canQuote = (state) => !state.status.invalidFiatAmount || !state.invalidDigitalAmount
-let canOrder = (state) => !state.status.invalidFiatAmount && !state.invalidDigitalAmountcanQuote && !state.invalidAddress
 let updateValues = (qChange, {
   state,
   dispatch,
@@ -27,6 +26,7 @@ let updateValues = (qChange, {
         commit('setFiatAmount', resp.result.fiat_money.base_amount)
         commit('setInvalidDigitalAmount', false)
         commit('setInvalidFiatAmount', false)
+        commit('setUserId', resp.result.user_id)
         resolve()
       } else {
         console.log(resp.result)
@@ -41,6 +41,7 @@ let updateValues = (qChange, {
       switch (qChange) {
         case quoteChanges.fiat_amount:
         case quoteChanges.fiat_currency:
+          commit('setRequestedCurrency', state.orderInfo.fiatCurrency)
           getQuote({
             digital_currency: state.orderInfo.digitalCurrency,
             fiat_currency: state.orderInfo.fiatCurrency,
@@ -50,6 +51,7 @@ let updateValues = (qChange, {
           break
         case quoteChanges.digital_amount:
         case quoteChanges.digital_currency:
+          commit('setRequestedCurrency', state.orderInfo.digitalCurrency)
           getQuote({
             digital_currency: state.orderInfo.digitalCurrency,
             fiat_currency: state.orderInfo.fiatCurrency,
@@ -59,7 +61,7 @@ let updateValues = (qChange, {
           break
       }
     } else {
-      reject('canQuote false')
+      reject(new Error('canQuote false'))
     }
   })
 }
@@ -68,7 +70,7 @@ export default {
     commit,
     state
   }, address) {
-    if (wav.validate(address, state.digitalCurrency)) {
+    if (wav.validate(address, state.orderInfo.digitalCurrency)) {
       commit('setDigitalAddress', address)
       commit('setInvalidAddress', false)
     } else {
