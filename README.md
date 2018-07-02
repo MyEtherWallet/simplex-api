@@ -13,7 +13,11 @@ Setup `.env` file with following variable
 WALLET_ID=
 QUOTE_EP=https://sandbox.test-simplexcc.com/wallet/merchant/v2/quote
 ORDER_EP=https://sandbox.test-simplexcc.com/wallet/merchant/v2/payments/partner/data
+PAYMENT_EP=https://sandbox.test-simplexcc.com/payments/new
 SIMPLEX_APIKEY=
+RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
+API_HOST=
 ```
 
 ### Installing
