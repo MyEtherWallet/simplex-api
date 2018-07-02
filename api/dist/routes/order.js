@@ -28,8 +28,11 @@ var _config = require('../config');
 
 var _mangodb = require('../mangodb');
 
+var _expressRecaptcha = require('express-recaptcha');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var recaptcha = new _expressRecaptcha.Recaptcha(_config.recaptcha.siteKey, _config.recaptcha.secretKey);
 var logger = (0, _logging2.default)('order.js');
 
 var schema = {
@@ -95,9 +98,12 @@ var validUserId = async function validUserId(_userId) {
 };
 
 exports.default = function (app) {
-    app.post('/order', async function (req, res) {
+    app.post('/order', recaptcha.middleware.verify, async function (req, res) {
         var errors = validator.validate(req.body);
-        if (errors.length) {
+        if (_config.env.mode != "development" && req.recaptcha.error) {
+            logger.error(errors);
+            _response2.default.error(res, req.recaptcha.error);
+        } else if (errors.length) {
             logger.error(errors);
             _response2.default.error(res, errors.map(function (_err) {
                 return _err.message;
@@ -108,12 +114,20 @@ exports.default = function (app) {
                 var quote_id = savedOrder[0].quote_id;
                 var payment_id = (0, _v2.default)();
                 var order_id = (0, _v2.default)();
+                var accept_language = _config.env.mode == "development" ? _config.env.dev.accept_language : req.headers['accept-language'];
+                var ip = _config.env.mode == "development" ? _config.env.dev.ip : req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                var user_agent = _config.env.mode == "development" ? _config.env.dev.user_agent : req.headers['User-Agent'];
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
                         app_provider_id: _config.simplex.walletID,
                         app_version_id: _config.simplex.apiVersion,
                         signup_login: {
-                            ip: '141.145.165.137',
+                            ip: ip,
+                            uaid: user_id,
+                            accept_language: accept_language,
+                            http_accept_language: accept_language,
+                            user_agent: user_agent,
+                            cookie_session_id: user_id,
                             timestamp: new Date().toISOString()
                         }
                     }),

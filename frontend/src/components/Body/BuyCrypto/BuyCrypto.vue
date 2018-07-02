@@ -61,6 +61,9 @@
                         <div v-show="loading">Loading</div>
                         <!-- .btc-address -->
                         <!--{{activateForm}}-->
+                        <template>
+                            <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
+                        </template>
                         <checkout-form :continueAction='order' :formData="formData" />
                         <div class="submit-button-container">
                             <p>You will be redirected to the partner's site</p>
@@ -89,21 +92,29 @@ import {
   getOrder
 } from '@/simplex-api'
 import {
-  simplex
+  simplex,
+  recaptcha
 } from '@/config'
+import VueRecaptcha from 'vue-recaptcha'
 export default {
   name: 'BuyCrypto',
   data () {
     return {
       loading: false,
-      formData: null
+      formData: null,
+      r_site_key: recaptcha.siteKey,
+      recaptchaResponse: ''
     }
   },
   methods: {
+    onVerify (response) {
+      this.recaptchaResponse = response
+    },
     order (cb) {
       let success = () => {
         const orderInfo = this.$store.state.orderInfo
         getOrder({
+          'g-recaptcha-response': this.recaptchaResponse,
           account_details: {
             app_end_user_id: orderInfo.userId
           },
@@ -124,7 +135,6 @@ export default {
             }
           }
         }).then((resp) => {
-          console.log(resp)
           resp = resp.data
           if (!resp.error) {
             this.formData = resp.result
@@ -211,11 +221,12 @@ export default {
     },
     canOrder: {
       get () {
-        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount
+        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse
       }
     }
 
-  }
+  },
+  components: { VueRecaptcha }
 }
 </script>
 <style lang="scss" scoped>

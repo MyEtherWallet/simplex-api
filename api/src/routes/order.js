@@ -6,14 +6,20 @@ import {
 import Validator from '../validator'
 import response from '../response'
 import {
-    simplex
+    simplex,
+    recaptcha as recaptchaConfig,
+    env
 } from '../config'
 import {
     Order,
     getOrderById,
     findAndUpdate
 } from '../mangodb'
+import {
+    Recaptcha
+} from 'express-recaptcha'
 
+const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretKey)
 const logger = createLogger('order.js')
 
 let schema = {
@@ -80,9 +86,12 @@ let validUserId = async(_userId) => {
     })
 }
 export default (app) => {
-    app.post('/order', async(req, res) => {
+    app.post('/order', recaptcha.middleware.verify, async(req, res) => {
         let errors = validator.validate(req.body)
-        if (errors.length) {
+        if (env.mode != "development" && req.recaptcha.error) {
+            logger.error(errors)
+            response.error(res, req.recaptcha.error)
+        } else if (errors.length) {
             logger.error(errors)
             response.error(res, errors.map(_err => _err.message))
         } else {
@@ -91,13 +100,21 @@ export default (app) => {
                 let quote_id = savedOrder[0].quote_id
                 let payment_id = uuidv4()
                 let order_id = uuidv4()
+                let accept_language = env.mode == "development" ? env.dev.accept_language : req.headers['accept-language']
+                let ip = env.mode == "development" ? env.dev.ip : (req.headers['x-forwarded-for'] || req.connection.remoteAddress)
+                let user_agent = env.mode == "development" ? env.dev.user_agent : req.headers['User-Agent']
                 let reqObj = {
                     account_details: {
                         ...req.body.account_details,
                         app_provider_id: simplex.walletID,
                         app_version_id: simplex.apiVersion,
                         signup_login: {
-                            ip: '141.145.165.137',
+                            ip: ip,
+                            uaid: user_id,
+                            accept_language: accept_language,
+                            http_accept_language: accept_language,
+                            user_agent: user_agent,
+                            cookie_session_id: user_id,
                             timestamp: new Date().toISOString()
                         }
                     },

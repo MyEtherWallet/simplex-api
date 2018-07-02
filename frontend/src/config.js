@@ -5,9 +5,13 @@ let simplex = {
   maxFiat: 20000
 }
 let host = {
-  url: 'https://apiccswap.myetherwallet.com'
+  url: 'http://172.20.0.2:8080'// process.env.API_HOST
+}
+let recaptcha = {
+  siteKey: process.env.RECAPTCHA_SITE_KEY || ''
 }
 export {
   simplex,
-  host
+  host,
+  recaptcha
 }
