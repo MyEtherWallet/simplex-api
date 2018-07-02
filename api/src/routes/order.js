@@ -85,6 +85,13 @@ let validUserId = async(_userId) => {
 
     })
 }
+let getIP = (req) => {
+    return (req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress).split(",")[0]
+
+}
 export default (app) => {
     app.post('/order', recaptcha.middleware.verify, async(req, res) => {
         let errors = validator.validate(req.body)
@@ -101,7 +108,7 @@ export default (app) => {
                 let payment_id = uuidv4()
                 let order_id = uuidv4()
                 let accept_language = env.mode == "development" ? env.dev.accept_language : req.headers['accept-language']
-                let ip = env.mode == "development" ? env.dev.ip : (req.headers['x-forwarded-for'] || req.connection.remoteAddress)
+                let ip = env.mode == "development" ? env.dev.ip : getIP(req)
                 let user_agent = env.mode == "development" ? env.dev.user_agent : req.headers['User-Agent']
                 let reqObj = {
                     account_details: {

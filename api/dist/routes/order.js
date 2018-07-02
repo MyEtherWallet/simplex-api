@@ -96,6 +96,9 @@ var validator = (0, _validator2.default)(schema);
 var validUserId = async function validUserId(_userId) {
     return new Promise(function (resolve, reject) {});
 };
+var getIP = function getIP(req) {
+    return (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress).split(",")[0];
+};
 
 exports.default = function (app) {
     app.post('/order', recaptcha.middleware.verify, async function (req, res) {
@@ -115,8 +118,12 @@ exports.default = function (app) {
                 var payment_id = (0, _v2.default)();
                 var order_id = (0, _v2.default)();
                 var accept_language = _config.env.mode == "development" ? _config.env.dev.accept_language : req.headers['accept-language'];
-                var ip = _config.env.mode == "development" ? _config.env.dev.ip : req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                var ip = _config.env.mode == "development" ? _config.env.dev.ip : getIP(req);
                 var user_agent = _config.env.mode == "development" ? _config.env.dev.user_agent : req.headers['User-Agent'];
+                logger.info(ip);
+                logger.info(accept_language);
+                logger.info(req.headers);
+                logger.info(req.connection.remoteAddress);
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
                         app_provider_id: _config.simplex.walletID,
