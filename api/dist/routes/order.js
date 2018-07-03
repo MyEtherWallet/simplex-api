@@ -120,10 +120,6 @@ exports.default = function (app) {
                 var accept_language = _config.env.mode == "development" ? _config.env.dev.accept_language : req.headers['accept-language'];
                 var ip = _config.env.mode == "development" ? _config.env.dev.ip : getIP(req);
                 var user_agent = _config.env.mode == "development" ? _config.env.dev.user_agent : req.headers['User-Agent'];
-                logger.info(ip);
-                logger.info(accept_language);
-                logger.info(req.headers);
-                logger.info(req.connection.remoteAddress);
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
                         app_provider_id: _config.simplex.walletID,
