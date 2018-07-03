@@ -9,6 +9,7 @@ let simplex = {
     quoteEP: process.env.QUOTE_EP || "",
     orderEP: process.env.ORDER_EP || "",
     paymentEP: process.env.PAYMENT_EP || "",
+    eventEP: process.env.EVENT_EP || "",
     apiKey: process.env.SIMPLEX_APIKEY || "",
     apiVersion: "1",
     validFiat: ["EUR", "USD"],
@@ -23,7 +24,7 @@ let simplex = {
     }
 }
 let mangodb = {
-    host: process.env.DATA_MONGODB_HOST || '',
+    host: process.env.DATA_MONGODB_HOST || 'localhost',
     port: 27017,
     name: 'gonano'
 }
