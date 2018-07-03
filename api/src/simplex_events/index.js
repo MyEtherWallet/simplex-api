@@ -1,4 +1,4 @@
-import { getEvents } from './retrieveEvents'
+import getEvents from './retrieveEvents'
 
 import createLogger from 'logging'
 const logger = createLogger('simplex_events/index.js')

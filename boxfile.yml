@@ -25,6 +25,10 @@ web.api:
     - bash -c 'cd api && npm run prod'
   routes:
     - 'api:/'
+  cron:
+    - id: simplex-events
+      schedule: '* * * * *'
+      command: bash -c 'cd api && npm run eventsProd'
 
 web.frontend:
   start: 

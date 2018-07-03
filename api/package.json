@@ -8,6 +8,7 @@
         "start": "npm run build && node dist/index.js",
         "prod": "node dist/index.js",
         "events": "npm run build && node dist/simplex_events/index.js",
+        "eventsProd": "node dist/simplex_events/",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
         "test": "env NODE_ENV=development mocha --exit --require babel-core/register test/*"
     },
