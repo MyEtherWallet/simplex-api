@@ -236,5 +236,4 @@ export default {
 <style lang="scss" scoped>
 @import '@/var.scss';
 @import 'BuyCrypto.scss'
-
 </style>

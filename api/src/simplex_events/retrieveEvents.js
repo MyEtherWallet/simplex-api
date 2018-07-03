@@ -9,7 +9,7 @@ import {
 } from '../config'
 import request from 'request'
 
-const logger = createLogger('index.js')
+const logger = createLogger('simplex_events/retrieveEvents.js')
 
 connect().then(() => {
   logger.info(`mangodb running on port: ${mangodb.host}:${mangodb.port}`)
@@ -29,8 +29,7 @@ export function getEvents () {
     }
     let callback = (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        let first3 = body.events.slice(0, 3)
-        eachOfSeries(first3, processEvent, (error) =>{
+        eachOfSeries(body.events, processEvent, (error) =>{
           if(error){
             reject(error)
           } else {
@@ -48,15 +47,11 @@ export function getEvents () {
 }
 
 function processEvent(item, key, callback){
-  console.log("========================") // todo remove dev item
-  console.log(item) // todo remove dev item
-  console.log(key) // todo remove dev item
     findAndUpdate(item.payment.partner_end_user_id, {
       status: item.payment.status
     }).catch((err) => {
       logger.error(err)
     })
-
   let options = {
     url: `${simplex.eventEP}/${item.event_id}`,
     headers: {
