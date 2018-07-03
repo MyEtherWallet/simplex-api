@@ -25,7 +25,8 @@ let updateValues = (qChange, {
         commit('setDigitalAmount', resp.result.digital_money.amount)
         commit('setFiatAmount', resp.result.fiat_money.base_amount)
         commit('setInvalidDigitalAmount', false)
-        commit('setInvalidFiatAmount', false)
+        const isInvalidFiat = resp.result.fiat_money.total_amount < simplex.minFiat && resp.result.fiat_money.total_amount > simplex.maxFiat
+        commit('setInvalidFiatAmount', isInvalidFiat)
         commit('setUserId', resp.result.user_id)
         resolve()
       } else {

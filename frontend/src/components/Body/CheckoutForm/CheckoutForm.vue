@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="submit-button-container">
         <form v-if="formData" id='payment_form' ref="payment_form" :action="formData.payment_post_url" method='POST' target='_self'>
             <input type='hidden' name='version' :value='formData.version'>
             <input type='hidden' name='partner' :value='formData.partner'>

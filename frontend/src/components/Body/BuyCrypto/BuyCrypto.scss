@@ -152,7 +152,7 @@
       }
 
       .btc-address {
-        margin-bottom: 150px;
+        margin-bottom: 60px;
 
 
         h4 {
@@ -175,6 +175,17 @@
             color: #bcc1c7;
           }
         }
+
+        // Hack (need David's magic CSS)
+        .loading-indicator{
+          position: absolute;
+          display: inline-block;
+          z-index: 1;
+          text-align: center;
+          right: 30%;
+          top: 70%;
+        }
+
       }
 
       .submit-button-container {
@@ -184,7 +195,7 @@
           position: relative;
           i {
             position: absolute;
-            right: 22px;
+            right: 44px;
             top: 16px;
             font-size: 30px;
           }
@@ -206,3 +217,18 @@
   }
 }
 
+
+.recaptcha{
+  position: relative;
+  margin-bottom: 30px;
+  left: 15%;
+}
+
+@media (max-width: $mobile-width){
+  .recaptcha{
+    display: inline-block;
+    margin-bottom: 30px;
+    right: auto;
+    left: auto;
+  }
+}

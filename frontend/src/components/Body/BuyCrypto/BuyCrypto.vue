@@ -31,6 +31,7 @@
                                     </div>
                                     <div>
                                         <select v-model="fiatCurrency">
+                                            <!--TODO: <option v-for=""></option-->
                                             <option value="USD">USD</option>
                                             <option value="EUR">EUR</option>
                                         </select>
@@ -45,6 +46,7 @@
                                     </div>
                                     <div>
                                         <select v-model="digitalCurrency">
+                                            <!--TODO: <option v-for=""></option-->
                                             <option value="BTC">BTC</option>
                                             <option value="ETH">ETH</option>
                                         </select>
@@ -57,12 +59,14 @@
                             <h4 v-if="digitalCurrency === 'BTC'">BTC Address <span>Do you have one?</span></h4>
                             <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span>Do you have one?</span></h4>
                             <input v-model="digitalAddress" type="text" name="" placeholder="Please enter the address" :class="{'invalid-field': isInvalidAddress}">
+                            <div class="loading-indicator" v-show="loading">Loading <i class="fa fa-spinner fa-pulse"></i></div>
                         </div>
-                        <div v-show="loading">Loading</div>
+
                         <!-- .btc-address -->
-                        <!--{{activateForm}}-->
                         <template>
+                          <div class="recaptcha">
                             <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
+                          </div>
                         </template>
                         <checkout-form :continueAction='order' :formData="formData" />
                         <div class="submit-button-container">
@@ -232,4 +236,5 @@ export default {
 <style lang="scss" scoped>
 @import '@/var.scss';
 @import 'BuyCrypto.scss'
+
 </style>
