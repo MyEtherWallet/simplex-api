@@ -31,9 +31,8 @@
                                     </div>
                                     <div>
                                         <select v-model="fiatCurrency">
-                                            <!--TODO: <option v-for=""></option-->
-                                            <option value="USD">USD</option>
-                                            <option value="EUR">EUR</option>
+                                          <!-- eslint-disable vue/require-v-for-key -->
+                                          <option v-for="fiat in validFiat" v-bind:value="fiat">{{fiat}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -46,9 +45,9 @@
                                     </div>
                                     <div>
                                         <select v-model="digitalCurrency">
+                                          <!-- eslint-disable vue/require-v-for-key -->
+                                          <option v-for="digital in validDigital"  v-bind:value="digital">{{digital}}</option>
                                             <!--TODO: <option v-for=""></option-->
-                                            <option value="BTC">BTC</option>
-                                            <option value="ETH">ETH</option>
                                         </select>
                                     </div>
                                 </div>
@@ -104,6 +103,8 @@ export default {
   name: 'BuyCrypto',
   data () {
     return {
+      validFiat: simplex.validFiat,
+      validDigital: simplex.validDigital,
       loading: false,
       formData: null,
       r_site_key: recaptcha.siteKey,

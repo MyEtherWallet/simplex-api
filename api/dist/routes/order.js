@@ -10,6 +10,10 @@ var _logging = require('logging');
 
 var _logging2 = _interopRequireDefault(_logging);
 
+var _walletAddressValidator = require('wallet-address-validator');
+
+var _walletAddressValidator2 = _interopRequireDefault(_walletAddressValidator);
+
 var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
@@ -34,6 +38,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var recaptcha = new _expressRecaptcha.Recaptcha(_config.recaptcha.siteKey, _config.recaptcha.secretKey);
 var logger = (0, _logging2.default)('order.js');
+
+var validateMinMax = function validateMinMax(val) {
+    return !(_config.simplex.minFiat > +val || _config.simplex.maxFiat < +val);
+};
+var validateAddress = function validateAddress(val) {
+    var maybeValid = _config.simplex.validDigital.filter(function (cryptoSymbol) {
+        return _walletAddressValidator2.default.validate(val, cryptoSymbol);
+    });
+    logger.info(maybeValid);
+    return maybeValid.length > 0;
+};
 
 var schema = {
     account_details: {
@@ -60,7 +75,8 @@ var schema = {
                 amount: {
                     type: Number,
                     required: true,
-                    message: "fiat amount required and must be a number"
+                    use: { validateMinMax: validateMinMax },
+                    message: "fiat amount is required, must be a number, and must be between 50 and 20,000"
                 }
             },
             requested_digital_amount: {
@@ -86,7 +102,8 @@ var schema = {
                 address: {
                     type: String,
                     required: true,
-                    message: "destination address required and must be a number"
+                    use: { validateAddress: validateAddress },
+                    message: "destination address is required and must be a valid BTC or ETH address respectively"
                 }
             }
         }
@@ -101,7 +118,7 @@ var getIP = function getIP(req) {
 };
 
 exports.default = function (app) {
-    app.post('/order', recaptcha.middleware.verify, async function (req, res) {
+    app.post('/order', /*recaptcha.middleware.verify,*/async function (req, res) {
         var errors = validator.validate(req.body);
         if (_config.env.mode != "development" && req.recaptcha.error) {
             logger.error(errors);

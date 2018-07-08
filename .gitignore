@@ -62,3 +62,6 @@ typings/
 
 # yarn directory
 .yarn
+
+# intellij settings
+.idea

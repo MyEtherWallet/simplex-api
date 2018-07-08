@@ -39,7 +39,8 @@
         "mongoose-timestamp": "^0.6.0",
         "request": "^2.87.0",
         "uuid": "^3.2.1",
-        "validate": "^4.4.1"
+        "validate": "^4.4.1",
+        "wallet-address-validator": "^0.1.7"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

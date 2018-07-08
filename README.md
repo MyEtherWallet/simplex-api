@@ -44,6 +44,13 @@ nanobox deploy
 nanobox deploy dry-run
 ```
 
+
+## External APIs
+
+### Status
+- /status/[userId]\
+    where userId is the same user_id used to generate the order
+
 ## Built With
 
 * [ExpressJS](https://expressjs.com/) - The web framework

@@ -9,7 +9,11 @@ let getQuote = (reqObj) => {
 let getOrder = (reqObj) => {
   return axios.post(`${host.url}/order`, reqObj)
 }
+let getStatus = (userId) => {
+  return axios.get(`${host.url}/status/${userId}`)
+}
 export {
   getQuote,
-  getOrder
+  getOrder,
+  getStatus
 }

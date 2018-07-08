@@ -1,4 +1,5 @@
 import createLogger from 'logging'
+import wav from 'wallet-address-validator'
 import uuidv4 from 'uuid/v4'
 import {
     getOrder
@@ -21,6 +22,16 @@ import {
 
 const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretKey)
 const logger = createLogger('order.js')
+
+const validateMinMax = val => {
+    return !(simplex.minFiat > +val || simplex.maxFiat < +val)
+}
+const validateAddress = val => {
+   const maybeValid = simplex.validDigital.filter(cryptoSymbol =>{
+        return wav.validate(val, cryptoSymbol)
+    })
+   return maybeValid.length > 0
+}
 
 let schema = {
     account_details: {
@@ -47,7 +58,8 @@ let schema = {
                 amount: {
                     type: Number,
                     required: true,
-                    message: "fiat amount required and must be a number"
+                    use: {validateMinMax},
+                    message: "fiat amount is required, must be a number, and must be between 50 and 20,000"
                 }
             },
             requested_digital_amount: {
@@ -73,7 +85,8 @@ let schema = {
                 address: {
                     type: String,
                     required: true,
-                    message: "destination address required and must be a number"
+                    use: {validateAddress},
+                    message: "destination address is required and must be a valid BTC or ETH address respectively"
                 }
             }
         }

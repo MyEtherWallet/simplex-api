@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _response = require('../response');
@@ -13,10 +13,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var packageInfo = require('../../package.json');
 
 exports.default = function (app) {
-    app.get('/info', function (req, res) {
-        _response2.default.success(res, {
-            name: "Simplex API",
-            version: packageInfo.version
-        });
+  app.get('/info', function (req, res) {
+    _response2.default.success(res, {
+      name: "Simplex API",
+      version: packageInfo.version
     });
+  });
 };
