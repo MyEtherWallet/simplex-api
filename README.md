@@ -48,8 +48,47 @@ nanobox deploy dry-run
 ## External APIs
 
 ### Status
-- /status/[userId]\
-    where userId is the same user_id used to generate the order
+
+post requests:
+- /quote\
+    returns a quote for the provided input\
+    parameter object:
+    ```javascript
+    {
+    digital_currency: "",
+    fiat_currency: '',
+    requested_currency: "",
+    requested_amount "" 'must be a number
+    }
+    ```
+    - from currency
+    - to currency
+    - from amount
+
+get request(s):
+- /status/:user_id\
+    gets the latest status for the particular user_id
+   - response:
+    ```javascript
+
+  {
+      user_id: <string>,
+      status: <string>,
+      fiat_total_amount: {
+          currency: <string>,
+          amount: <string>
+          },
+      requested_digital_amount: {
+          currency: <string>,
+          amount: <string>
+          }
+    }
+    ```
+
+    - The user_id supplied to the status endpoint the same user_id used to generate the order.
+    - The status is updated when an event containing the user_id appears.
+    - Note: The user_id is created on a per order basis, so no correlation exists between various orders.
+
 
 ## Built With
 

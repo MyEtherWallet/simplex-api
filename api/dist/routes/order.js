@@ -46,7 +46,6 @@ var validateAddress = function validateAddress(val) {
     var maybeValid = _config.simplex.validDigital.filter(function (cryptoSymbol) {
         return _walletAddressValidator2.default.validate(val, cryptoSymbol);
     });
-    logger.info(maybeValid);
     return maybeValid.length > 0;
 };
 
@@ -118,7 +117,7 @@ var getIP = function getIP(req) {
 };
 
 exports.default = function (app) {
-    app.post('/order', /*recaptcha.middleware.verify,*/async function (req, res) {
+    app.post('/order', recaptcha.middleware.verify, async function (req, res) {
         var errors = validator.validate(req.body);
         if (_config.env.mode != "development" && req.recaptcha.error) {
             logger.error(errors);
