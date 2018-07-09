@@ -127,7 +127,7 @@ export default {
             payment_details: {
               fiat_total_amount: {
                 currency: orderInfo.fiatCurrency,
-                amount: orderInfo.fiatAmount
+                amount: orderInfo.fiatTotal
               },
               requested_digital_amount: {
                 currency: orderInfo.digitalCurrency,

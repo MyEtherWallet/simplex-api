@@ -8,6 +8,9 @@ export default {
   setFiatAmount (state, _fiatAmount) {
     state.orderInfo.fiatAmount = _fiatAmount
   },
+  setFiatTotal (state, _fiatTotal) {
+    state.orderInfo.fiatTotal = _fiatTotal
+  },
   setDigitalAmount (state, _digitalAmount) {
     state.orderInfo.digitalAmount = _digitalAmount
   },
