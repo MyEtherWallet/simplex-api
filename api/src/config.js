@@ -40,10 +40,19 @@ let env = {
         user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'
     }
 }
+
+let mobileValidation = {
+    apiKeyHeaderName: process.env.API_KEY_HEADER || 'apikey',
+    apiKeys: process.env.API_KEY ? [process.env.API_KEY] : ['321654987', 'abcdefg'],
+    referrerAppleiOS: process.env.IOS_REFERER || 'iOS',
+    referrerAndroid: process.env.ANDROID_REFERER || 'Android'
+}
+
 export {
     network,
     simplex,
     mangodb,
     recaptcha,
-    env
+    env,
+    mobileValidation
 }

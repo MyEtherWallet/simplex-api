@@ -34,9 +34,13 @@ var _mangodb = require('../mangodb');
 
 var _expressRecaptcha = require('express-recaptcha');
 
+var _sourceValidate = require('../sourceValidate');
+
+var _sourceValidate2 = _interopRequireDefault(_sourceValidate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var recaptcha = new _expressRecaptcha.Recaptcha(_config.recaptcha.siteKey, _config.recaptcha.secretKey);
+// const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretKey)
 var logger = (0, _logging2.default)('order.js');
 
 var validateMinMax = function validateMinMax(val) {
@@ -117,9 +121,9 @@ var getIP = function getIP(req) {
 };
 
 exports.default = function (app) {
-    app.post('/order', recaptcha.middleware.verify, async function (req, res) {
+    app.post('/order', (0, _sourceValidate2.default)(), function (req, res) {
         var errors = validator.validate(req.body);
-        if (_config.env.mode != "development" && req.recaptcha.error) {
+        if (_config.env.mode != 'development' && req.recaptcha.error) {
             logger.error(errors);
             _response2.default.error(res, req.recaptcha.error);
         } else if (errors.length) {
@@ -133,9 +137,9 @@ exports.default = function (app) {
                 var quote_id = savedOrder[0].quote_id;
                 var payment_id = (0, _v2.default)();
                 var order_id = (0, _v2.default)();
-                var accept_language = _config.env.mode == "development" ? _config.env.dev.accept_language : req.headers['accept-language'];
-                var ip = _config.env.mode == "development" ? _config.env.dev.ip : getIP(req);
-                var user_agent = _config.env.mode == "development" ? _config.env.dev.user_agent : req.headers['User-Agent'];
+                var accept_language = _config.env.mode == 'development' ? _config.env.dev.accept_language : req.headers['accept-language'];
+                var ip = _config.env.mode == 'development' ? _config.env.dev.ip : getIP(req);
+                var user_agent = _config.env.mode == 'development' ? _config.env.dev.user_agent : req.headers['user-agent'];
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
                         app_provider_id: _config.simplex.walletID,
@@ -167,12 +171,12 @@ exports.default = function (app) {
                     logger.error(err);
                 });
                 (0, _simplex.getOrder)(reqObj).then(function (result) {
-                    if ("is_kyc_update_required" in result) {
+                    if ('is_kyc_update_required' in result) {
                         _response2.default.success(res, {
                             payment_post_url: _config.simplex.paymentEP,
                             version: _config.simplex.apiVersion,
                             partner: _config.simplex.walletID,
-                            return_url: "https://www.myetherwallet.com",
+                            return_url: 'https://www.myetherwallet.com',
                             quote_id: quote_id,
                             payment_id: payment_id,
                             user_id: user_id,

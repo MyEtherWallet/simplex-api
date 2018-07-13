@@ -26,6 +26,10 @@ var _config = require('../config');
 
 var _mangodb = require('../mangodb');
 
+var _sourceValidate = require('../sourceValidate');
+
+var _sourceValidate2 = _interopRequireDefault(_sourceValidate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('quote.js');
@@ -55,10 +59,11 @@ var schema = {
         message: "requested_amount required and must be a number"
     }
 };
+
 var validator = (0, _validator2.default)(schema);
 
 exports.default = function (app) {
-    app.post('/quote', function (req, res) {
+    app.post('/quote', (0, _sourceValidate2.default)(), function (req, res) {
         var errors = validator.validate(req.body);
         if (errors.length) {
             logger.error(errors);

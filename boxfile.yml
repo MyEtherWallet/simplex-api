@@ -5,9 +5,6 @@ run.config:
     dep_manager: npm
   extra_packages:
     - bash
-  build_triggers:
-    - api/package.json
-    - frontend/package.json
   cache_dirs:
     - api/node_modules
     - frontend/node_modules
@@ -19,9 +16,9 @@ run.config:
 
 data.mongodb:
   image: nanobox/mongodb:3.4
-  
+
 web.api:
-  start: 
+  start:
     - bash -c 'cd api && npm run prod'
   routes:
     - 'api:/'
@@ -31,7 +28,7 @@ web.api:
       command: bash -c 'cd api && npm run eventsProd'
 
 web.frontend:
-  start: 
+  start:
     - bash -c 'cd frontend && npm run prod'
   routes:
     - '/'

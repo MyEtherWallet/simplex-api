@@ -11,6 +11,7 @@ import {
 import {
     Order
 } from '../mangodb'
+import sourceValidate from '../sourceValidate'
 
 const logger = createLogger('quote.js')
 
@@ -39,9 +40,10 @@ let schema = {
         message: "requested_amount required and must be a number"
     }
 }
+
 let validator = Validator(schema)
 export default (app) => {
-    app.post('/quote', (req, res) => {
+    app.post('/quote', sourceValidate(), (req, res) => {
         let errors = validator.validate(req.body)
         if (errors.length) {
             logger.error(errors)
