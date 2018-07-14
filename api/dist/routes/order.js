@@ -40,7 +40,6 @@ var _sourceValidate2 = _interopRequireDefault(_sourceValidate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretKey)
 var logger = (0, _logging2.default)('order.js');
 
 var validateMinMax = function validateMinMax(val) {

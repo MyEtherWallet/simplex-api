@@ -148,6 +148,9 @@ export default {
             })
           } else console.log(resp)
         })
+          .catch((error) => {
+            console.error(error)
+          })
       }
       let failed = (err) => console.log(err)
       if (this.canOrder) {
