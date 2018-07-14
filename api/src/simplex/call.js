@@ -18,10 +18,6 @@ export default (body, path) => {
             json: true
         }
         let callback = (error, response, body) => {
-            if(!response){
-                logger.error('Undefined Response: ', response)
-                reject(error)
-            }
             if (!error && response.statusCode == 200) {
                 resolve(body)
             } else if (response.statusCode == 400) {

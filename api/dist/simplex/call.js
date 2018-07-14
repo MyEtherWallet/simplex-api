@@ -30,10 +30,6 @@ exports.default = function (body, path) {
             json: true
         };
         var callback = function callback(error, response, body) {
-            if (!response) {
-                logger.error('Undefined Response: ', response);
-                reject(error);
-            }
             if (!error && response.statusCode == 200) {
                 resolve(body);
             } else if (response.statusCode == 400) {
