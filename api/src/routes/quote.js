@@ -50,10 +50,15 @@ export default (app) => {
             response.error(res, errors.map(_err => _err.message))
         } else {
             let newUserId = uuidv4()
+          let userIp = (req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress).split(",")[0];
+
             let reqObj = Object.assign(req.body, {
                 "end_user_id": newUserId,
                 "wallet_id": simplex.walletID,
-                "client_ip": '141.145.165.137'
+              "client_ip": userIp  // '141.145.165.137'
             })
             getQuote(reqObj).then((result) => {
                 Order({
