@@ -72,10 +72,12 @@ exports.default = function (app) {
             }));
         } else {
             var newUserId = (0, _v2.default)();
+            var userIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress).split(",")[0];
+
             var reqObj = Object.assign(req.body, {
                 "end_user_id": newUserId,
                 "wallet_id": _config.simplex.walletID,
-                "client_ip": '141.145.165.137'
+                "client_ip": userIp // '141.145.165.137'
             });
             (0, _simplex.getQuote)(reqObj).then(function (result) {
                 (0, _mangodb.Order)({

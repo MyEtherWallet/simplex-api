@@ -110,7 +110,6 @@ describe('API getQuote Test', () => {
     .expect(200)
     .end((err, res) => {
       let body = res.body
-      console.log(body) // todo remove dev item
       assert.typeOf(body, 'Object')
       assert.equal(body.error, false)
       let response = body.result
@@ -147,7 +146,6 @@ describe('API getQuote Test', () => {
         }
       }
     }
-    console.log(reqObject) // todo remove dev item
     request(app)
     .post('/order')
     .send(reqObject)

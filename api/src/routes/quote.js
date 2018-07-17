@@ -58,7 +58,7 @@ export default (app) => {
             let reqObj = Object.assign(req.body, {
                 "end_user_id": newUserId,
                 "wallet_id": simplex.walletID,
-              "client_ip": userIp  // '141.145.165.137'
+              "client_ip": userIp
             })
             getQuote(reqObj).then((result) => {
                 Order({
