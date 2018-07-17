@@ -12,7 +12,8 @@ export default new Router({
       name: 'LandingPage',
       component: LandingPage
     }, {
-      path: '/viewStatus/:userId',
+      path: '/status/:userId',
+      name: 'OrderStatus',
       component: OrderStatus,
       props: true
     }

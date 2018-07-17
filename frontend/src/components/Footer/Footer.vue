@@ -3,7 +3,7 @@
         <div class="page-container">
             <div class="text-button-container">
                 <div class="text-block">
-                    <h1>Buy Bitcoin, Etherum at Lower Rates</h1>
+                    <h1>Buy Etherum at Lower Rates</h1>
                 </div>
                 <div class="button-block">
                     <div class="submit-button-container">

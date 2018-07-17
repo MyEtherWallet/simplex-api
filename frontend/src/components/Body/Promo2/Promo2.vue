@@ -15,7 +15,7 @@
                     </div>
                     <div class="text-container">
                         <h3>Reasonable fee</h3>
-                        <p>Extra charges apply in addition to the rate provided at the checkout changelly fee 1%.</p>
+                        <p>Extra charges apply in addition to the rate provided, including a 1% MyEtherWallet fee.</p>
                     </div>
                 </div>
                 <div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="text-container">
                         <h3>Quick transactions</h3>
-                        <p>We offer lightning-fast transactions taking just 10-30 minutes in regular circumstances.</p>
+                        <p>We offer lightning-fast transactions typically taking just minutes.</p>
                     </div>
                 </div>
                 <div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="text-container">
                         <h3>Instant support</h3>
-                        <p>Feel free to contact support@mew.com should you have questions</p>
+                        <p>Feel free to contact <a href="mailto:support@simplex.com" style="color: rgb(135, 153, 171)" >support@simplex.com </a> should you have questions</p>
                     </div>
                 </div>
             </div>

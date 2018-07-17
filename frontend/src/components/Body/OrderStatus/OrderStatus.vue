@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     getOrderStatus () {
+      console.log('get order status') // todo remove dev item
       getStatus(this.userId)
         .then(result => {
           this.status = JSON.stringify(result.data.result, null, 2)

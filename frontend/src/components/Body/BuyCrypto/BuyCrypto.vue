@@ -7,7 +7,7 @@
                         <img class="mew-logo-image" src="~@/assets/images/logo.png">
                     </div>
                     <div class="text-contents">
-                        <h1 class="large-title">Buy Ethereum, Bitcoin at Lower Rates</h1>
+                        <h1 class="large-title">Buy Ethereum at Lower Rates</h1>
                     </div>
                     <div class="powered-by">
                         <div class="simplex">

@@ -1,6 +1,6 @@
 let simplex = {
   validFiat: ['USD', 'EUR'],
-  validDigital: ['ETH', 'BTC'],
+  validDigital: ['ETH'],
   minFiat: 50,
   maxFiat: 20000
 }
