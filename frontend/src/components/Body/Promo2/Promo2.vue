@@ -6,7 +6,7 @@
         </div>
         <div class="page-container">
             <div class="component-title-container">
-                <h2>That is the reason why millions of our user choose us</h2>
+                <h2>That is the reason why millions of our users choose us</h2>
             </div>
             <div class="promo-content-container">
                 <div>
@@ -32,7 +32,7 @@
                         <img class="mew-logo-image" src="~@/assets/images/icons/calendar.png">
                     </div>
                     <div class="text-container">
-                        <h3>Easy verificaiton</h3>
+                        <h3>Easy verification</h3>
                         <p>Payment process is pretty simple and takes just a few steps.</p>
                     </div>
                 </div>
