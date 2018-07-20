@@ -15,7 +15,7 @@ var packageInfo = require('../../package.json');
 exports.default = function (app) {
   app.get('/info', function (req, res) {
     _response2.default.success(res, {
-      name: "Simplex API",
+      name: 'Simplex API',
       version: packageInfo.version
     });
   });

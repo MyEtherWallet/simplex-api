@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _express = require('express');
@@ -37,11 +37,11 @@ app.use(_bodyParser2.default.json());
 app.use((0, _cors2.default)());
 (0, _routes2.default)(app);
 (0, _mangodb.connect)().then(function () {
-    logger.info('mangodb running on port: ' + _config.mangodb.host + ':' + _config.mangodb.port);
+  logger.info('mangodb running on port: ' + _config.mangodb.host + ':' + _config.mangodb.port);
 }).catch(function (err) {
-    logger.error('mangodb error: ' + err);
+  logger.error('mangodb error: ' + err);
 });
 var server = app.listen(_config.network.port, function () {
-    logger.info('app running on port: ' + server.address().port);
+  logger.info('app running on port: ' + server.address().port);
 });
 exports.default = server;

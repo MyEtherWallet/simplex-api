@@ -4,13 +4,14 @@
     "description": "API to handle simplex integration",
     "main": "index.js",
     "scripts": {
-        "build": "rimraf dist/ && babel ./src --out-dir dist/",
+        "build": "npm run lint && rimraf dist/ && babel ./src --out-dir dist/",
         "start": "npm run build && node dist/index.js",
         "prod": "node dist/index.js",
         "events": "npm run build && node dist/simplex_events/index.js",
         "eventsProd": "node dist/simplex_events/",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
-        "test": "env NODE_ENV=development mocha --exit --require babel-core/register test/*"
+        "test": "npm run lint && env NODE_ENV=development mocha --exit --require babel-core/register test/*",
+        "lint": "standard --fix 'src/**/*.js'"
     },
     "repository": {
         "type": "git",
@@ -50,6 +51,7 @@
         "mocha": "^5.2.0",
         "nodemon": "^1.17.5",
         "rimraf": "^2.6.2",
+        "standard": "^11.0.1",
         "supertest": "^3.1.0"
     }
 }

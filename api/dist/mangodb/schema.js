@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _mongoose = require('mongoose');
@@ -19,51 +19,51 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Schema = _mongoose2.default.Schema;
 
 var orderSchema = new Schema({
-    user_id: {
-        type: String,
-        required: true,
-        unique: true
+  user_id: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  quote_id: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  payment_id: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  order_id: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  fiat_total_amount: {
+    currency: {
+      type: String,
+      required: true
     },
-    quote_id: {
-        type: String,
-        unique: true,
-        sparse: true
-    },
-    payment_id: {
-        type: String,
-        unique: true,
-        sparse: true
-    },
-    order_id: {
-        type: String,
-        unique: true,
-        sparse: true
-    },
-    fiat_total_amount: {
-        currency: {
-            type: String,
-            required: true
-        },
-        amount: {
-            type: Number,
-            required: true
-        }
-    },
-    requested_digital_amount: {
-        currency: {
-            type: String,
-            required: true
-        },
-        amount: {
-            type: Number,
-            required: true
-        }
-    },
-    status: {
-        type: String,
-        enum: Object.values(_config.simplex.status),
-        required: true
+    amount: {
+      type: Number,
+      required: true
     }
+  },
+  requested_digital_amount: {
+    currency: {
+      type: String,
+      required: true
+    },
+    amount: {
+      type: Number,
+      required: true
+    }
+  },
+  status: {
+    type: String,
+    enum: Object.values(_config.simplex.status),
+    required: true
+  }
 });
 orderSchema.plugin(_mongooseTimestamp2.default);
 exports.default = _mongoose2.default.model('Order', orderSchema);

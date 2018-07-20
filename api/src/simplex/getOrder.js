@@ -1,7 +1,7 @@
 import call from './call'
 import {
-    simplex
+  simplex
 } from '../config'
 export default (reqObject) => {
-    return call(reqObject, simplex.orderEP)
+  return call(reqObject, simplex.orderEP)
 }
