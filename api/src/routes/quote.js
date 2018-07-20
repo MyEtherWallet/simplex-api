@@ -6,12 +6,16 @@ import Validator from '../validator'
 import uuidv4 from 'uuid/v4'
 import response from '../response'
 import {
-    simplex
+    simplex,
+    env
 } from '../config'
 import {
     Order
 } from '../mangodb'
 import sourceValidate from '../sourceValidate'
+import {
+    getIP
+} from '../common'
 
 const logger = createLogger('quote.js')
 
@@ -50,15 +54,10 @@ export default (app) => {
             response.error(res, errors.map(_err => _err.message))
         } else {
             let newUserId = uuidv4()
-          let userIp = (req.headers['x-forwarded-for'] ||
-            req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress).split(",")[0];
-
             let reqObj = Object.assign(req.body, {
                 "end_user_id": newUserId,
                 "wallet_id": simplex.walletID,
-              "client_ip": userIp
+                "client_ip": env.mode == 'development' ? env.dev.ip : getIP(req)
             })
             getQuote(reqObj).then((result) => {
                 Order({
@@ -75,7 +74,7 @@ export default (app) => {
                     status: simplex.status.initiated
                 }).save().catch((err) => {
                     logger.error(err)
-                    response.error(res,error)
+                    response.error(res, error)
                 })
                 response.success(res, result)
             }).catch((error) => {

@@ -34,6 +34,8 @@ var _mangodb = require('../mangodb');
 
 var _expressRecaptcha = require('express-recaptcha');
 
+var _common = require('../common');
+
 var _sourceValidate = require('../sourceValidate');
 
 var _sourceValidate2 = _interopRequireDefault(_sourceValidate);
@@ -77,7 +79,9 @@ var schema = {
                 amount: {
                     type: Number,
                     required: true,
-                    use: { validateMinMax: validateMinMax },
+                    use: {
+                        validateMinMax: validateMinMax
+                    },
                     message: "fiat amount is required, must be a number, and must be between 50 and 20,000"
                 }
             },
@@ -104,7 +108,9 @@ var schema = {
                 address: {
                     type: String,
                     required: true,
-                    use: { validateAddress: validateAddress },
+                    use: {
+                        validateAddress: validateAddress
+                    },
                     message: "destination address is required and must be a valid BTC or ETH address respectively"
                 }
             }
@@ -114,9 +120,6 @@ var schema = {
 var validator = (0, _validator2.default)(schema);
 var validUserId = async function validUserId(_userId) {
     return new Promise(function (resolve, reject) {});
-};
-var getIP = function getIP(req) {
-    return (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress).split(",")[0];
 };
 
 exports.default = function (app) {
@@ -137,7 +140,7 @@ exports.default = function (app) {
                 var payment_id = (0, _v2.default)();
                 var order_id = (0, _v2.default)();
                 var accept_language = _config.env.mode == 'development' ? _config.env.dev.accept_language : req.headers['accept-language'];
-                var ip = _config.env.mode == 'development' ? _config.env.dev.ip : getIP(req);
+                var ip = _config.env.mode == 'development' ? _config.env.dev.ip : (0, _common.getIP)(req);
                 var user_agent = _config.env.mode == 'development' ? _config.env.dev.user_agent : req.headers['user-agent'];
                 var reqObj = {
                     account_details: _extends({}, req.body.account_details, {
@@ -172,7 +175,7 @@ exports.default = function (app) {
                 (0, _simplex.getOrder)(reqObj).then(function (result) {
                     if ('is_kyc_update_required' in result) {
                         _response2.default.success(res, {
-                            payment_post_url: _config.simplex.paymentEP,
+                            payment_post_url: _config.simplex.paymentEP.trim(),
                             version: _config.simplex.apiVersion,
                             partner: _config.simplex.walletID,
                             return_url: 'https://www.myetherwallet.com',

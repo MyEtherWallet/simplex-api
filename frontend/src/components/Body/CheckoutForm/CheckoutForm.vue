@@ -30,8 +30,6 @@ export default {
   },
   methods: {
     submit () {
-      // hack to prevent zero width space from getting appended to the url
-      document.querySelector('#payment_form').action = encodeURI(this.formData.payment_post_url).replace('%E2%80%8B', ' ')
       document.querySelector('#payment_form').submit()
     }
   }
