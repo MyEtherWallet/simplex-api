@@ -98,6 +98,7 @@ let validUserId = async(_userId) => {
 
     })
 }
+
 let getIP = (req) => {
     return (req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||

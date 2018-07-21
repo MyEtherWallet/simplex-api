@@ -12,7 +12,9 @@ var quoteChanges = Object.freeze({
   fiat_currency: 3,
   digital_currency: 4
 })
+
 let canQuote = (state) => !state.status.invalidFiatAmount || !state.invalidDigitalAmount
+
 let updateValues = (qChange, {
   state,
   dispatch,
@@ -21,6 +23,7 @@ let updateValues = (qChange, {
   return new Promise((resolve, reject) => {
     let onSuccess = (result) => {
       const resp = result.data
+
       if (!resp.error) {
         commit('setDigitalAmount', resp.result.digital_money.amount)
         commit('setFiatAmount', resp.result.fiat_money.base_amount)
@@ -35,10 +38,15 @@ let updateValues = (qChange, {
         reject(resp)
       }
     }
+
     let onError = (err) => {
+      if (err.msg === 'quote unavailable') {
+        // show pop-up
+      }
       console.log(err)
       reject(err)
     }
+
     if (canQuote(state)) {
       switch (qChange) {
         case quoteChanges.fiat_amount:
@@ -53,6 +61,7 @@ let updateValues = (qChange, {
           break
         case quoteChanges.digital_amount:
         case quoteChanges.digital_currency:
+
           commit('setRequestedCurrency', state.orderInfo.digitalCurrency)
           getQuote({
             digital_currency: state.orderInfo.digitalCurrency,

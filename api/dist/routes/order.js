@@ -115,6 +115,7 @@ var validator = (0, _validator2.default)(schema);
 var validUserId = async function validUserId(_userId) {
     return new Promise(function (resolve, reject) {});
 };
+
 var getIP = function getIP(req) {
     return (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress).split(",")[0];
 };

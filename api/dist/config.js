@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 require('dotenv').config({
     path: '../.env'
 });
+
 var network = {
     port: process.env.PORT || 8080
 };
@@ -40,7 +41,7 @@ var recaptcha = {
 var env = {
     mode: process.env.NODE_ENV || 'production',
     dev: {
-        ip: '141.145.165.137',
+        ip: '72.229.28.185',
         accept_language: 'en-US,en;q=0.9',
         user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'
     }
