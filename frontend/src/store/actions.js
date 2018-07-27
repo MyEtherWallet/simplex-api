@@ -34,17 +34,14 @@ let updateValues = (qChange, {
         commit('setUserId', resp.result.user_id)
         resolve()
       } else {
-        if (err.msg === 'quote unavailable') {
-          // show pop-up
-          commit('setInvalidRegion', true)
-        }
+        console.log(resp.result)
         reject(resp)
       }
     }
 
     let onError = (err) => {
       if (err.msg === 'quote unavailable') {
-        // show pop-up
+        // show pop-up (with support information?)
         commit('setInvalidRegion', true)
       }
       console.log(err)

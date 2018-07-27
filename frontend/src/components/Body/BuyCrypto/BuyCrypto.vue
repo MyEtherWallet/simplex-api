@@ -168,7 +168,8 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('setDigitalAmount', 1)
+    let errored = (err) => console.log(err)
+    this.$store.dispatch('setDigitalAmount', 1).catch(errored)
   },
   computed: {
     digitalAddress: {

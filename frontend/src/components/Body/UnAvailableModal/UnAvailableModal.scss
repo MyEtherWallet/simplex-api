@@ -1,179 +1,111 @@
 @import '@/var.scss';
 @import '@/components/Body/BuyCrypto/BuyCrypto.scss';
 
-/*.other-modal-content {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
+.inner-body {
+  text-align: center;
+  display: block;
   width: 100%;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0;
-}*/
-/*
 
-.modal-open {
-  overflow: hidden;
-}
+  .oops-title {
+    position: relative;
+    width: 100%;
+    margin-top: 0;
+    font-size: 35px;
+    padding: 20px 0;
+  }
 
-.modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  overflow: hidden;
-  outline: 0;
-}
-
-.modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 0.5rem;
-  pointer-events: none;
-}
-
-.modal.fade .modal-dialog {
-  transition: -webkit-transform 0.3s ease-out;
-  transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
-  -webkit-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-  .modal.fade .modal-dialog {
-    transition: none;
+  .oops-text {
+    position: relative;
+    color: black;
+    margin: 10px 40px 40px 35px;
   }
 }
 
-.modal.show .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
+.oops-btn-container {
+  padding-bottom: 20px;
+
+  .button-1 {
+    position: relative;
+    i {
+      position: absolute;
+      right: 44px;
+      top: 16px;
+      font-size: 30px;
+    }
+  }
+
+  @media all and (max-width: $mobile-width) {
+    .button-1 {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 30px;
+  }
+
 }
 
-.modal-dialog-centered {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  min-height: calc(100% - (0.5rem * 2));
-}
-
-.modal-dialog-centered::before {
-  display: block;
-  height: calc(100vh - (0.5rem * 2));
-  content: "";
-}
-
-
-
-.modal-backdrop {
+.modal-mask {
   position: fixed;
+  z-index: 9998;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
-  z-index: 1040;
-  background-color: #000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
 }
 
-.modal-backdrop.fade {
-  opacity: 0;
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
 }
 
-.modal-backdrop.show {
-  opacity: 0.5;
+.modal-container {
+  width: 380px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
 }
 
-.modal-header {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: start;
-  align-items: flex-start;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid #e9ecef;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
-}
-
-.modal-header .close {
-  padding: 1rem;
-  margin: -1rem -1rem -1rem auto;
-}
-
-.modal-title {
-  margin-bottom: 0;
-  line-height: 1.5;
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
 }
 
 .modal-body {
-  position: relative;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  padding: 1rem;
 }
 
-.modal-footer {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  padding: 1rem;
-  border-top: 1px solid #e9ecef;
+.modal-default-button {
+  float: right;
 }
 
-.modal-footer > :not(:first-child) {
-  margin-left: .25rem;
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+  opacity: 0;
 }
 
-.modal-footer > :not(:last-child) {
-  margin-right: .25rem;
+.modal-leave-active {
+  opacity: 0;
 }
 
-.modal-scrollbar-measure {
-  position: absolute;
-  top: -9999px;
-  width: 50px;
-  height: 50px;
-  overflow: scroll;
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 500px;
-    margin: 1.75rem auto;
-  }
-  .modal-dialog-centered {
-    min-height: calc(100% - (1.75rem * 2));
-  }
-  .modal-dialog-centered::before {
-    height: calc(100vh - (1.75rem * 2));
-  }
-  .modal-sm {
-    max-width: 300px;
-  }
-}
-
-@media (min-width: 992px) {
-  .modal-lg {
-    max-width: 800px;
-  }
-}
-*/
