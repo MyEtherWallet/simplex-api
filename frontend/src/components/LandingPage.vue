@@ -1,5 +1,6 @@
 <template>
     <div class="landing-page">
+      <!--<unavailable-modal />-->
         <page-header />
         <buy-crypto />
         <promo1 />

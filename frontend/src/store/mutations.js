@@ -26,6 +26,9 @@ export default {
   setInvalidDigitalAmount (state, _isInvalid) {
     state.status.invalidDigitalAmount = _isInvalid
   },
+  setInvalidRegion (state, _isInvalid) {
+    state.status.invalidRegion = _isInvalid
+  },
   setRequestedCurrency (state, _currency) {
     state.orderInfo.requestedCurrency = _currency
   },

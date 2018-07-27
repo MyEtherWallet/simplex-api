@@ -2,7 +2,8 @@ export default {
   status: {
     invalidFiatAmount: true,
     invalidDigitalAmount: true,
-    invalidAddress: true
+    invalidAddress: true,
+    invalidRegion: false
   },
   orderInfo: {
     fiatCurrency: 'USD',

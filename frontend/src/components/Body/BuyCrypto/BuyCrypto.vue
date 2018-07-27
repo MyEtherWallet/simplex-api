@@ -1,5 +1,8 @@
 <template>
     <div class="buy-btc">
+      <!--<div v-if="isInvalidRegion">-->
+        <unavailable-modal />
+      <!--</div>-->
         <div class="page-container">
             <div class="block-division">
                 <div class="block-1">
@@ -99,6 +102,8 @@ import {
   recaptcha
 } from '@/config'
 import VueRecaptcha from 'vue-recaptcha'
+import UnAvailableModal from '@/components/Body/UnAvailableModal/UnAvailableModal'
+
 export default {
   name: 'BuyCrypto',
   data () {
@@ -227,6 +232,11 @@ export default {
         return this.$store.state.status.invalidAddress
       }
     },
+    isInvalidRegion: {
+      get () {
+        return this.$store.state.status.invalidRegion
+      }
+    },
     canOrder: {
       get () {
         return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse
@@ -234,7 +244,7 @@ export default {
     }
 
   },
-  components: { VueRecaptcha }
+  components: { VueRecaptcha, 'unavailable-modal': UnAvailableModal }
 }
 </script>
 <style lang="scss" scoped>

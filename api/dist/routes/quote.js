@@ -90,7 +90,6 @@ exports.default = function (app) {
 
       (0, _simplex.getQuote)(reqObj).then(function (result) {
         if (result.error === 'Country  is not supported') {
-          console.log(result); // todo remove dev item
           _response2.default.error(res, 'quote unavailable');
         } else {
           (0, _mangodb.Order)({
@@ -107,7 +106,7 @@ exports.default = function (app) {
             status: _config.simplex.status.initiated
           }).save().catch(function (err) {
             logger.error(err);
-            _response2.default.error(res, error);
+            _response2.default.error(res, err);
           });
         }
 

@@ -75,7 +75,6 @@ export default (app) => {
 
       getQuote(reqObj).then((result) => {
         if (result.error === 'Country  is not supported') {
-          console.log(result) // todo remove dev item
           response.error(res, 'quote unavailable')
         } else {
           Order({
@@ -92,7 +91,7 @@ export default (app) => {
             status: simplex.status.initiated
           }).save().catch((err) => {
             logger.error(err)
-            response.error(res, error)
+            response.error(res, err)
           })
         }
 
