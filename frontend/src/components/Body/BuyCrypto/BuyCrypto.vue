@@ -1,8 +1,8 @@
 <template>
     <div class="buy-btc">
-      <!--<div v-if="isInvalidRegion">-->
+      <div v-if="isInvalidRegion">
         <unavailable-modal />
-      <!--</div>-->
+      </div>
         <div class="page-container">
             <div class="block-division">
                 <div class="block-1">
