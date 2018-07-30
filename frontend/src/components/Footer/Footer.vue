@@ -7,7 +7,7 @@
                 </div>
                 <div class="button-block">
                     <div class="submit-button-container">
-                        <div class="button-2">Buy Now</div>
+                        <div v-on:click="scrolltop" class="button-2">Buy Now</div>
                     </div>
                 </div>
             </div>
@@ -28,6 +28,11 @@ export default {
   name: 'Footer',
   data () {
     return {}
+  },
+  methods: {
+    scrolltop: function () {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>
