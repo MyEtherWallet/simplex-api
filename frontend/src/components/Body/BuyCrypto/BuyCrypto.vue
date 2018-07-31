@@ -55,8 +55,8 @@
                         </div>
                         <!-- .price-amount -->
                         <div class="btc-address">
-                            <h4 v-if="digitalCurrency === 'BTC'">BTC Address <span>Do you have one?</span></h4>
-                            <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span>Do you have one?</span></h4>
+                          <h4 v-if="digitalCurrency === 'BTC'">BTC Address <span><a href="https://www.myetherwallet.com" style="text-decoration: none">Don't have one?</a></span></h4>
+                          <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span><a href="https://www.myetherwallet.com" style="text-decoration: none">Don't have one?</a></span></h4>
                             <input v-model="digitalAddress" type="text" name="" placeholder="Please enter the address" :class="{'invalid-field': isInvalidAddress}">
                             <div class="loading-indicator" v-show="loading">Loading <i class="fa fa-spinner fa-pulse"></i></div>
                         </div>
