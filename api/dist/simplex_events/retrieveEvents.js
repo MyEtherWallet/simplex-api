@@ -22,6 +22,7 @@ var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var recordLogger = (0, _logging2.default)('simplex_events/retrieveEvents.js : record-event');
 var logger = (0, _logging2.default)('simplex_events/retrieveEvents.js');
 
 (0, _mangodb.connect)().then(function () {
@@ -40,40 +41,52 @@ var getEvents = function getEvents() {
       method: 'get',
       json: true
     };
-    var callback = function callback(error, response, body) {
+    var retrieveCallback = function retrieveCallback(error, response, body) {
       if (!error && response.statusCode === 200) {
         (0, _eachOfSeries2.default)(body.events, processEvent, function (error) {
           if (error) {
+            logger.error(response);
             reject(error);
           } else {
             resolve();
           }
         });
       } else if (response.statusCode === 400) {
+        logger.error(response);
         reject(body);
       } else {
+        logger.error(error);
         reject(error);
       }
     };
-    (0, _request2.default)(options, callback);
+    (0, _request2.default)(options, retrieveCallback);
   });
 };
 
-var processEvent = function processEvent(item, key, callback) {
-  (0, _mangodb.findAndUpdate)(item.payment.partner_end_user_id, {
-    status: item.payment.status
+function updateItem(recordItem, deleteCallback) {
+  (0, _mangodb.findAndUpdate)(recordItem.payment.partner_end_user_id, {
+    status: recordItem.payment.status
   }).catch(function (err) {
     logger.error(err);
   });
   var options = {
-    url: _config.simplex.eventEP + '/' + item.event_id,
+    url: _config.simplex.eventEP + '/' + recordItem.event_id,
     headers: {
       'Authorization': 'ApiKey ' + _config.simplex.apiKey
     },
     method: 'DELETE',
     json: true
   };
-  (0, _request2.default)(options, callback);
-};
+  (0, _request2.default)(options, deleteCallback);
+}
+
+function processEvent(item, key, callback) {
+  (0, _mangodb.EventSchema)(item).save().then(function () {
+    updateItem(item, callback);
+  }).catch(function (error) {
+    recordLogger.error(error);
+    updateItem(item, callback);
+  });
+}
 
 exports.default = getEvents;

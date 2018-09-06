@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.findAndUpdate = exports.getOrderById = exports.Order = exports.connect = undefined;
+exports.findAndUpdate = exports.getOrderById = exports.EventSchema = exports.Order = exports.connect = undefined;
 
 var _mongoose = require('mongoose');
 
@@ -14,6 +14,10 @@ var _config = require('../config');
 var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
+
+var _event_schema = require('./event_schema');
+
+var _event_schema2 = _interopRequireDefault(_event_schema);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41,5 +45,6 @@ var findAndUpdate = function findAndUpdate(_userId, _newVals) {
 };
 exports.connect = connect;
 exports.Order = _schema2.default;
+exports.EventSchema = _event_schema2.default;
 exports.getOrderById = getOrderById;
 exports.findAndUpdate = findAndUpdate;

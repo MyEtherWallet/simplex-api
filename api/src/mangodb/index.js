@@ -3,6 +3,7 @@ import {
   mangodb
 } from '../config'
 import Order from './schema'
+import EventSchema from './event_schema'
 let connect = () => {
   return new Promise((resolve, reject) => {
     mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name)
@@ -28,6 +29,7 @@ let findAndUpdate = (_userId, _newVals) => {
 export {
   connect,
   Order,
+  EventSchema,
   getOrderById,
   findAndUpdate
 }

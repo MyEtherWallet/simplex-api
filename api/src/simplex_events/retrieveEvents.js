@@ -1,6 +1,7 @@
 import {
   connect,
-  findAndUpdate
+  findAndUpdate,
+  EventSchema
 } from '../mangodb'
 import eachOfSeries from 'async/eachOfSeries'
 import createLogger from 'logging'
@@ -10,6 +11,7 @@ import {
 } from '../config'
 import request from 'request'
 
+const recordLogger = createLogger('simplex_events/retrieveEvents.js : record-event')
 const logger = createLogger('simplex_events/retrieveEvents.js')
 
 connect().then(() => {
@@ -28,40 +30,55 @@ let getEvents = () => {
       method: 'get',
       json: true
     }
-    let callback = (error, response, body) => {
+    let retrieveCallback = (error, response, body) => {
       if (!error && response.statusCode === 200) {
         eachOfSeries(body.events, processEvent, (error) => {
           if (error) {
+            logger.error(response)
             reject(error)
           } else {
             resolve()
           }
         })
       } else if (response.statusCode === 400) {
+        logger.error(response)
         reject(body)
       } else {
+        logger.error(error)
         reject(error)
       }
     }
-    request(options, callback)
+    request(options, retrieveCallback)
   })
 }
 
-let processEvent = (item, key, callback) => {
-  findAndUpdate(item.payment.partner_end_user_id, {
-    status: item.payment.status
+function updateItem (recordItem, deleteCallback) {
+  findAndUpdate(recordItem.payment.partner_end_user_id, {
+    status: recordItem.payment.status
   }).catch((err) => {
     logger.error(err)
   })
   let options = {
-    url: `${simplex.eventEP}/${item.event_id}`,
+    url: `${simplex.eventEP}/${recordItem.event_id}`,
     headers: {
       'Authorization': 'ApiKey ' + simplex.apiKey
     },
     method: 'DELETE',
     json: true
   }
-  request(options, callback)
+  request(options, deleteCallback)
+}
+
+function processEvent (item, key, callback) {
+  EventSchema(item)
+    .save()
+    .then(() => {
+      updateItem(item, callback)
+    })
+    .catch((error) => {
+      recordLogger.error(error)
+      updateItem(item, callback)
+    })
 }
 
 export default getEvents
