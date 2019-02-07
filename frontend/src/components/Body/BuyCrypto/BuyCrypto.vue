@@ -176,7 +176,7 @@ export default {
     },
     fiatAmount: {
       get () {
-        return this.$store.state.orderInfo.fiatAmount
+        return this.$store.state.orderInfo.fiatTotal
       },
       set: _.debounce(function (value) {
         this.loading = true
