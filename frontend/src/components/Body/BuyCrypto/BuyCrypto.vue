@@ -155,7 +155,7 @@ export default {
       let failed = (err) => console.log(err)
       if (this.canOrder) {
         if (simplex.validFiat.includes(this.$store.state.orderInfo.requestedCurrency)) {
-          this.$store.dispatch('setFiatAmount', this.$store.state.orderInfo.fiatAmount).then(success).catch(failed)
+          this.$store.dispatch('setFiatAmount', this.$store.state.orderInfo.fiatTotal).then(success).catch(failed)
         } else {
           this.$store.dispatch('setDigitalAmount', this.$store.state.orderInfo.digitalAmount).then(success).catch(failed)
         }
