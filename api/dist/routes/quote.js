@@ -99,7 +99,11 @@ exports.default = function (app) {
         _response2.default.success(res, result);
       }).catch(function (error) {
         logger.error(error);
-        _response2.default.error(res, error);
+        if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
+          _response2.default.error(res, 'Error_1');
+        } else {
+          _response2.default.error(res, error);
+        }
       });
     }
   });

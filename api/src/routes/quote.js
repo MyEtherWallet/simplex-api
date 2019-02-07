@@ -79,7 +79,11 @@ export default (app) => {
         response.success(res, result)
       }).catch((error) => {
         logger.error(error)
-        response.error(res, error)
+        if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
+          response.error(res, 'Error_1')
+        } else {
+          response.error(res, error)
+        }
       })
     }
   })

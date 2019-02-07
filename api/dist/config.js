@@ -46,11 +46,12 @@ var env = {
   }
 };
 
-var mobileValidation = {
+var productValidation = {
   apiKeyHeaderName: process.env.API_KEY_HEADER || 'apikey',
   apiKeys: process.env.API_KEY ? [process.env.API_KEY] : ['321654987', 'abcdefg'],
   referrerAppleiOS: process.env.IOS_REFERER || 'iOS',
-  referrerAndroid: process.env.ANDROID_REFERER || 'Android'
+  referrerAndroid: process.env.ANDROID_REFERER || 'Android',
+  specialWebOrigins: process.env.SPECIAL_WEB_ORIGINS ? process.env.SPECIAL_WEB_ORIGINS.split(' ') : []
 };
 
 exports.network = network;
@@ -58,4 +59,4 @@ exports.simplex = simplex;
 exports.mangodb = mangodb;
 exports.recaptcha = recaptcha;
 exports.env = env;
-exports.mobileValidation = mobileValidation;
+exports.productValidation = productValidation;

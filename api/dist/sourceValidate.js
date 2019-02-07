@@ -24,7 +24,7 @@ var logger = (0, _logging2.default)('sourceValidate.js');
 var recaptcha = new _expressRecaptcha.Recaptcha(_config.recaptcha.siteKey, _config.recaptcha.secretKey);
 
 function sourceyValidate() {
-  var validationOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _config.mobileValidation;
+  var validationOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _config.productValidation;
 
   return function (req, res, next) {
     if (req.headers['referer'] === validationOptions.referrerAppleiOS || req.headers['referer'] === validationOptions.referrerAndroid) {
@@ -35,12 +35,13 @@ function sourceyValidate() {
         logger.error('Invalid API key');
         _response2.default.error(res, 'Invalid API key');
       }
+    } else if (validationOptions.specialWebOrigins.includes(req.headers['origin'])) {
+      req.recaptcha = {};
+      next();
+    } else if (/quote/.test(req.route.path)) {
+      next();
     } else {
-      if (/quote/.test(req.route.path)) {
-        next();
-      } else {
-        return recaptcha.middleware.verify(req, res, next);
-      }
+      return recaptcha.middleware.verify(req, res, next);
     }
   };
 }
