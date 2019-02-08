@@ -54,6 +54,7 @@ export default (app) => {
       response.error(res, errors.map(_err => _err.message))
     } else {
       let newUserId = uuidv4()
+      console.log(req.body) // todo remove dev item
       let reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
         'wallet_id': simplex.walletID,

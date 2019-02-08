@@ -74,6 +74,7 @@ exports.default = function (app) {
       }));
     } else {
       var newUserId = (0, _v2.default)();
+      console.log(req.body); // todo remove dev item
       var reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
         'wallet_id': _config.simplex.walletID,
