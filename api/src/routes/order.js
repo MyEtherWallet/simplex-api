@@ -20,8 +20,11 @@ import {
 } from '../common'
 
 import sourceValidate from '../sourceValidate'
+import debugLogger from 'debug'
 
 const logger = createLogger('order.js')
+const debugRequest = debugLogger('request:routes-order')
+const debugResponse = debugLogger('response:routes-order')
 
 const validateMinMax = val => {
   return !(simplex.minFiat > +val || simplex.maxFiat < +val)
@@ -153,7 +156,9 @@ export default (app) => {
             logger.error('findAndUpdate catch error')
             logger.error(err)
           })
+          debugRequest(reqObj)
           getOrder(reqObj).then((result) => {
+            debugResponse(result)
             if ('is_kyc_update_required' in result) {
               response.success(res, {
                 payment_post_url: simplex.paymentEP.replace(/\u200B/g, ''),

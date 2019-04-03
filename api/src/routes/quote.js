@@ -1,4 +1,5 @@
 import createLogger from 'logging'
+import debugLogger from 'debug'
 import {
   getQuote
 } from '../simplex'
@@ -18,6 +19,8 @@ import {
 } from '../common'
 
 const logger = createLogger('quote.js')
+const debugRequest = debugLogger('request:routes-quote')
+const debugResponse = debugLogger('response:routes-quote')
 
 let schema = {
   digital_currency: {
@@ -54,13 +57,14 @@ export default (app) => {
       response.error(res, errors.map(_err => _err.message))
     } else {
       let newUserId = uuidv4()
-      console.log(req.body) // todo remove dev item
       let reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
         'wallet_id': simplex.walletID,
         'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
       })
+      debugRequest(reqObj)
       getQuote(reqObj).then((result) => {
+        debugResponse(result)
         Order({
           user_id: newUserId,
           quote_id: result.quote_id,

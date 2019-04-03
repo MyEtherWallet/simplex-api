@@ -1,4 +1,5 @@
 import createLogger from 'logging'
+import debugLogger from 'debug'
 
 import response from './response'
 import {
@@ -10,6 +11,7 @@ import {
 } from 'express-recaptcha'
 
 const logger = createLogger('sourceValidate.js')
+const debug = debugLogger('validation:bypass')
 
 const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretKey)
 
@@ -18,6 +20,7 @@ export default function sourceyValidate (validationOptions = productValidation) 
     if (req.headers['referer'] === validationOptions.referrerAppleiOS || req.headers['referer'] === validationOptions.referrerAndroid) {
       if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
         req.recaptcha = {}
+        debug('Mobile Bypass Success')
         next()
       } else {
         logger.error('Invalid API key')
@@ -25,6 +28,7 @@ export default function sourceyValidate (validationOptions = productValidation) 
       }
     } else if (validationOptions.specialWebOrigins.includes(req.headers['origin'])) {
       req.recaptcha = {}
+      debug('Web Bypass Success')
       next()
     } else if (/quote/.test(req.route.path)) {
       next()

@@ -38,9 +38,15 @@ var _sourceValidate = require('../sourceValidate');
 
 var _sourceValidate2 = _interopRequireDefault(_sourceValidate);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('order.js');
+var debugRequest = (0, _debug2.default)('request:routes-order');
+var debugResponse = (0, _debug2.default)('response:routes-order');
 
 var validateMinMax = function validateMinMax(val) {
   return !(_config.simplex.minFiat > +val || _config.simplex.maxFiat < +val);
@@ -172,7 +178,9 @@ exports.default = function (app) {
             logger.error('findAndUpdate catch error');
             logger.error(err);
           });
+          debugRequest(reqObj);
           (0, _simplex.getOrder)(reqObj).then(function (result) {
+            debugResponse(result);
             if ('is_kyc_update_required' in result) {
               _response2.default.success(res, {
                 payment_post_url: _config.simplex.paymentEP.replace(/\u200B/g, ''),
