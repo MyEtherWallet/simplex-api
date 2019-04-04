@@ -21,6 +21,8 @@ import {
 const logger = createLogger('quote.js')
 const debugRequest = debugLogger('request:routes-quote')
 const debugResponse = debugLogger('response:routes-quote')
+const validationErrors = debugLogger('errors:validation')
+
 
 let schema = {
   digital_currency: {
@@ -52,6 +54,7 @@ let validator = Validator(schema)
 export default (app) => {
   app.post('/quote', sourceValidate(), (req, res) => {
     let errors = validator.validate(req.body)
+    validationErrors(errors);
     if (errors.length) {
       logger.error(errors)
       response.error(res, errors.map(_err => _err.message))

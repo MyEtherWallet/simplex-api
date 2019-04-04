@@ -25,6 +25,7 @@ import debugLogger from 'debug'
 const logger = createLogger('order.js')
 const debugRequest = debugLogger('request:routes-order')
 const debugResponse = debugLogger('response:routes-order')
+const validationErrors = debugLogger('errors:validation')
 
 const validateMinMax = val => {
   return !(simplex.minFiat > +val || simplex.maxFiat < +val)
@@ -105,6 +106,7 @@ export default (app) => {
   app.post('/order', sourceValidate(), (req, res) => {
     try {
       let errors = validator.validate(req.body)
+      validationErrors(errors)
       if (env.mode !== 'development' && req.recaptcha.error) {
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
         logger.error(errors)
