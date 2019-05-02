@@ -74,7 +74,6 @@ let updateValues = (qChange, {
 // ?amount=2
 export default {
   saveQueryVal ({dispatch, commit, state}, val) {
-    console.log('dispatch', state) // todo remove dev item
     if (val.amount && !val.fiat) {
       dispatch('setDigitalAmount', +val.amount)
     } else if (val.fiat && !val.amount) {
