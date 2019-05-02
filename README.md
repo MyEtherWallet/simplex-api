@@ -95,6 +95,24 @@ get request(s):
     - Note: The user_id is created on a per order basis, so no correlation exists between various orders.
 
 
+#### Debuging
+
+Logging Namespaces:
+
+validation:bypass
+
+request:
+routes-order
+routes-quote
+
+response:
+routes-order
+routes-quote
+
+calls:
+getOrder
+getQuote
+
 ## Built With
 
 * [ExpressJS](https://expressjs.com/) - The web framework

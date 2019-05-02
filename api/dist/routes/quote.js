@@ -8,6 +8,10 @@ var _logging = require('logging');
 
 var _logging2 = _interopRequireDefault(_logging);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 var _simplex = require('../simplex');
 
 var _validator = require('../validator');
@@ -35,6 +39,8 @@ var _common = require('../common');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('quote.js');
+var debugRequest = (0, _debug2.default)('request:routes-quote');
+var debugResponse = (0, _debug2.default)('response:routes-quote');
 
 var schema = {
   digital_currency: {
@@ -79,7 +85,9 @@ exports.default = function (app) {
         'wallet_id': _config.simplex.walletID,
         'client_ip': _config.env.mode === 'development' ? _config.env.dev.ip : (0, _common.getIP)(req)
       });
+      debugRequest(reqObj);
       (0, _simplex.getQuote)(reqObj).then(function (result) {
+        debugResponse(result);
         (0, _mangodb.Order)({
           user_id: newUserId,
           quote_id: result.quote_id,
@@ -99,7 +107,11 @@ exports.default = function (app) {
         _response2.default.success(res, result);
       }).catch(function (error) {
         logger.error(error);
-        _response2.default.error(res, error);
+        if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
+          _response2.default.error(res, 'Error_1');
+        } else {
+          _response2.default.error(res, error);
+        }
       });
     }
   });

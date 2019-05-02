@@ -41,11 +41,12 @@ let env = {
   }
 }
 
-let mobileValidation = {
+let productValidation = {
   apiKeyHeaderName: process.env.API_KEY_HEADER || 'apikey',
   apiKeys: process.env.API_KEY ? [process.env.API_KEY] : ['321654987', 'abcdefg'],
   referrerAppleiOS: process.env.IOS_REFERER || 'iOS',
-  referrerAndroid: process.env.ANDROID_REFERER || 'Android'
+  referrerAndroid: process.env.ANDROID_REFERER || 'Android',
+  specialWebOrigins: process.env.SPECIAL_WEB_ORIGINS ? process.env.SPECIAL_WEB_ORIGINS.split(' ') : []
 }
 
 export {
@@ -54,5 +55,5 @@ export {
   mangodb,
   recaptcha,
   env,
-  mobileValidation
+  productValidation
 }

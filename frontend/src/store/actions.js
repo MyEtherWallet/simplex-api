@@ -12,7 +12,7 @@ var quoteChanges = Object.freeze({
   fiat_currency: 3,
   digital_currency: 4
 })
-let canQuote = (state) => !state.status.invalidFiatAmount || !state.invalidDigitalAmount
+let canQuote = (state) => !state.status.invalidFiatAmount || !state.status.invalidDigitalAmount
 let updateValues = (qChange, {
   state,
   dispatch,
