@@ -12,6 +12,7 @@ var quoteChanges = Object.freeze({
   fiat_currency: 3,
   digital_currency: 4
 })
+
 let canQuote = (state) => !state.status.invalidFiatAmount || !state.status.invalidDigitalAmount
 let updateValues = (qChange, {
   state,
@@ -67,7 +68,40 @@ let updateValues = (qChange, {
     }
   })
 }
+
+// ?to=0x9C483A851938d1C77a5e7e50eFDA4751A3637215&amount=2&fiat=eur
+// ?to=0x9C483A851938d1C77a5e7e50eFDA4751A3637215&amount=2
+// ?amount=2
 export default {
+  saveQueryVal ({dispatch, commit, state}, val) {
+    console.log('dispatch', state) // todo remove dev item
+    if (val.amount && !val.fiat) {
+      dispatch('setDigitalAmount', +val.amount)
+    } else if (val.fiat && !val.amount) {
+      const upperFiat = val.fiat.toUpperCase()
+      if (['USD', 'EUR'].includes(upperFiat)) {
+        dispatch('setFiatCurrency', val.fiat.toUpperCase())
+      }
+    } else if (val.amount && val.fiat) {
+      dispatch('setDigitalAmount', +val.amount)
+        .then(() => {
+          const upperFiat = val.fiat.toUpperCase()
+          if (['USD', 'EUR'].includes(upperFiat)) {
+            dispatch('setFiatCurrency', val.fiat.toUpperCase())
+              .then(() => {
+                setTimeout(() => {
+                  dispatch('setDigitalAmount', +val.amount)
+                }, 500)
+              })
+          }
+        })
+    }
+    if (val.to) {
+      dispatch('setDigitalAddress', val.to)
+    }
+
+    commit('saveQueryValue', val)
+  },
   setDigitalAddress ({
     commit,
     state
