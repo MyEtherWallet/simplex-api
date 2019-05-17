@@ -31,5 +31,8 @@ export default {
   },
   setUserId (state, _id) {
     state.orderInfo.userId = _id
+  },
+  saveQueryValue (state, newQuery) {
+    state.linkQuery = newQuery
   }
 }

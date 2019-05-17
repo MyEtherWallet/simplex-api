@@ -12,6 +12,7 @@ export default {
     fiatTotal: 0,
     digitalAmount: 1,
     digitalAddress: '',
-    userId: ''
+    userId: '',
+    linkQuery: {}
   }
 }
