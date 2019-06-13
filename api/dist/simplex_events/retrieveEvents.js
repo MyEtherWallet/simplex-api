@@ -20,10 +20,15 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var recordLogger = (0, _logging2.default)('simplex_events/retrieveEvents.js : record-event');
 var logger = (0, _logging2.default)('simplex_events/retrieveEvents.js');
+var debugRequest = (0, _debug2.default)('calls:Events');
 
 (0, _mangodb.connect)().then(function () {
   logger.info('mangodb running on port: ' + _config.mangodb.host + ':' + _config.mangodb.port);
@@ -42,6 +47,7 @@ var getEvents = function getEvents() {
       json: true
     };
     var retrieveCallback = function retrieveCallback(error, response, body) {
+      console.log(body);
       if (!error && response.statusCode === 200) {
         (0, _eachOfSeries2.default)(body.events, processEvent, function (error) {
           if (error) {
@@ -59,6 +65,7 @@ var getEvents = function getEvents() {
         reject(error);
       }
     };
+    debugRequest(options);
     (0, _request2.default)(options, retrieveCallback);
   });
 };

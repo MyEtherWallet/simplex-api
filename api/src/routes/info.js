@@ -6,7 +6,7 @@ const debugRequest = debugLogger('request:info')
 
 export default (app) => {
   app.get('/info', (req, res) => {
-    debugRequest("Info Request Received");
+    debugRequest('Info Request Received')
     response.success(res, {
       name: 'Simplex API',
       version: packageInfo.version

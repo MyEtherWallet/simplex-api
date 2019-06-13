@@ -8,7 +8,6 @@ import debugLogger from 'debug'
 const logger = createLogger('simplex/call.js')
 const debugRequest = debugLogger('calls:request')
 
-
 export default (body, path) => {
   return new Promise((resolve, reject) => {
     var options = {
@@ -21,7 +20,7 @@ export default (body, path) => {
       json: true
     }
     let callback = (error, response, body) => {
-      debugRequest(body);
+      debugRequest(body)
       if (!error && response.statusCode === 200) {
         resolve(body)
       } else if (response.statusCode === 400) {
@@ -32,6 +31,7 @@ export default (body, path) => {
         logger.error(error)
       }
     }
+    debugRequest(options)
     request(options, callback)
   })
 }

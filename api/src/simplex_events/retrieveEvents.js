@@ -10,9 +10,11 @@ import {
   simplex
 } from '../config'
 import request from 'request'
+import debugLogger from 'debug'
 
 const recordLogger = createLogger('simplex_events/retrieveEvents.js : record-event')
 const logger = createLogger('simplex_events/retrieveEvents.js')
+const debugRequest = debugLogger('calls:Events')
 
 connect().then(() => {
   logger.info(`mangodb running on port: ${mangodb.host}:${mangodb.port}`)
@@ -31,6 +33,7 @@ let getEvents = () => {
       json: true
     }
     let retrieveCallback = (error, response, body) => {
+      console.log(body)
       if (!error && response.statusCode === 200) {
         eachOfSeries(body.events, processEvent, (error) => {
           if (error) {
@@ -48,6 +51,7 @@ let getEvents = () => {
         reject(error)
       }
     }
+    debugRequest(options)
     request(options, retrieveCallback)
   })
 }
