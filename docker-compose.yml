@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:3.4.20-xenial
+    ports:
+      - "27017:27017"
+  api:
+    container_name: api
+    image: simplex-api
+    env_file:
+      - .env
+    depends_on:
+      - mongo_db
+    ports:
+      - "8080:8080/tcp"
+    environment:
+      - DATA_MONGODB_HOST=mongo_db
+    links:
+      - mongo_db
