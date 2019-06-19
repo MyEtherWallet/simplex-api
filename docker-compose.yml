@@ -7,8 +7,8 @@ services:
     ports:
       - "27017:27017"
   api:
-    build:
-      context: https://github.com/MyEtherWallet/simplex-api.git#may_debug_and_Docker_Start
+#    build:
+#      context: https://github.com/MyEtherWallet/simplex-api.git#may_debug_and_Docker_Start
     container_name: api
     image: simplex-api
     env_file:
