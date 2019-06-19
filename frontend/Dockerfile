@@ -9,5 +9,5 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-EXPOSE 8081/tcp
+EXPOSE 8080/tcp
 CMD npm run prod

@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   mongo_db:
@@ -16,7 +16,7 @@ services:
     depends_on:
       - mongo_db
     ports:
-      - "8081:8081/tcp"
+      - "8081:8080/tcp"
     environment:
       - DATA_MONGODB_HOST=mongo_db
     links:
