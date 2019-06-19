@@ -7,6 +7,8 @@ services:
     ports:
       - "27017:27017"
   api:
+#    build:
+#      context: ./api
     container_name: api
     image: simplex-api
     env_file:
