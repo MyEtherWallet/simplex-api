@@ -9,11 +9,7 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-console.log(path.resolve(__dirname, '../../'))
-console.log(path.join(path.resolve(__dirname, '../../'), '.env')) // todo remove dev item
-console.log(__dirname) // todo remove dev item
 const envPath = path.join(path.resolve(__dirname, '../../'), '.env');
-console.log(envPath) // todo remove dev item
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
