@@ -16,7 +16,7 @@ services:
     depends_on:
       - mongo_db
     ports:
-      - "8081:8080/tcp"
+      - "${API_PORT}:8080/tcp"
     environment:
       - DATA_MONGODB_HOST=mongo_db
     links:
@@ -32,4 +32,5 @@ services:
       - mongo_db
       - api
     ports:
-      - "8080:8080/tcp"
+      - "${FRONTEND_PORT}:8080/tcp"
+    command: npm run prod
