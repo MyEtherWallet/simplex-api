@@ -7,8 +7,6 @@ services:
     ports:
       - "27017:27017"
   api:
-#    build:
-#      context: https://github.com/MyEtherWallet/simplex-api.git#may_debug_and_Docker_Start
     container_name: api
     image: simplex-api
     env_file:
@@ -16,14 +14,12 @@ services:
     depends_on:
       - mongo_db
     ports:
-      - "${API_PORT}:8080/tcp"
+      - "8080:8080/tcp"
     environment:
       - DATA_MONGODB_HOST=mongo_db
     links:
       - mongo_db
   frontend:
-    #    build:
-    #      context: ./api
     container_name: frontend
     image: simplex-frontend
     env_file:
@@ -32,5 +28,5 @@ services:
       - mongo_db
       - api
     ports:
-      - "${FRONTEND_PORT}:8080/tcp"
+      - "80:8080/tcp"
     command: npm run prod
