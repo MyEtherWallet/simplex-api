@@ -15,7 +15,7 @@ services:
       - NGINX_HOST=example.com
       - NGINX_PORT=80
     ports:
-      - "8080:80/tcp"
+      - "80:80/tcp"
     links:
       - api
       - frontend
