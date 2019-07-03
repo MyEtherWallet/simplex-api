@@ -4,6 +4,8 @@ services:
   mongo_db:
     container_name: mongo_db
     image: mongo:3.4.20-xenial
+    volumes:
+      - "../dbdata:/data/db"
 #    ports:
 #      - "27017:27017"
   nginx:
