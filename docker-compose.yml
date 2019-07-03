@@ -29,6 +29,7 @@ services:
       - .env
     depends_on:
       - mongo_db
+      - nginx
 #    ports:
 #      - "8081:8080/tcp"
     environment:
@@ -42,6 +43,7 @@ services:
       - .env
     depends_on:
       - mongo_db
+      - nginx
       - api
 #    ports:
 #      - "8082:8080/tcp"
