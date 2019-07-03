@@ -15,7 +15,7 @@
             <input type='hidden' name='digital_total_amount[amount]' :value='formData.digital_total_amount_amount'>
             <input type='hidden' name='digital_total_amount[currency]' :value='formData.digital_total_amount_currency'>
         </form>
-        <a class="button-1" @click="continueAction(submit)">Continue<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+        <a :class="['button-1', validInputs? '' : 'cant-continue' ]" @click="continueAction(submit)">Continue<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
     </div>
 </template>
 <script>
@@ -23,7 +23,8 @@ export default {
   name: 'CheckoutForm',
   props: [
     'formData',
-    'continueAction'
+    'continueAction',
+    'validInputs'
   ],
   data () {
     return {}
