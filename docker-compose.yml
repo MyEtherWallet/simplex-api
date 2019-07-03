@@ -6,8 +6,6 @@ services:
     image: mongo:3.4.20-xenial
     volumes:
       - "../dbdata:/data/db"
-#    ports:
-#      - "27017:27017"
   nginx:
     container_name: nginx
     image: nginx:latest
@@ -21,7 +19,6 @@ services:
     links:
       - api
       - frontend
-
   api:
     container_name: api
     image: simplex-api
@@ -29,9 +26,6 @@ services:
       - .env
     depends_on:
       - mongo_db
-      - nginx
-#    ports:
-#      - "8081:8080/tcp"
     environment:
       - DATA_MONGODB_HOST=mongo_db
     links:
@@ -43,8 +37,5 @@ services:
       - .env
     depends_on:
       - mongo_db
-      - nginx
       - api
-#    ports:
-#      - "8082:8080/tcp"
     command: npm run prod
