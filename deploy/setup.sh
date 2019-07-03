@@ -203,9 +203,8 @@ if [ -f ".env" ]; then
   echo "env file exists"
   createDataDirectory
   if [ -d "simplex-api" ]; then
-  echo ${RESTART_VAR}
-    echo "prior simplex-api dir exists"
     purgeDocker
+    echo "prior simplex-api dir exists"
     rm -rf ./simplex-api/
     checkoutRepo
     buildDockerImages
