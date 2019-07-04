@@ -1,2 +1,2 @@
-*/5 * * * * root bash -c 'cd api && npm run eventsProd'
+* * * * * root bash -c 'cd /api && npm run eventsProd'
 # Don't remove the empty line at the end of this file. It is required to run the cron job

@@ -6,6 +6,8 @@ services:
     image: mongo:3.4.20-xenial
     volumes:
       - "../dbdata:/data/db"
+    ports:
+      - "27017:27017" # can access via ssh tunnel via host
   nginx:
     container_name: nginx
     image: nginx:latest
