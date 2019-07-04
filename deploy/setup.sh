@@ -69,6 +69,70 @@ echo " -p | --purge-docker : stop and remove all docker containers"
 echo " -b | --rebuild-restart-docker : remove docker containers, rebuild and run docker-compose"
 }
 
+runFromRepoDeploy(){
+  prg=$0
+  if [ ! -e "$prg" ]; then
+    case $prg in
+      (*/*) exit 1;;
+      (*) prg=$(command -v -- "$prg") || exit;;
+    esac
+  fi
+
+  dir=$(
+    cd -P -- "$(dirname -- "$prg")" && pwd -P
+  ) || exit
+  prg=$dir/$(basename -- "$prg") || exit
+
+  if [[ $prg == *"/simplex-api/deploy/"* ]]; then
+    cd ../../
+  fi
+
+}
+
+if [ "$HELP" == 'true' ]; then
+    usage
+    exit 0
+fi
+
+alternateActionsAndAbort(){
+if [ "$RESTART_VAR" = 'true' ]; then
+
+echo ${RESTART_VAR}
+    stopDocker
+    sudo docker-compose up -d --remove-orphans
+fi
+
+if [ "$REBUILD_RESTART" = 'true' ]; then
+    purgeDocker
+    cd simplex-api;
+    buildDockerImages
+    sudo docker-compose up -d --remove-orphans
+fi
+
+if [ "$STOP_DOCKER" == 'true' ]; then
+  stopDocker
+fi
+
+if [ "$PURGE_DOCKER" == 'true' ]; then
+  purgeDocker
+fi
+
+if [ "$FLAGGED" == 'true' ]; then
+    exit 0
+fi
+
+echo "Will stop and remove Docker containers, clone repo, build and restart docker."
+echo "Press any key to abort:"
+
+read -t 3 -n 1 SHOULD_ABORT
+
+if [ $? == 0 ]; then
+    echo ' '
+    echo "Aborting Setup"
+    exit 0
+fi
+}
+
 installDocker(){
     if hash docker 2>/dev/null; then
     echo "Docker present"
@@ -124,7 +188,7 @@ stopDocker(){
 purgeDocker(){
   stopDocker
   echo "Removing Docker Containers"
-#  sudo docker rm $(sudo docker ps -a -q)
+  #  sudo docker rm $(sudo docker ps -a -q)
   sudo docker rm "frontend"
   sudo docker rm "api"
   sudo docker rm "nginx"
@@ -154,51 +218,12 @@ createDataDirectory(){
   fi
 }
 
-if [ "$HELP" == 'true' ]; then
-    usage
-    exit 0
-fi
+alternateActionsAndAbort
 
 installDocker
 installDockerCompose
 
-if [ "$RESTART_VAR" = 'true' ]; then
-
-echo ${RESTART_VAR}
-    stopDocker
-    sudo docker-compose up -d --remove-orphans
-fi
-
-if [ "$REBUILD_RESTART" = 'true' ]; then
-    purgeDocker
-    cd simplex-api;
-    buildDockerImages
-    sudo docker-compose up -d --remove-orphans
-fi
-
-if [ "$STOP_DOCKER" == 'true' ]; then
-stopDocker
-fi
-
-if [ "$PURGE_DOCKER" == 'true' ]; then
-purgeDocker
-fi
-
-if [ "$FLAGGED" == 'true' ]; then
-    exit 0
-fi
-
-echo "Will stop and remove Docker containers, clone repo, build and restart docker."
-echo "Press any key to abort:"
-
-read -t 3 -n 1 SHOULD_ABORT
-
-if [ $? == 0 ]; then
-    echo ' '
-    echo "Aborting Setup"
-    exit 0
-fi
-
+runFromRepoDeploy
 if [ -f ".env" ]; then
   echo "env file exists"
   createDataDirectory
