@@ -19,4 +19,4 @@ RUN npm install
 RUN npm run build
 EXPOSE 8080/tcp
 
-CMD cron && npm run start
+CMD npm run start
