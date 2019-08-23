@@ -5,11 +5,15 @@
 #*********************************************************
 
 # Setup options:
+GIT_URL=https://github.com/MyEtherWallet/simplex-api.git
+DOCKER_COMPOSE_VERSION=1.24.0
+ENV_FILE='.env'
+
+# GIT options
 # Use a branch other than master
-FROM_BRANCH=true
+FROM_BRANCH=false
 # The name of the branch to use
 BRANCH_NAME=may_debug_and_Docker_Start;
-
 
 # defaults
 RESTART_VAR='false'
@@ -17,6 +21,7 @@ STOP_DOCKER='false'
 FLAGGED='false'
 PURGE_DOCKER='false'
 REBUILD_RESTART='false'
+
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -86,7 +91,8 @@ runFromRepoDeploy(){
 
 echo $prg
   if [[ $prg == *"/simplex-api/deploy/"* ]]; then
-    cd ../../
+    echo "running from deploy directory"
+    cd ../
   fi
 
 }
@@ -163,7 +169,7 @@ installDockerCompose(){
     if hash docker-compose 2>/dev/null; then
       echo "Docker Compose present"
     else
-      sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       sudo chmod +x /usr/local/bin/docker-compose
       echo sudo docker-compose --version
     fi
@@ -171,7 +177,7 @@ installDockerCompose(){
 
 checkoutRepo(){
 echo "Checking out simplex-api"
-git clone https://github.com/MyEtherWallet/simplex-api.git;
+git clone ${GIT_URL};
 cd simplex-api;
 if [ $FROM_BRANCH = "true" ]; then
   echo "Checking out branch ${BRANCH_NAME}"
@@ -203,13 +209,13 @@ purgeDocker(){
 
 buildDockerImages(){
     echo $PWD
-    cp ../.env ./
+    cp ../${ENV_FILE} ./
     cd api;
-    cp ../.env ./
+    cp ../${ENV_FILE} ./
     sudo docker build --rm --tag=simplex-api .
     cd ../
     cd frontend;
-    cp ../.env ./
+    cp ../${ENV_FILE} ./
     sudo docker build --rm  --tag=simplex-frontend .
     cd ../
 }
@@ -223,13 +229,7 @@ createDataDirectory(){
   fi
 }
 
-alternateActionsAndAbort
-
-installDocker
-installDockerCompose
-
-runFromRepoDeploy
-if [ -f ".env" ]; then
+doSetup(){
   echo "env file exists"
   createDataDirectory
   if [ -d "simplex-api" ]; then
@@ -245,8 +245,18 @@ if [ -f ".env" ]; then
     buildDockerImages
     sudo docker-compose up -d --remove-orphans
   fi
+}
+
+alternateActionsAndAbort
+
+installDocker
+installDockerCompose
+
+runFromRepoDeploy
+if [ -f ${ENV_FILE} ]; then
+doSetup
 else
-  echo "ERROR: failed to begin setup. .env file does not exist"
+    echo "ERROR: failed to begin setup. .env file does not exist"
 fi
 
 
