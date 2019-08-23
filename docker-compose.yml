@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:3.4.20-xenial
+    volumes:
+      - "../dbdata:/data/db"
+    ports:
+      - "27017:27017" # can access via ssh tunnel via host
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
+    environment:
+      - NGINX_HOST=example.com
+      - NGINX_PORT=80
+    ports:
+      - "80:80/tcp"
+    links:
+      - api
+      - frontend
+  api:
+    container_name: api
+    image: simplex-api
+    env_file:
+      - .env
+    depends_on:
+      - mongo_db
+    environment:
+      - DATA_MONGODB_HOST=mongo_db
+#      - DEBUG=*
+    links:
+      - mongo_db
+  frontend:
+    container_name: frontend
+    image: simplex-frontend
+    env_file:
+      - .env
+    depends_on:
+      - mongo_db
+      - api
+    command: npm run prod

@@ -18,11 +18,12 @@ import {
   getIP
 } from '../common'
 
+
+const validationLogger = createLogger('quote.js - validation')
 const logger = createLogger('quote.js')
 const debugRequest = debugLogger('request:routes-quote')
 const debugResponse = debugLogger('response:routes-quote')
 const validationErrors = debugLogger('errors:validation')
-
 
 let schema = {
   digital_currency: {
@@ -54,9 +55,9 @@ let validator = Validator(schema)
 export default (app) => {
   app.post('/quote', sourceValidate(), (req, res) => {
     let errors = validator.validate(req.body)
-    validationErrors(errors);
+    validationErrors(errors)
     if (errors.length) {
-      logger.error(errors)
+      validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
       let newUserId = uuidv4()
@@ -79,7 +80,8 @@ export default (app) => {
             currency: result.digital_money.currency,
             amount: result.digital_money.amount
           },
-          status: simplex.status.initiated
+          status: simplex.status.initiated,
+          source: req.mewSourceApplication || 'web'
         }).save().catch((error) => {
           logger.error(error)
           response.error(res, error)
@@ -87,10 +89,14 @@ export default (app) => {
         response.success(res, result)
       }).catch((error) => {
         logger.error(error)
-        if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
-          response.error(res, 'Error_1')
-        } else {
-          response.error(res, error)
+        try {
+          if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
+            response.error(res, 'Error_1')
+          } else {
+            response.error(res, error)
+          }
+        } catch (e) {
+          logger.error(e)
         }
       })
     }

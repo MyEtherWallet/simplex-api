@@ -1,6 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import createLogger from 'logging'
+import debugLogger from 'debug'
+
 import cors from 'cors'
 import routes from './routes'
 import {
@@ -11,6 +13,7 @@ import {
   mangodb
 } from './config'
 
+const debugRequest = debugLogger('')
 const logger = createLogger('index.js')
 let app = express()
 
@@ -23,6 +26,7 @@ dbConnect().then(() => {
   logger.error(`mangodb error: ${err}`)
 })
 let server = app.listen(network.port, () => {
+  debugRequest(`DEBUG ACTIVE ${process.env.DEBUG}`)
   logger.info(`app running on port: ${server.address().port}`)
 })
 export default server

@@ -8,7 +8,8 @@ const Dotenv = require('dotenv-webpack')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-console.log(path.resolve(__dirname, '../../'))
+
+const envPath = path.join(path.resolve(__dirname, '../../'), '.env');
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
@@ -42,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new Dotenv({
-      path:path.resolve(__dirname, '../../')+'/.env'
+      path: envPath
     })
   ],
   module: {

@@ -45,8 +45,10 @@ var _debug2 = _interopRequireDefault(_debug);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('order.js');
+var catchLogger = (0, _logging2.default)('order.js');
 var debugRequest = (0, _debug2.default)('request:routes-order');
 var debugResponse = (0, _debug2.default)('response:routes-order');
+var validationErrors = (0, _debug2.default)('errors:validation');
 
 var validateMinMax = function validateMinMax(val) {
   return !(_config.simplex.minFiat > +val || _config.simplex.maxFiat < +val);
@@ -127,6 +129,7 @@ exports.default = function (app) {
   app.post('/order', (0, _sourceValidate2.default)(), function (req, res) {
     try {
       var errors = validator.validate(req.body);
+      validationErrors(errors);
       if (_config.env.mode !== 'development' && req.recaptcha.error) {
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error');
         logger.error(errors);
@@ -214,7 +217,7 @@ exports.default = function (app) {
         });
       }
     } catch (e) {
-      logger.error(e);
+      catchLogger.error(e);
     }
   });
 };

@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 require('dotenv').config({
-  path: '../.env'
+  path: '../../.env'
 });
 var network = {
   port: process.env.PORT || 8080

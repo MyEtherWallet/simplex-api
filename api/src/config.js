@@ -1,5 +1,5 @@
 require('dotenv').config({
-  path: '../.env'
+  path: '../../.env'
 })
 let network = {
   port: process.env.PORT || 8080

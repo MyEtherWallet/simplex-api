@@ -41,6 +41,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var logger = (0, _logging2.default)('quote.js');
 var debugRequest = (0, _debug2.default)('request:routes-quote');
 var debugResponse = (0, _debug2.default)('response:routes-quote');
+var validationErrors = (0, _debug2.default)('errors:validation');
 
 var schema = {
   digital_currency: {
@@ -73,6 +74,7 @@ var validator = (0, _validator2.default)(schema);
 exports.default = function (app) {
   app.post('/quote', (0, _sourceValidate2.default)(), function (req, res) {
     var errors = validator.validate(req.body);
+    validationErrors(errors);
     if (errors.length) {
       logger.error(errors);
       _response2.default.error(res, errors.map(function (_err) {
@@ -107,10 +109,14 @@ exports.default = function (app) {
         _response2.default.success(res, result);
       }).catch(function (error) {
         logger.error(error);
-        if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
-          _response2.default.error(res, 'Error_1');
-        } else {
-          _response2.default.error(res, error);
+        try {
+          if (/[C|c]ountry/.test(error.message) && /supported/.test(error.message)) {
+            _response2.default.error(res, 'Error_1');
+          } else {
+            _response2.default.error(res, error);
+          }
+        } catch (e) {
+          logger.error(e);
         }
       });
     }
