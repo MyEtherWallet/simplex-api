@@ -17,17 +17,29 @@ const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretK
 
 export default function sourceyValidate (validationOptions = productValidation) {
   return function (req, res, next) {
-    if (req.headers['referer'] === validationOptions.referrerAppleiOS || req.headers['referer'] === validationOptions.referrerAndroid) {
+    if (req.headers['referer'] === validationOptions.referrerAppleiOS) {
       if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
         req.recaptcha = {}
-        debug('Mobile Bypass Success')
+        req.mewSourceApplication = 'ios'
+        debug('Mobile Bypass Success IOS')
         next()
       } else {
-        logger.error('Invalid API key')
+        logger.error('Invalid API key: IOS')
+        response.error(res, 'Invalid API key')
+      }
+    } else if (req.headers['referer'] === validationOptions.referrerAndroid) {
+      if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
+        req.recaptcha = {}
+        req.mewSourceApplication = 'android'
+        debug('Mobile Bypass Success Android')
+        next()
+      } else {
+        logger.error('Invalid API key: Android')
         response.error(res, 'Invalid API key')
       }
     } else if (validationOptions.specialWebOrigins.includes(req.headers['origin'])) {
       req.recaptcha = {}
+      req.mewSourceApplication = 'mew'
       debug('Web Bypass Success')
       next()
     } else if (/quote/.test(req.route.path)) {

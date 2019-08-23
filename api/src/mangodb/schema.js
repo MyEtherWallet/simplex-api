@@ -50,6 +50,10 @@ var orderSchema = new Schema({
     type: String,
     enum: Object.values(simplex.status),
     required: true
+  },
+  source: {
+    type: String,
+    required: false
   }
 })
 orderSchema.plugin(timestamp)

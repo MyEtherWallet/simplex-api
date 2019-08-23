@@ -18,6 +18,8 @@ import {
   getIP
 } from '../common'
 
+
+const validationLogger = createLogger('quote.js - validation')
 const logger = createLogger('quote.js')
 const debugRequest = debugLogger('request:routes-quote')
 const debugResponse = debugLogger('response:routes-quote')
@@ -55,7 +57,7 @@ export default (app) => {
     let errors = validator.validate(req.body)
     validationErrors(errors)
     if (errors.length) {
-      logger.error(errors)
+      validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
       let newUserId = uuidv4()
@@ -78,7 +80,8 @@ export default (app) => {
             currency: result.digital_money.currency,
             amount: result.digital_money.amount
           },
-          status: simplex.status.initiated
+          status: simplex.status.initiated,
+          source: req.mewSourceApplication || 'web'
         }).save().catch((error) => {
           logger.error(error)
           response.error(res, error)

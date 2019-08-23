@@ -67,6 +67,7 @@ echo " -r | --restart : stop docker and run docker-compose "
 echo " -s | --stop-docker : stop all docker containers"
 echo " -p | --purge-docker : stop and remove all docker containers"
 echo " -b | --rebuild-restart-docker : remove docker containers, rebuild and run docker-compose"
+echo "Running with no arguments initiates total setup or re-setup"
 }
 
 runFromRepoDeploy(){
@@ -83,6 +84,7 @@ runFromRepoDeploy(){
   ) || exit
   prg=$dir/$(basename -- "$prg") || exit
 
+echo $prg
   if [[ $prg == *"/simplex-api/deploy/"* ]]; then
     cd ../../
   fi
@@ -99,6 +101,9 @@ if [ "$RESTART_VAR" = 'true' ]; then
 
 echo ${RESTART_VAR}
     stopDocker
+    if [ -d "simplex-api"  ]; then
+    cd simplex-api
+    fi
     sudo docker-compose up -d --remove-orphans
 fi
 

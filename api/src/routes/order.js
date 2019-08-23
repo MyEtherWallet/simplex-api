@@ -23,6 +23,7 @@ import sourceValidate from '../sourceValidate'
 import debugLogger from 'debug'
 
 const logger = createLogger('order.js')
+const catchLogger = createLogger('order.js - catch')
 const debugRequest = debugLogger('request:routes-order')
 const debugResponse = debugLogger('response:routes-order')
 const validationErrors = debugLogger('errors:validation')
@@ -194,7 +195,7 @@ export default (app) => {
         })
       }
     } catch (e) {
-      logger.error(e)
+      catchLogger.error(e)
     }
   })
 }

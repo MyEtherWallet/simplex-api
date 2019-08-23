@@ -16,6 +16,10 @@ var _logging = require('logging');
 
 var _logging2 = _interopRequireDefault(_logging);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
@@ -30,6 +34,7 @@ var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var debugRequest = (0, _debug2.default)('');
 var logger = (0, _logging2.default)('index.js');
 var app = (0, _express2.default)();
 
@@ -42,6 +47,7 @@ app.use((0, _cors2.default)());
   logger.error('mangodb error: ' + err);
 });
 var server = app.listen(_config.network.port, function () {
+  debugRequest('DEBUG ACTIVE ' + process.env.DEBUG);
   logger.info('app running on port: ' + server.address().port);
 });
 exports.default = server;

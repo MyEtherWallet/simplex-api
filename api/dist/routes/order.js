@@ -45,6 +45,7 @@ var _debug2 = _interopRequireDefault(_debug);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _logging2.default)('order.js');
+var catchLogger = (0, _logging2.default)('order.js');
 var debugRequest = (0, _debug2.default)('request:routes-order');
 var debugResponse = (0, _debug2.default)('response:routes-order');
 var validationErrors = (0, _debug2.default)('errors:validation');
@@ -216,7 +217,7 @@ exports.default = function (app) {
         });
       }
     } catch (e) {
-      logger.error(e);
+      catchLogger.error(e);
     }
   });
 };

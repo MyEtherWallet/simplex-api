@@ -6,6 +6,7 @@ import request from 'request'
 import debugLogger from 'debug'
 
 const logger = createLogger('simplex/call.js')
+const catchLogger = createLogger('simplex/call.js - catch')
 const debugRequest = debugLogger('calls:request')
 
 export default (body, path) => {
@@ -20,15 +21,19 @@ export default (body, path) => {
       json: true
     }
     let callback = (error, response, body) => {
-      debugRequest(body)
-      if (!error && response.statusCode === 200) {
-        resolve(body)
-      } else if (response.statusCode === 400) {
-        reject(body)
-        logger.error(body)
-      } else {
-        reject(error)
-        logger.error(error)
+      try {
+        debugRequest(body)
+        if (!error && response.statusCode === 200) {
+          resolve(body)
+        } else if (response.statusCode === 400) {
+          reject(body)
+          logger.error(body)
+        } else {
+          reject(error)
+          logger.error(error)
+        }
+      } catch (e) {
+        catchLogger.error(e)
       }
     }
     debugRequest(options)
