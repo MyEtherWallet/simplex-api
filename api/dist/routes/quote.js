@@ -38,6 +38,7 @@ var _common = require('../common');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var validationLogger = (0, _logging2.default)('quote.js - validation');
 var logger = (0, _logging2.default)('quote.js');
 var debugRequest = (0, _debug2.default)('request:routes-quote');
 var debugResponse = (0, _debug2.default)('response:routes-quote');
@@ -76,7 +77,7 @@ exports.default = function (app) {
     var errors = validator.validate(req.body);
     validationErrors(errors);
     if (errors.length) {
-      logger.error(errors);
+      validationLogger.error(errors);
       _response2.default.error(res, errors.map(function (_err) {
         return _err.message;
       }));
@@ -101,7 +102,8 @@ exports.default = function (app) {
             currency: result.digital_money.currency,
             amount: result.digital_money.amount
           },
-          status: _config.simplex.status.initiated
+          status: _config.simplex.status.initiated,
+          source: req.mewSourceApplication || 'web'
         }).save().catch(function (error) {
           logger.error(error);
           _response2.default.error(res, error);

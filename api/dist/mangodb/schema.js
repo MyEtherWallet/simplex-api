@@ -63,6 +63,10 @@ var orderSchema = new Schema({
     type: String,
     enum: Object.values(_config.simplex.status),
     required: true
+  },
+  source: {
+    type: String,
+    required: false
   }
 });
 orderSchema.plugin(_mongooseTimestamp2.default);

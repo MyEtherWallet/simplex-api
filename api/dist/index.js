@@ -20,6 +20,10 @@ var _debug = require('debug');
 
 var _debug2 = _interopRequireDefault(_debug);
 
+var _simplex_events = require('simplex_events');
+
+var _simplex_events2 = _interopRequireDefault(_simplex_events);
+
 var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
@@ -46,6 +50,7 @@ app.use((0, _cors2.default)());
 }).catch(function (err) {
   logger.error('mangodb error: ' + err);
 });
+(0, _simplex_events2.default)();
 var server = app.listen(_config.network.port, function () {
   debugRequest('DEBUG ACTIVE ' + process.env.DEBUG);
   logger.info('app running on port: ' + server.address().port);

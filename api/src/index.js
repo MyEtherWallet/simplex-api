@@ -4,7 +4,6 @@ import createLogger from 'logging'
 import debugLogger from 'debug'
 import retrieveEvents from 'simplex_events'
 
-
 import cors from 'cors'
 import routes from './routes'
 import {

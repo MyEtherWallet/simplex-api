@@ -1,5 +1,5 @@
 import getEvents from './retrieveEvents'
-import cron from 'node-cron';
+import cron from 'node-cron'
 
 import createLogger from 'logging'
 const logger = createLogger('simplex_events/index.js')
@@ -14,7 +14,7 @@ const logger = createLogger('simplex_events/index.js')
 //     process.exit(1)
 //   })
 
-const cronTime = '* * * * *';
+const cronTime = '* * * * *'
 
 // cron.schedule(cronTime, () => {
 //   getEvents()
@@ -28,13 +28,12 @@ const cronTime = '* * * * *';
 //     })
 // })
 
-
 const runCron = () => {
   console.log('cronning')
   return cron.schedule(cronTime, () => {
     getEvents()
       .then(() => {
-        logger.info("Simplex Events Retrieved")
+        logger.info('Simplex Events Retrieved')
         // process.exit(0)
       })
       .catch(_error => {
@@ -43,6 +42,5 @@ const runCron = () => {
       })
   })
 }
-
 
 export default runCron
