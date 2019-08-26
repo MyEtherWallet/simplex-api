@@ -22,11 +22,9 @@ const runCron = () => {
     getEvents()
       .then(() => {
         logger.info('Simplex Events Retrieved')
-        process.exit(0)
       })
       .catch(_error => {
         logger.error(_error)
-        process.exit(1)
       })
   })
 }
