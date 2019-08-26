@@ -32,17 +32,29 @@ function sourceyValidate() {
   var validationOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _config.productValidation;
 
   return function (req, res, next) {
-    if (req.headers['referer'] === validationOptions.referrerAppleiOS || req.headers['referer'] === validationOptions.referrerAndroid) {
+    if (req.headers['referer'] === validationOptions.referrerAppleiOS) {
       if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
         req.recaptcha = {};
-        debug('Mobile Bypass Success');
+        req.mewSourceApplication = 'ios';
+        debug('Mobile Bypass Success IOS');
         next();
       } else {
-        logger.error('Invalid API key');
+        logger.error('Invalid API key: IOS');
+        _response2.default.error(res, 'Invalid API key');
+      }
+    } else if (req.headers['referer'] === validationOptions.referrerAndroid) {
+      if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
+        req.recaptcha = {};
+        req.mewSourceApplication = 'android';
+        debug('Mobile Bypass Success Android');
+        next();
+      } else {
+        logger.error('Invalid API key: Android');
         _response2.default.error(res, 'Invalid API key');
       }
     } else if (validationOptions.specialWebOrigins.includes(req.headers['origin'])) {
       req.recaptcha = {};
+      req.mewSourceApplication = 'mew';
       debug('Web Bypass Success');
       next();
     } else if (/quote/.test(req.route.path)) {

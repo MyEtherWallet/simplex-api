@@ -25,12 +25,12 @@ let validator = Validator(schema)
 export default (app) => {
   app.get('/status/:userId', (req, res) => {
     let errors = validator.validate({user_id: req.params.userId})
-    if(errors.length){
+    if (errors.length) {
       response.error(res, 'invalid user id')
     } else {
       getOrderById(req.params.userId)
         .then(result => {
-          if(result.length === 0){
+          if (result.length === 0) {
             loggerInvalidId.error(`UserId requested: ${req.params.userId}`)
             response.error(res, 'user id does not exist')
           } else {

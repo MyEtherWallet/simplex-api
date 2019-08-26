@@ -18,7 +18,6 @@ import {
   getIP
 } from '../common'
 
-
 const validationLogger = createLogger('quote.js - validation')
 const logger = createLogger('quote.js')
 const debugRequest = debugLogger('request:routes-quote')

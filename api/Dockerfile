@@ -5,6 +5,7 @@ RUN apt-get update
 RUN apt-get -y install cron
 
 ADD crontab /etc/cron.d/cron-events
+ADD crontab /etc/crontab
 RUN chmod 0644 /etc/cron.d/cron-events
 RUN service cron start
 
@@ -18,4 +19,4 @@ RUN npm install
 RUN npm run build
 EXPOSE 8080/tcp
 
-CMD cron && npm run start
+CMD npm run start

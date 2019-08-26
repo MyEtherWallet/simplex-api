@@ -33,7 +33,6 @@ let getEvents = () => {
       json: true
     }
     let retrieveCallback = (error, response, body) => {
-      console.log(body)
       if (!error && response.statusCode === 200) {
         eachOfSeries(body.events, processEvent, (error) => {
           if (error) {

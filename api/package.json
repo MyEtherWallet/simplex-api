@@ -39,6 +39,7 @@
         "logging": "^3.2.0",
         "mongoose": "^5.5.10",
         "mongoose-timestamp": "^0.6.0",
+        "node-cron": "^2.0.3",
         "request": "^2.87.0",
         "uuid": "^3.2.1",
         "validate": "^4.4.1",
