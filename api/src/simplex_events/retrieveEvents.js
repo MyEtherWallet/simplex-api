@@ -33,19 +33,24 @@ let getEvents = () => {
       json: true
     }
     let retrieveCallback = (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        eachOfSeries(body.events, processEvent, (error) => {
-          if (error) {
-            logger.error(response)
-            reject(error)
-          } else {
-            resolve()
-          }
-        })
-      } else if (response.statusCode === 400) {
-        logger.error(response)
-        reject(body)
-      } else {
+      try {
+        if (!error && response.statusCode === 200) {
+          eachOfSeries(body.events, processEvent, (error) => {
+            if (error) {
+              logger.error(response)
+              reject(error)
+            } else {
+              resolve()
+            }
+          })
+        } else if (response.statusCode === 400) {
+          logger.error(response)
+          reject(body)
+        } else {
+          logger.error(error)
+          reject(error)
+        }
+      } catch (e) {
         logger.error(error)
         reject(error)
       }

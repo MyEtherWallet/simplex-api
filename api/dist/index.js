@@ -20,7 +20,7 @@ var _debug = require('debug');
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _simplex_events = require('simplex_events');
+var _simplex_events = require('./simplex_events');
 
 var _simplex_events2 = _interopRequireDefault(_simplex_events);
 

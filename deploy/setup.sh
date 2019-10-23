@@ -53,8 +53,12 @@ case $key in
     HELP='true'
     shift # past argument
     ;;
-    --default)
+    -a|--all)
     DEFAULT=YES
+    shift # past argument
+    ;;
+    --default)
+    HELP='true' #DEFAULT=YES
     shift # past argument
     ;;
     *)    # unknown option
@@ -104,8 +108,8 @@ fi
 
 alternateActionsAndAbort(){
 if [ "$RESTART_VAR" = 'true' ]; then
-
-echo ${RESTART_VAR}
+    echo "Stopping all docker and running docker-compose"
+    echo ${RESTART_VAR}
     stopDocker
     if [ -d "simplex-api"  ]; then
     cd simplex-api
@@ -114,6 +118,7 @@ echo ${RESTART_VAR}
 fi
 
 if [ "$REBUILD_RESTART" = 'true' ]; then
+    echo "Removing docker containers, rebuilding and running docker-compose"
     purgeDocker
     cd simplex-api;
     buildDockerImages
@@ -121,10 +126,12 @@ if [ "$REBUILD_RESTART" = 'true' ]; then
 fi
 
 if [ "$STOP_DOCKER" == 'true' ]; then
+  echo "Stopping all Docker containers"
   stopDocker
 fi
 
 if [ "$PURGE_DOCKER" == 'true' ]; then
+  echo "Stopping and removing all docker containers"
   purgeDocker
 fi
 
@@ -148,6 +155,7 @@ installDocker(){
     if hash docker 2>/dev/null; then
     echo "Docker present"
     else
+    echo "Installing Docker"
         sudo apt-get update
         sudo apt-get install -y \
     apt-transport-https \
@@ -169,6 +177,7 @@ installDockerCompose(){
     if hash docker-compose 2>/dev/null; then
       echo "Docker Compose present"
     else
+      echo "Installing Docker Compose version: ${DOCKER_COMPOSE_VERSION}"
       sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       sudo chmod +x /usr/local/bin/docker-compose
       echo sudo docker-compose --version
@@ -183,6 +192,10 @@ if [ $FROM_BRANCH = "true" ]; then
   echo "Checking out branch ${BRANCH_NAME}"
   git checkout origin/${BRANCH_NAME};
   git checkout -b ${BRANCH_NAME};
+fi
+
+if [ -f "nginx.conf" ]; then
+ cp ./nginx.conf ./simplex-api/deploy/nginx
 fi
 }
 
