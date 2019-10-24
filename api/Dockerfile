@@ -11,14 +11,13 @@ RUN service cron start
 
 ENV NODE_OPTIONS --max-old-space-size=4096
 RUN npm install npm@6.9 -g
+RUN npm install pm2 -g
 RUN node -v && npm -v
 WORKDIR /api
 
 COPY . /api
-RUN npm install pm2 -g
 RUN npm install
 RUN npm run build
 EXPOSE 8080/tcp
 
-CMD pm2 start ecosystem.config.js
-#CMD npm run start
+CMD npm run start:docker

@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "npm run lint && rimraf dist/ && babel ./src --out-dir dist/",
+        "start:docker": "npm run build && pm2-runtime  dist/index.js",
         "start": "npm run build && node dist/index.js",
         "prod": "node dist/index.js",
         "events": "npm run build && node dist/simplex_events/index.js",
