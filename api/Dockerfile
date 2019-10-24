@@ -15,8 +15,10 @@ RUN node -v && npm -v
 WORKDIR /api
 
 COPY . /api
+RUN npm install pm2 -g
 RUN npm install
 RUN npm run build
 EXPOSE 8080/tcp
 
-CMD npm run start
+CMD pm2 start ecosystem.config.js
+#CMD npm run start
