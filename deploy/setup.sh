@@ -189,8 +189,8 @@ installDockerCompose(){
 checkoutRepo(){
 echo "Checking out simplex-api"
 git clone ${GIT_URL};
-echo "copying setup script to home directory"
-cp ./simplex-api/deploy/setup.sh ~/
+echo "copying setup script to repo top level directory"
+cp ./simplex-api/deploy/setup.sh ./simplex-api/
 echo "entering simplex-api directory"
 cd simplex-api;
 if [ $FROM_BRANCH = "true" ]; then
