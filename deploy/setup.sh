@@ -13,7 +13,7 @@ ENV_FILE='.env'
 # Use a branch other than master
 FROM_BRANCH=false
 # The name of the branch to use
-BRANCH_NAME=may_debug_and_Docker_Start;
+BRANCH_NAME=add-cad-and-jpy;
 
 # defaults
 RESTART_VAR='false'
