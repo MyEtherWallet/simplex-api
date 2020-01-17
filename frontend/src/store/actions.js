@@ -78,14 +78,14 @@ export default {
       dispatch('setDigitalAmount', +val.amount)
     } else if (val.fiat && !val.amount) {
       const upperFiat = val.fiat.toUpperCase()
-      if (simplex.validFiat.includes(upperFiat)) {
+      if (['USD', 'EUR'].includes(upperFiat)) {
         dispatch('setFiatCurrency', val.fiat.toUpperCase())
       }
     } else if (val.amount && val.fiat) {
       dispatch('setDigitalAmount', +val.amount)
         .then(() => {
           const upperFiat = val.fiat.toUpperCase()
-          if (simplex.validFiat.includes(upperFiat)) {
+          if (['USD', 'EUR'].includes(upperFiat)) {
             dispatch('setFiatCurrency', val.fiat.toUpperCase())
               .then(() => {
                 setTimeout(() => {

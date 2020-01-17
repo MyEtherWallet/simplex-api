@@ -11,7 +11,7 @@ ENV_FILE='.env'
 
 # GIT options
 # Use a branch other than master
-FROM_BRANCH=true
+FROM_BRANCH=false
 # The name of the branch to use
 BRANCH_NAME=add-cad-and-jpy;
 
@@ -21,7 +21,7 @@ STOP_DOCKER='false'
 FLAGGED='false'
 PURGE_DOCKER='false'
 REBUILD_RESTART='false'
-RUN_ALL='false'
+
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -54,8 +54,7 @@ case $key in
     shift # past argument
     ;;
     -a|--all)
-    RUN_ALL='true'
-    FLAGGED='true'
+    DEFAULT=YES
     shift # past argument
     ;;
     --default)
@@ -77,7 +76,6 @@ echo " -r | --restart : stop docker and run docker-compose "
 echo " -s | --stop-docker : stop all docker containers"
 echo " -p | --purge-docker : stop and remove all docker containers"
 echo " -b | --rebuild-restart-docker : remove docker containers, rebuild and run docker-compose"
-echo " -a | --all : run total setup or re-setup without asking for abort"
 echo "Running with no arguments initiates total setup or re-setup"
 echo "Note: total setup/re-setup does not replace an existing database data directory."
 
@@ -137,11 +135,6 @@ fi
 if [ "$PURGE_DOCKER" == 'true' ]; then
   echo "Stopping and removing all docker containers"
   purgeDocker
-fi
-
-if [ "$RUN_ALL" == 'true' ]; then
-  echo "Stopping and removing all docker containers"
-  doSetup
 fi
 
 if [ "$FLAGGED" == 'true' ]; then
@@ -256,24 +249,20 @@ createDataDirectory(){
 }
 
 doSetup(){
-  if [ -f ${ENV_FILE} ]; then
-    echo "env file exists"
-    createDataDirectory
-    if [ -d "simplex-api" ]; then
-      purgeDocker
-      echo "prior simplex-api dir exists"
-      rm -rf ./simplex-api/
-      checkoutRepo
-      buildDockerImages
-      sudo docker-compose up -d --remove-orphans
-    else
-      echo "prior simplex-api dir does not exist"
-      checkoutRepo
-      buildDockerImages
-      sudo docker-compose up -d --remove-orphans
-    fi
-    else
-      echo "ERROR: failed to begin setup. .env file does not exist"
+  echo "env file exists"
+  createDataDirectory
+  if [ -d "simplex-api" ]; then
+    purgeDocker
+    echo "prior simplex-api dir exists"
+    rm -rf ./simplex-api/
+    checkoutRepo
+    buildDockerImages
+    sudo docker-compose up -d --remove-orphans
+  else
+    echo "prior simplex-api dir does not exist"
+    checkoutRepo
+    buildDockerImages
+    sudo docker-compose up -d --remove-orphans
   fi
 }
 
@@ -283,9 +272,11 @@ installDocker
 installDockerCompose
 
 runFromRepoDeploy
-
+if [ -f ${ENV_FILE} ]; then
 doSetup
-
+else
+    echo "ERROR: failed to begin setup. .env file does not exist"
+fi
 
 
 
