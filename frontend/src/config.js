@@ -1,8 +1,10 @@
+import {minFiat, maxFiat, fiat, crypto} from '../../currencyConfig';
+
 let simplex = {
-  validFiat: ['USD', 'EUR', 'GBP', 'RUB', 'AUD', 'KRW', 'CHF', 'CZK', 'DKK', 'NOK', 'NZD', 'PLN', 'SEK', 'TRY', 'ZAR', 'HUF'],
-  validDigital: ['ETH', 'BTC', 'DAI', 'USDT'],
-  minFiat: 50,
-  maxFiat: 20000
+  validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat,
+  validDigital: process.env.DIGITAL_CURRENCIES.split(',') || crypto,
+  minFiat: minFiat,
+  maxFiat: maxFiat
 }
 let host = {
   url: process.env.API_HOST || 'http://172.20.0.2:8080'
