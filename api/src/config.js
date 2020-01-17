@@ -12,7 +12,7 @@ let simplex = {
   eventEP: process.env.EVENT_EP || '',
   apiKey: process.env.SIMPLEX_APIKEY || '',
   apiVersion: '1',
-  validFiat: ['USD', 'EUR', 'GBP', 'RUB', 'AUD', 'KRW', 'CHF', 'CZK', 'DKK', 'NOK', 'NZD', 'PLN', 'SEK', 'TRY', 'ZAR', 'HUF'],
+  validFiat: ['USD', 'EUR',  'CAD', 'JPY', 'GBP', 'RUB', 'AUD', 'KRW', 'CHF', 'CZK', 'DKK', 'NOK', 'NZD', 'PLN', 'SEK', 'TRY', 'ZAR', 'HUF'],
   validDigital: ['ETH', 'BTC', 'DAI', 'USDT'],
   status: {
     initiated: 'INITIATED',
