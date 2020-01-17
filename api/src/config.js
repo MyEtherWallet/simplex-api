@@ -1,7 +1,8 @@
+import {fiat, crypto} from '../../currencyConfig';
+
 require('dotenv').config({
   path: '../../.env'
 });
-import {fiat, crypto} from '../../currencyConfig';
 
 let network = {
   port: process.env.PORT || 8080
