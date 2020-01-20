@@ -39,6 +39,7 @@ let getExchangeRates = () => {
           rates.map(cur => {
             return {base_currency: body.base, rate_currency: cur, rate: body.rates[cur]};
           });
+          console.log(rates); // todo remove dev item
           rates.forEach(updateItem);
           // processEvent
         } else if (response.statusCode === 400) {
@@ -59,6 +60,7 @@ let getExchangeRates = () => {
 };
 
 function updateItem (recordItem, deleteCallback) {
+  console.log(recordItem); // todo remove dev item
   findAndUpdateExchangeRates(recordItem, recordItem).catch((err) => {
     logger.error(err);
   });
