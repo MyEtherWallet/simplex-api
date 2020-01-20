@@ -5,7 +5,7 @@ import createLogger from 'logging'
 const logger = createLogger('currency_rates/index.js')
 
 const runCron = () => {
-  console.log('cronning')
+  console.log('cron setup for exchange rates')
   const cronTime = '* * * * *'
   return cron.schedule(cronTime, () => {
     try {
