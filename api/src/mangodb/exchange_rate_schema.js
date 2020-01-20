@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import timestamp from 'mongoose-timestamp'
-import {
-  simplex
-} from '../config'
+// import {
+//   simplex
+// } from '../config'
 let Schema = mongoose.Schema
 
 var ExchangeRateSchema = new Schema({
