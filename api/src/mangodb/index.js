@@ -33,12 +33,20 @@ let getExchangeRates = (base='USD') => {
     base_currency: base
   })
 }
+
+let findAndUpdateExchangeRates = (rateItem) => {
+  return ExchangeRateSchema.findOneAndUpdate({
+    base_currency: rateItem.base_currency,
+    rate_currency: rateItem.rate_currency
+  }, rateItem, {upsert: true})
+}
 export {
   connect,
   Order,
   EventSchema,
   ExchangeRateSchema,
   getExchangeRates,
+  findAndUpdateExchangeRates,
   getOrderById,
   findAndUpdate
 }

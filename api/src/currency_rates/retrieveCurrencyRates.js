@@ -1,6 +1,6 @@
 import {
   connect,
-  findAndUpdate,
+  findAndUpdateExchangeRates,
   // ExchangeRateSchema
 } from '../mangodb';
 // import eachOfSeries from 'async/eachOfSeries'
@@ -59,9 +59,7 @@ let getExchangeRates = () => {
 };
 
 function updateItem (recordItem, deleteCallback) {
-  findAndUpdate(recordItem.rate_currency, {
-    rate: recordItem.rate
-  }).catch((err) => {
+  findAndUpdateExchangeRates(recordItem, recordItem).catch((err) => {
     logger.error(err);
   });
 }
