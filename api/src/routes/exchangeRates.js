@@ -18,7 +18,7 @@ export default (app) => {
         })
       })
       .catch((error) => {
-        logger.error(error);
+        // logger.error(error);
         response.error(res, 'Failed to retrieve currency exchange rates')
       })
 
