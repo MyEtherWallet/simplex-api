@@ -74,7 +74,7 @@ let updateValues = (qChange, {
 // ?to=0x9C483A851938d1C77a5e7e50eFDA4751A3637215&amount=2
 // ?amount=2
 export default {
-  setCurrencyMaxAndMins ({dispatch, commit, state}, val) {
+  setCurrencyMaxAndMins ({dispatch, commit, state}) {
     exchangeRates()
       .then(result => {
         console.log(result); // todo remove dev item
