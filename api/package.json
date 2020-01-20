@@ -10,6 +10,7 @@
         "prod": "node dist/index.js",
         "events": "npm run build && node dist/simplex_events/index.js",
         "eventsProd": "node dist/simplex_events/",
+        "getExchangeRatesProd": "node dist/currency_rates/",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
         "test": "npm run lint && env NODE_ENV=development mocha --exit --require babel-core/register test/*",
         "lint": "standard --fix 'src/**/*.js'"

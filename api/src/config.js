@@ -17,6 +17,8 @@ let simplex = {
   apiVersion: '1',
   validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat, // ['USD','EUR'],
   validDigital: process.env.DIGITAL_CURRENCIES.split(',') || crypto, //['BTC', 'ETH'],
+  currencyApiKey: process.env.CURRENCY_APIKEY || '',
+  baseCurrency: 'EUR', // USD
   status: {
     initiated: 'INITIATED',
     sentToSimplex: 'SENT_TO_SIMPLEX',

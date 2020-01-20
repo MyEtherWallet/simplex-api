@@ -4,6 +4,7 @@ import {
 } from '../config'
 import Order from './schema'
 import EventSchema from './event_schema'
+import ExchangeRateSchema from './exchange_rate_schema'
 let connect = () => {
   return new Promise((resolve, reject) => {
     mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name)
@@ -30,6 +31,7 @@ export {
   connect,
   Order,
   EventSchema,
+  ExchangeRateSchema,
   getOrderById,
   findAndUpdate
 }
