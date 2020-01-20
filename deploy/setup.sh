@@ -236,14 +236,15 @@ purgeDocker(){
 
 buildDockerImages(){
     echo $PWD
-    cp ../${CURRENCY_FILE} ./
     cp ../${ENV_FILE} ./
     cd api;
     cp ../${ENV_FILE} ./
+    cp ../${CURRENCY_FILE} ./
     sudo docker build --rm --tag=simplex-api .
     cd ../
     cd frontend;
     cp ../${ENV_FILE} ./
+    cp ../${CURRENCY_FILE} ./
     sudo docker build --rm  --tag=simplex-frontend .
     cd ../
 }
@@ -268,11 +269,13 @@ doSetup(){
       checkoutRepo
       buildDockerImages
       sudo docker-compose up -d --remove-orphans
+      sudo docker ps
     else
       echo "prior simplex-api dir does not exist"
       checkoutRepo
       buildDockerImages
       sudo docker-compose up -d --remove-orphans
+      sudo docker ps
     fi
     else
       echo "ERROR: failed to begin setup. .env file does not exist"

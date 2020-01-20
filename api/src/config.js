@@ -1,4 +1,4 @@
-import {fiat, crypto} from '../../currencyConfig';
+import {fiat, crypto} from '../currencyConfig';
 
 require('dotenv').config({
   path: '../../.env'

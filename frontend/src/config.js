@@ -1,4 +1,4 @@
-import {minFiat, maxFiat, fiat, crypto} from '../../currencyConfig';
+import {minFiat, maxFiat, fiat, crypto} from '../currencyConfig';
 
 let simplex = {
   validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat,
