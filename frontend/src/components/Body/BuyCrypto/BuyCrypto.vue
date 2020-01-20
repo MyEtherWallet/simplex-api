@@ -163,6 +163,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.dispatch('exchangeRates');
     this.$store.dispatch('setDigitalAmount', 1)
   },
   computed: {

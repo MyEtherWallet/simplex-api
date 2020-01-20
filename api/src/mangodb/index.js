@@ -27,11 +27,18 @@ let findAndUpdate = (_userId, _newVals) => {
     user_id: _userId
   }, _newVals)
 }
+
+let getExchangeRates = (base='USD') => {
+  return ExchangeRateSchema.find({
+    base_currency: base
+  })
+}
 export {
   connect,
   Order,
   EventSchema,
   ExchangeRateSchema,
+  getExchangeRates,
   getOrderById,
   findAndUpdate
 }
