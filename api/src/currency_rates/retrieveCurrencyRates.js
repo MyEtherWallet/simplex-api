@@ -35,10 +35,15 @@ let getExchangeRates = () => {
       try {
         if (!error && response.statusCode === 200) {
           logger.error(body);
-          const rates = Object.keys(body.rates);
-          rates.map(cur => {
-            return {base_currency: body.base, rate_currency: cur, rate: body.rates[cur]};
-          });
+          // const rates = Object.keys(body.rates);
+          const rates = Object.keys(body.rates).reduce((prior, current) => {
+            prior.push({
+              base_currency: body.base,
+              rate_currency: current,
+              rate: body.rates[current]
+            });
+            return prior;
+          }, []);
           console.log(rates); // todo remove dev item
           rates.forEach(updateItem);
           // processEvent
