@@ -40,6 +40,7 @@ let findAndUpdateExchangeRates = (rateItem) => {
     rate_currency: rateItem.rate_currency
   }, rateItem, {upsert: true})
 }
+
 export {
   connect,
   Order,
