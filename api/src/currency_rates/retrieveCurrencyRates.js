@@ -13,7 +13,7 @@ import request from 'request';
 import debugLogger from 'debug';
 
 // const recordLogger = createLogger('simplex_events/retrieveEvents.js : record-event')
-const logger = createLogger('simplex_events/retrieveEvents.js');
+const logger = createLogger('currency_rates/retrieveCurrencyRates.js');
 const debugRequest = debugLogger('calls:Events');
 
 connect().then(() => {
@@ -66,7 +66,9 @@ let getExchangeRates = () => {
 
 function updateItem (recordItem, deleteCallback) {
   console.log(recordItem); // todo remove dev item
-  findAndUpdateExchangeRates(recordItem, recordItem).catch((err) => {
+  findAndUpdateExchangeRates({
+    rate_currency: recordItem.rate_currency,
+  }, recordItem).catch((err) => {
     logger.error(err);
   });
 }
