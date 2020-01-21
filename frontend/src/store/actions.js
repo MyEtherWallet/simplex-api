@@ -28,6 +28,9 @@ let updateValues = (qChange, {
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);
         commit('setInvalidDigitalAmount', false);
+        console.log(resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency]); // todo remove dev item
+        console.log(resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency]); // todo remove dev item
+        console.log(resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency]); // todo remove dev item
         const isInvalidFiat = resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency];
         commit('setInvalidFiatAmount', isInvalidFiat);
         commit('setUserId', resp.result.user_id);
