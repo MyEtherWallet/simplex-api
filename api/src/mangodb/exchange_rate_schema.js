@@ -14,11 +14,9 @@ var ExchangeRateSchema = new Schema({
   base_currency: {
     type: String,
     required: true,
-    unique: true
   },
   rate_currency: {
     type: String,
-    unique: true,
     sparse: true
   },
   rate: {
