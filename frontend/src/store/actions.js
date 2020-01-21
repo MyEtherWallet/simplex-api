@@ -28,7 +28,7 @@ let updateValues = (qChange, {
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);
         commit('setInvalidDigitalAmount', false);
-        const isInvalidFiat = resp.result.fiat_money.total_amount < simplex.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > simplex.maxFiat[state.fiatCurrency];
+        const isInvalidFiat = resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency];
         commit('setInvalidFiatAmount', isInvalidFiat);
         commit('setUserId', resp.result.user_id);
         resolve();
@@ -83,7 +83,7 @@ export default {
         const maxFiat = {};
         simplex.validFiat.forEach(item => {
           const details = result.find(entry => entry.rate_currency === item);
-          minFiat[item] = details.rate * simplex.minFiat.USD;
+          minFiat[item] = details.rate * state.minFiat.USD;
           maxFiat[item] = details.rate * simplex.maxFiat.USD;
         })
         commit('setMinFiat', minFiat);
@@ -135,7 +135,7 @@ export default {
     state
   }, amount) {
     commit('setFiatAmount', amount);
-    if (amount >= simplex.minFiat[state.fiatCurrency] && amount <= simplex.maxFiat[state.fiatCurrency]) {
+    if (amount >= state.minFiat[state.fiatCurrency] && amount <= state.maxFiat[state.fiatCurrency]) {
       commit('setInvalidFiatAmount', false);
       return updateValues(quoteChanges.fiat_amount, {
         commit,
