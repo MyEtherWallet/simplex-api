@@ -65,6 +65,7 @@ let getExchangeRates = () => {
 };
 
 function updateItem (recordItem, deleteCallback) {
+  console.log('----------------------------'); // todo remove dev item
   console.log(recordItem); // todo remove dev item
   findAndUpdateExchangeRates({
     rate_currency: recordItem.rate_currency,
