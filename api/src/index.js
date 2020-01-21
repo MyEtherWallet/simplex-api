@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import createLogger from 'logging'
 import debugLogger from 'debug'
 import retrieveEvents from './simplex_events'
-import retrieveRates from './currency_rates'
+// import retrieveRates from './currency_rates'
 
 import cors from 'cors'
 import routes from './routes'

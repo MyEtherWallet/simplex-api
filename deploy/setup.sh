@@ -19,10 +19,13 @@ BRANCH_NAME=add-cad-and-jpy;
 # defaults
 RESTART_VAR='false'
 STOP_DOCKER='false'
+START_DOCKER='false'
 FLAGGED='false'
 PURGE_DOCKER='false'
+PURGE_IMAGES='false'
 REBUILD_RESTART='false'
 RUN_ALL='false'
+NO_CACHE='false'
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -40,8 +43,18 @@ case $key in
     FLAGGED='true'
     shift # past argument
     ;;
+    -st|--start-docker)
+    START_DOCKER='true'
+    FLAGGED='true'
+    shift # past argument
+    ;;
     -p|--purge-docker)
     PURGE_DOCKER='true'
+    FLAGGED='true'
+    shift # past argument
+    ;;
+    -pi|--purge-images)
+    PURGE_IMAGES='true'
     FLAGGED='true'
     shift # past argument
     ;;
@@ -57,6 +70,11 @@ case $key in
     -a|--all)
     RUN_ALL='true'
     FLAGGED='true'
+    shift # past argument
+    ;;
+    --no-cache)
+    NO_CACHE='true'
+    echo "not using cache when building docker images"
     shift # past argument
     ;;
     --default)
@@ -76,9 +94,12 @@ echo "usage: setup.sh [optional flag]"
 echo " flags: (Note: only one may be used at a time)"
 echo " -r | --restart : stop docker and run docker-compose "
 echo " -s | --stop-docker : stop all docker containers"
+echo " -st| --start-docker : start all docker containers"
 echo " -p | --purge-docker : stop and remove all docker containers"
+echo " -pi | --purge-images : purge all docker images not currently attached"
 echo " -b | --rebuild-restart-docker : remove docker containers, rebuild and run docker-compose"
 echo " -a | --all : run total setup or re-setup without asking for abort"
+echo " --no-cache : don't use cache when building docker images"
 echo "Running with no arguments initiates total setup or re-setup"
 echo "Note: total setup/re-setup does not replace an existing database data directory."
 
@@ -135,9 +156,19 @@ if [ "$STOP_DOCKER" == 'true' ]; then
   stopDocker
 fi
 
+if [ "$START_DOCKER" == 'true' ]; then
+  echo "Starting all Docker containers"
+  startDocker
+fi
+
 if [ "$PURGE_DOCKER" == 'true' ]; then
   echo "Stopping and removing all docker containers"
   purgeDocker
+fi
+
+if [ "$PURGE_IMAGES" == 'true' ]; then
+  echo "Purging all docker images not currently attached"
+  cleanAllImages
 fi
 
 if [ "$RUN_ALL" == 'true' ]; then
@@ -222,6 +253,14 @@ stopDocker(){
   sudo docker stop "mongo_db"
 }
 
+startDocker(){
+  echo "Starting Docker Containers"
+  #  sudo docker stop $(sudo docker ps -a -q)
+  sudo docker start "frontend"
+  sudo docker start "api"
+  sudo docker start "nginx"
+  sudo docker start "mongo_db"
+}
 
 purgeDocker(){
   stopDocker
@@ -233,6 +272,11 @@ purgeDocker(){
   sudo docker rm "mongo_db"
 }
 
+cleanAllImages(){
+  echo "Removing all docker images"
+  sudo docker image prune -a
+}
+
 
 buildDockerImages(){
     echo $PWD
@@ -240,12 +284,24 @@ buildDockerImages(){
     cd api;
     cp ../${ENV_FILE} ./
     cp ../${CURRENCY_FILE} ./
-    sudo docker build --rm --tag=simplex-api .
+    if [ $NO_CACHE = "true" ]; then
+      cleanAllImages
+    fi
+
+    if [ $NO_CACHE = "true" ]; then
+      sudo docker build --force-rm --no-cache --tag=simplex-api .
+    else
+      sudo docker build --force-rm --tag=simplex-api .
+    fi
     cd ../
     cd frontend;
     cp ../${ENV_FILE} ./
     cp ../${CURRENCY_FILE} ./
-    sudo docker build --rm  --tag=simplex-frontend .
+    if [ $NO_CACHE = "true" ]; then
+      sudo docker build --force-rm  --no-cache --tag=simplex-frontend .
+    else
+      sudo docker build --force-rm  --tag=simplex-frontend .
+    fi
     cd ../
 }
 
