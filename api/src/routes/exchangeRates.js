@@ -13,8 +13,16 @@ export default (app) => {
     debugRequest('Info Request Received');
     getExchangeRates(simplex.baseCurrency)
       .then(rates => {
+        const cleanedRates = rates.map(item => {
+          return {
+            rate_currency: item.rate_currency,
+            base_currency: item.base_currency,
+            rate: item.rate,
+            updatedAt: item.updatedAt
+          }
+        })
         response.success(res, {
-          rates,
+          cleanedRates,
         });
       })
       .catch((error) => {

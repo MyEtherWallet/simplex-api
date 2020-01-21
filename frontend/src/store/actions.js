@@ -76,10 +76,18 @@ let updateValues = (qChange, {
 export default {
   setCurrencyMaxAndMins ({dispatch, commit, state}) {
     exchangeRates()
-      .then(result => {
-        console.log(result); // todo remove dev item
-        // const minFiat = {};
-        // const maxFiat = {};
+      .then(rawResult => {
+        console.log(rawResult); // todo remove dev item
+        const result = rawResult.data.result.rates;
+        const minFiat = {};
+        const maxFiat = {};
+        simplex.validFiat.forEach(item => {
+          const details = result.find(entry => entry.rate_currency === item);
+          minFiat[item] = details.rate * simplex.minFiat.USD;
+          maxFiat[item] = details.rate * simplex.maxFiat.USD;
+        })
+        commit('setMinFiat', minFiat);
+        commit('setMaxFiat', maxFiat);
       });
   },
   saveQueryVal ({dispatch, commit, state}, val) {

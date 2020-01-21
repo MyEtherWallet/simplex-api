@@ -1,4 +1,10 @@
 export default {
+  setMinFiat (state, _minFiat) {
+    state.minFiat = _minFiat
+  },
+  setMaxFiat (state, _maxFiat) {
+    state.maxFiat = _maxFiat
+  },
   setFiatCurrency (state, _fiatCurrency) {
     state.orderInfo.fiatCurrency = _fiatCurrency
   },

@@ -13,6 +13,8 @@ export default {
     digitalAmount: 1,
     digitalAddress: '',
     userId: '',
-    linkQuery: {}
+    linkQuery: {},
+    minFiat: {},
+    maxFiat: {}
   }
 }
