@@ -15,7 +15,7 @@ const maxFiatTarget = {USD: 20000, EUR: 20000};
 const minFiat = new Proxy(minFiatTarget, handler(50));
 const maxFiat = new Proxy(maxFiatTarget, handler(20000));
 
-export {
+module.exports = {
   fiat,
   crypto,
   minFiat,
