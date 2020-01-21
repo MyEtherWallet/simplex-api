@@ -22,7 +22,7 @@ export default (app) => {
           }
         })
         response.success(res, {
-          cleanedRates,
+          rates: cleanedRates,
         });
       })
       .catch((error) => {
