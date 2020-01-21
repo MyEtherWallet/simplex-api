@@ -1,4 +1,5 @@
 import wav from 'wallet-address-validator';
+import BigNumber from 'bignumber.js';
 import {
   simplex
 } from '@/config.js';
@@ -28,10 +29,7 @@ let updateValues = (qChange, {
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);
         commit('setInvalidDigitalAmount', false);
-        console.log(resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency]); // todo remove dev item
-        console.log(resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency]); // todo remove dev item
-        console.log(resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency]); // todo remove dev item
-        const isInvalidFiat = resp.result.fiat_money.total_amount < state.minFiat[state.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.fiatCurrency];
+        const isInvalidFiat = resp.result.fiat_money.total_amount < state.minFiat[state.orderInfo.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.orderInfo.fiatCurrency];
         commit('setInvalidFiatAmount', isInvalidFiat);
         commit('setUserId', resp.result.user_id);
         resolve();
@@ -80,15 +78,16 @@ export default {
   setCurrencyMaxAndMins ({dispatch, commit, state}) {
     exchangeRates()
       .then(rawResult => {
-        console.log(rawResult); // todo remove dev item
         const result = rawResult.data.result.rates;
         const minFiat = {};
         const maxFiat = {};
         simplex.validFiat.forEach(item => {
           const details = result.find(entry => entry.rate_currency === item);
-          minFiat[item] = details.rate * simplex.minFiat.USD;
-          maxFiat[item] = details.rate * simplex.maxFiat.USD;
-        })
+          if (details) {
+            minFiat[item] = new BigNumber(details.rate).times(simplex.minFiat.USD).toNumber();
+            maxFiat[item] = new BigNumber(details.rate).times(simplex.maxFiat.USD).toNumber();
+          }
+        });
         commit('setMinFiat', minFiat);
         commit('setMaxFiat', maxFiat);
       });
@@ -138,7 +137,7 @@ export default {
     state
   }, amount) {
     commit('setFiatAmount', amount);
-    if (amount >= state.minFiat[state.fiatCurrency] && amount <= state.maxFiat[state.fiatCurrency]) {
+    if (amount >= state.minFiat[state.orderInfo.fiatCurrency] && amount <= state.maxFiat[state.orderInfo.fiatCurrency]) {
       commit('setInvalidFiatAmount', false);
       return updateValues(quoteChanges.fiat_amount, {
         commit,

@@ -1,9 +1,7 @@
 import {
   connect,
   findAndUpdateExchangeRates,
-  // ExchangeRateSchema
 } from '../mangodb';
-// import eachOfSeries from 'async/eachOfSeries'
 import createLogger from 'logging';
 import {
   mangodb,
@@ -12,7 +10,6 @@ import {
 import request from 'request';
 import debugLogger from 'debug';
 
-// const recordLogger = createLogger('simplex_events/retrieveEvents.js : record-event')
 const logger = createLogger('currency_rates/retrieveCurrencyRates.js');
 const debugRequest = debugLogger('calls:Events');
 
@@ -35,7 +32,6 @@ let getExchangeRates = () => {
       try {
         if (!error && response.statusCode === 200) {
           logger.error(body);
-          // const rates = Object.keys(body.rates);
           const rates = Object.keys(body.rates).reduce((prior, current) => {
             prior.push({
               pair_key: body.base + current,
@@ -45,7 +41,6 @@ let getExchangeRates = () => {
             });
             return prior;
           }, []);
-          console.log(rates); // todo remove dev item
           rates.forEach(updateItem);
           // processEvent
         } else if (response.statusCode === 400) {
@@ -65,27 +60,12 @@ let getExchangeRates = () => {
   });
 };
 
-function updateItem (recordItem, deleteCallback) {
-  console.log('----------------------------'); // todo remove dev item
-  console.log(recordItem); // todo remove dev item
+function updateItem (recordItem) {
   findAndUpdateExchangeRates({
     pair_key: recordItem.pair_key,
   }, recordItem).catch((err) => {
     logger.error(err);
   });
 }
-
-// function processEvent (item, key, callback) {
-//   updateItem(item, callback)
-//   // ExchangeRateSchema(item)
-//   //   .save()
-//   //   .then(() => {
-//   //     updateItem(item, callback)
-//   //   })
-//   //   .catch((error) => {
-//   //     recordLogger.error(error)
-//   //     updateItem(item, callback)
-//   //   })
-// }
 
 export default getExchangeRates;
