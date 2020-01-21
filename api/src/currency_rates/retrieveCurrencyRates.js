@@ -38,6 +38,7 @@ let getExchangeRates = () => {
           // const rates = Object.keys(body.rates);
           const rates = Object.keys(body.rates).reduce((prior, current) => {
             prior.push({
+              pair_key: body.base + current,
               base_currency: body.base,
               rate_currency: current,
               rate: body.rates[current]
@@ -68,7 +69,7 @@ function updateItem (recordItem, deleteCallback) {
   console.log('----------------------------'); // todo remove dev item
   console.log(recordItem); // todo remove dev item
   findAndUpdateExchangeRates({
-    rate_currency: recordItem.rate_currency,
+    pair_key: recordItem.pair_key,
   }, recordItem).catch((err) => {
     logger.error(err);
   });

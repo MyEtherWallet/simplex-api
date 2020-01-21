@@ -6,6 +6,11 @@ import timestamp from 'mongoose-timestamp'
 let Schema = mongoose.Schema
 
 var ExchangeRateSchema = new Schema({
+  pair_key: {
+    type: String,
+    required: true,
+    unique: true
+  },
   base_currency: {
     type: String,
     required: true,

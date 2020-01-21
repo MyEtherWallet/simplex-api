@@ -35,7 +35,7 @@ let getExchangeRates = (base='USD') => {
 }
 
 let findAndUpdateExchangeRates = (queryItem, rateItem) => {
-  console.log(rateItem); // todo remove dev item
+  console.log(queryItem, rateItem); // todo remove dev item
   return ExchangeRateSchema.findOneAndUpdate(queryItem, rateItem, {upsert: true})
 }
 
