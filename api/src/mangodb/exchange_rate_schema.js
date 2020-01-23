@@ -1,8 +1,5 @@
 import mongoose from 'mongoose'
 import timestamp from 'mongoose-timestamp'
-// import {
-//   simplex
-// } from '../config'
 let Schema = mongoose.Schema
 
 var ExchangeRateSchema = new Schema({
@@ -18,6 +15,14 @@ var ExchangeRateSchema = new Schema({
   rate_currency: {
     type: String,
     sparse: true
+  },
+  min: {
+    type: Number,
+    required: true
+  },
+  max: {
+    type: Number,
+    required: true
   },
   rate: {
     type: Number,

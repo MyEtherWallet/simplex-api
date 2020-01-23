@@ -9,6 +9,7 @@ import {
 } from '../config';
 import request from 'request';
 import debugLogger from 'debug';
+import BigNumber from 'bignumber.js'
 
 const logger = createLogger('currency_rates/retrieveCurrencyRates.js');
 const debugRequest = debugLogger('calls:Events');
@@ -18,6 +19,10 @@ connect().then(() => {
 }).catch((err) => {
   logger.error(`mangodb error: ${err}`);
 });
+
+const multiple = (val1, val2) =>{
+  return new BigNumber(val1).times(new BigNumber(val2)).toNumber();
+}
 
 let getExchangeRates = () => {
   return new Promise((resolve, reject) => {
@@ -37,6 +42,8 @@ let getExchangeRates = () => {
               pair_key: body.base + current,
               base_currency: body.base,
               rate_currency: current,
+              min: multiple(simplex.minBaseCurrency, body.rates[current]),
+              max: multiple(simplex.maxBaseCurrency, body.rates[current]),
               rate: body.rates[current]
             });
             return prior;
