@@ -113,8 +113,7 @@ export default {
   },
   methods: {
     onVerify (response) {
-      this.recaptchaResponse = 'true'; // todo remove dev item
-      // this.recaptchaResponse = response // todo uncomment after dev
+      this.recaptchaResponse = response
     },
     order (cb) {
       let success = () => {
@@ -231,7 +230,7 @@ export default {
     },
     canOrder: {
       get () {
-        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse
+        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount /*&& this.recaptchaResponse*/
       }
     }
 
