@@ -113,7 +113,8 @@ export default {
   },
   methods: {
     onVerify (response) {
-      this.recaptchaResponse = response
+      this.recaptchaResponse = 'true'; // todo remove dev item
+      // this.recaptchaResponse = response // todo uncomment after dev
     },
     order (cb) {
       let success = () => {
