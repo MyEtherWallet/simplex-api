@@ -1,5 +1,5 @@
 import wav from 'wallet-address-validator';
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import {
   simplex
 } from '@/config.js';
