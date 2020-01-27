@@ -84,8 +84,8 @@ export default {
         simplex.validFiat.forEach(item => {
           const details = result.find(entry => entry.rate_currency === item);
           if (details) {
-            minFiat[item] = new BigNumber(details.rate).times(simplex.minFiat.USD).toNumber();
-            maxFiat[item] = new BigNumber(details.rate).times(simplex.maxFiat.USD).toNumber();
+            minFiat[item] = details.min;
+            maxFiat[item] = details.max;
           }
         });
         commit('setMinFiat', minFiat);

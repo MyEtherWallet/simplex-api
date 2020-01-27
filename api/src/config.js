@@ -17,7 +17,7 @@ let simplex = {
   apiVersion: '1',
   validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat, // ['USD','EUR'],
   validDigital: process.env.DIGITAL_CURRENCIES.split(',') || crypto, //['BTC', 'ETH'],
-  currencyApiKey: process.env.CURRENCY_APIKEY || '',
+  currencyApiKey: process.env.FIXER_APIKEY || '',
   baseCurrency: process.env.BASE_CURRENCY || 'EUR', // USD
   minBaseCurrency: process.env.FIAT_MIN_USD || 50, // USD
   maxBaseCurrency: process.env.FIAT_MAX_USD || 20000, // USD
@@ -27,7 +27,6 @@ let simplex = {
     deniedSimplex: 'DENIED_SIMPLEX',
     processingSimplex: 'PROCESSING_SIMPPLEX',
     successSimplex: 'SUCCESS_SIMPLEX'
-
   }
 };
 let mangodb = {
