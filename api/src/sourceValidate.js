@@ -47,7 +47,8 @@ export default function sourceyValidate (validationOptions = productValidation) 
     } else if (/quote/.test(req.route.path)) {
       next()
     } else {
-      return recaptcha.middleware.verify(req, res, next)
+      next()
+      // return recaptcha.middleware.verify(req, res, next)
     }
   }
 }

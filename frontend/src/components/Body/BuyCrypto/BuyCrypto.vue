@@ -63,9 +63,9 @@
 
                         <!-- .btc-address -->
                         <template>
-                          <div class="recaptcha">
-                            <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
-                          </div>
+<!--                          <div class="recaptcha">-->
+<!--                            <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>-->
+<!--                          </div>-->
                         </template>
                         <checkout-form :continueAction='order' :valid-inputs="canOrder" :formData="formData" />
                         <div class="submit-button-container">
@@ -112,9 +112,9 @@ export default {
     }
   },
   methods: {
-    onVerify (response) {
-      this.recaptchaResponse = response
-    },
+    // onVerify (response) {
+    //   this.recaptchaResponse = response
+    // },
     order (cb) {
       let success = () => {
         const orderInfo = this.$store.state.orderInfo
@@ -122,6 +122,7 @@ export default {
           'g-recaptcha-response': this.recaptchaResponse,
           account_details: {
             app_end_user_id: orderInfo.userId
+
           },
           transaction_details: {
             payment_details: {

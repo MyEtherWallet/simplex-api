@@ -153,7 +153,7 @@ export default (app) => {
               }
             }
           }
-          findAndUpdate(userId, {
+          findAndUpdate(userId, quoteId, {
             payment_id: paymentId,
             order_id: orderId,
             status: simplex.status.sentToSimplex

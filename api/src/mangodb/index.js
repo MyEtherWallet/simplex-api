@@ -21,13 +21,14 @@ let getOrderById = (_userId, _quoteId) => {
   // { sort: { 'created_at' : -1 } }
   return Order.find({
     user_id: _userId,
-    sort: { 'created_at' : -1 }
+    // sort: { 'created_at' : -1 }
     // quote_id: _quoteId
-  })
+  }).sort({ "created_at": -1 })
 }
-let findAndUpdate = (_userId, _newVals) => {
+let findAndUpdate = (_userId, _quoteId, _newVals) => {
   return Order.findOneAndUpdate({
-    user_id: _userId
+    user_id: _userId,
+    quote_id: _quoteId
   }, _newVals)
 }
 
