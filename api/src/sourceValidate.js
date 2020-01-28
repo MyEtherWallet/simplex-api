@@ -17,7 +17,7 @@ const recaptcha = new Recaptcha(recaptchaConfig.siteKey, recaptchaConfig.secretK
 
 export default function sourceyValidate (validationOptions = productValidation) {
   return function (req, res, next) {
-    debug.info(req.headers['origin'])
+    logger.error(req.headers['origin'])
     if (req.headers['referer'] === validationOptions.referrerAppleiOS) {
       if (validationOptions.apiKeys.includes(req.headers[validationOptions.apiKeyHeaderName])) {
         req.recaptcha = {}
