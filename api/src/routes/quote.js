@@ -25,6 +25,9 @@ const debugResponse = debugLogger('response:routes-quote')
 const validationErrors = debugLogger('errors:validation')
 
 let schema = {
+  user_id: {
+    type: String
+  },
   digital_currency: {
     type: String,
     required: true,
