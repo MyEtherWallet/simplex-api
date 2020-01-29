@@ -19,11 +19,21 @@ let connect = () => {
 }
 let getOrderById = (_userId, _quoteId) => {
   // { sort: { 'created_at' : -1 } }
+
+  Order.find({
+    user_id: _userId,
+    // sort: { 'created_at' : -1 }
+    // quote_id: _quoteId
+  }).sort({ "created_at": -1 }).exec((err, res) =>{
+    console.log("ERROR: ", err); // todo remove dev item
+    console.log("RESULT: ", res); // todo remove dev item
+  })
+
   return Order.find({
     user_id: _userId,
     // sort: { 'created_at' : -1 }
     // quote_id: _quoteId
-  }).sort({ "created_at": -1 })
+  });//.sort({ "created_at": -1 })
 }
 let findAndUpdate = (_userId, _quoteId, _newVals) => {
   return Order.findOneAndUpdate({
