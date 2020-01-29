@@ -65,7 +65,7 @@ export default (app) => {
         'wallet_id': simplex.walletID,
         'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
       })
-      console.log(reqObj); // todo remove dev item
+      console.log('reqObj', reqObj); // todo remove dev item
       debugRequest(reqObj)
       getQuote(reqObj).then((result) => {
         debugResponse(result)
