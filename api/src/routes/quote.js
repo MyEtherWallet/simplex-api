@@ -59,6 +59,9 @@ export default (app) => {
       validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
+      console.log(req.body); // todo remove dev item
+      console.log("--------------"); // todo remove dev item
+      console.log(req.body.user_id); // todo remove dev item
       let newUserId = req.body.user_id ? req.body.user_id : uuidv4();
       let reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
