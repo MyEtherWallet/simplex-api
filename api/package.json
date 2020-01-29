@@ -4,7 +4,8 @@
     "description": "API to handle simplex integration",
     "main": "index.js",
     "scripts": {
-        "build": "npm run lint && rimraf dist/ && babel ./src --out-dir dist/",
+        "build:other": "npm run lint",
+        "build": "rimraf dist/ && babel ./src --out-dir dist/",
         "start:docker": "npm run build && pm2-runtime  dist/index.js",
         "start": "npm run build && node dist/index.js",
         "prod": "node dist/index.js",
