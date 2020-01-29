@@ -20,7 +20,7 @@ connect().then(() => {
   logger.error(`mangodb error: ${err}`);
 });
 
-const multiple = (val1, val2) =>{
+const multiply = (val1, val2) =>{
   return new BigNumber(val1).times(new BigNumber(val2)).toNumber();
 }
 
@@ -42,8 +42,8 @@ let getExchangeRates = () => {
               pair_key: body.base + current,
               base_currency: body.base,
               rate_currency: current,
-              min: multiple(simplex.minBaseCurrency, body.rates[current]),
-              max: multiple(simplex.maxBaseCurrency, body.rates[current]),
+              min: multiply(simplex.minBaseCurrency, body.rates[current]),
+              max: multiply(simplex.maxBaseCurrency, body.rates[current]),
               rate: body.rates[current]
             });
             return prior;
