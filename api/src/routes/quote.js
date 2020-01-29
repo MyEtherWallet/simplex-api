@@ -59,7 +59,7 @@ export default (app) => {
       validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
-      let newUserId = req.body.user_id || req.body.user_id ? req.body.user_id : uuidv4();
+      let newUserId = req.body.user_id ? req.body.user_id : uuidv4();
       let reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
         'wallet_id': simplex.walletID,
