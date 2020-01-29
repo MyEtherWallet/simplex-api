@@ -68,6 +68,8 @@ export default (app) => {
       console.log('reqObj', reqObj); // todo remove dev item
       debugRequest(reqObj)
       getQuote(reqObj).then((result) => {
+        console.log('result', result); // todo remove dev item
+
         debugResponse(result)
         Order({
           user_id: newUserId,
