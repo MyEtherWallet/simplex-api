@@ -62,20 +62,14 @@ export default (app) => {
       validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
-      console.log(req.body); // todo remove dev item
-      console.log("--------------"); // todo remove dev item
-      console.log(req.body.user_id); // todo remove dev item
       let newUserId = req.body.user_id ? req.body.user_id : uuidv4();
       let reqObj = Object.assign(req.body, {
         'end_user_id': newUserId,
         'wallet_id': simplex.walletID,
         'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
       })
-      console.log('reqObj', reqObj); // todo remove dev item
       debugRequest(reqObj)
       getQuote(reqObj).then((result) => {
-        console.log('result', result); // todo remove dev item
-
         debugResponse(result)
         Order({
           user_id: newUserId,

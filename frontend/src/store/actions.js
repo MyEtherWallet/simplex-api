@@ -1,5 +1,4 @@
 import wav from 'wallet-address-validator';
-// import BigNumber from 'bignumber.js';
 import {
   simplex
 } from '@/config.js';
@@ -34,12 +33,12 @@ let updateValues = (qChange, {
         commit('setUserId', resp.result.user_id);
         resolve();
       } else {
-        console.log(resp.result);
+        console.error(resp.result);
         reject(resp);
       }
     };
     let onError = (err) => {
-      console.log(err);
+      console.error(err);
       reject(err);
     };
     if (canQuote(state)) {
@@ -48,7 +47,6 @@ let updateValues = (qChange, {
         case quoteChanges.fiat_currency:
           commit('setRequestedCurrency', state.orderInfo.fiatCurrency);
           getQuote({
-            user_id: '46612050-6212-4e99-ac26-ca41b6dc7e1f',
             digital_currency: state.orderInfo.digitalCurrency,
             fiat_currency: state.orderInfo.fiatCurrency,
             requested_currency: state.orderInfo.fiatCurrency,
@@ -59,7 +57,6 @@ let updateValues = (qChange, {
         case quoteChanges.digital_currency:
           commit('setRequestedCurrency', state.orderInfo.digitalCurrency);
           getQuote({
-            user_id: '46612050-6212-4e99-ac26-ca41b6dc7e1f',
             digital_currency: state.orderInfo.digitalCurrency,
             fiat_currency: state.orderInfo.fiatCurrency,
             requested_currency: state.orderInfo.digitalCurrency,

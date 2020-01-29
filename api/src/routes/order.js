@@ -119,9 +119,7 @@ export default (app) => {
         response.error(res, errors.map(_err => _err.message))
       } else {
         let userId = req.body.account_details.app_end_user_id
-        console.log(req.body)
         getOrderById(userId).then((savedOrder) => {
-          console.log(savedOrder)
           let quoteId = savedOrder[0].quote_id
           let paymentId = uuidv4()
           let orderId = uuidv4()
