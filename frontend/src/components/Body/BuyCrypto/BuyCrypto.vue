@@ -121,7 +121,7 @@ export default {
         getOrder({
           'g-recaptcha-response': this.recaptchaResponse,
           account_details: {
-            app_end_user_id: orderInfo.userId
+            userId: orderInfo.userId
 
           },
           transaction_details: {
