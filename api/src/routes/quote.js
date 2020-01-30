@@ -62,9 +62,9 @@ export default (app) => {
       validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
-      let newUserId = req.body.user_id ? req.body.user_id : uuidv4();
+      let userId = req.body.user_id ? req.body.user_id : uuidv4();
       let reqObj = Object.assign(req.body, {
-        'end_user_id': newUserId,
+        'end_user_id': userId,
         'wallet_id': simplex.walletID,
         'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
       })
@@ -72,7 +72,7 @@ export default (app) => {
       getQuote(reqObj).then((result) => {
         debugResponse(result)
         Order({
-          user_id: newUserId,
+          user_id: userId,
           quote_id: result.quote_id,
           fiat_total_amount: {
             currency: result.fiat_money.currency,

@@ -61,7 +61,7 @@ let getEvents = () => {
 }
 
 function updateItem (recordItem, deleteCallback) {
-  findAndUpdate(recordItem.payment.partner_end_user_id, {
+  findAndUpdate(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
   }).catch((err) => {
     logger.error(err)

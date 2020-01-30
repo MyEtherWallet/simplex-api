@@ -38,6 +38,9 @@ export default {
   setUserId (state, _id) {
     state.orderInfo.userId = _id
   },
+  setQuoteId (state, _id) {
+    state.orderInfo.quoteId = _id
+  },
   saveQueryValue (state, newQuery) {
     state.linkQuery = newQuery
   }

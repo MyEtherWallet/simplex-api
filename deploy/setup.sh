@@ -274,7 +274,7 @@ purgeDocker(){
 
 cleanAllImages(){
   echo "Removing all docker images"
-  sudo docker image prune -a
+  sudo docker image prune
 }
 
 
@@ -321,7 +321,7 @@ doSetup(){
     if [ -d "simplex-api" ]; then
       purgeDocker
       echo "prior simplex-api dir exists"
-      rm -rf ./simplex-api/
+      sudo rm -rf ./simplex-api/
       checkoutRepo
       buildDockerImages
       sudo docker-compose up -d --remove-orphans

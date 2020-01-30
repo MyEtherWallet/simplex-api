@@ -21,20 +21,42 @@ let connect = () => {
 
 let getOrderById = (_userId, _quoteId) => {
   return new Promise((resolve, reject) => {
-    return Order.find({
-      user_id: _userId,
-    }).sort({'created_at': -1}).exec((err, res) => {
-      if (err) reject(err);
-      else resolve(res);
-    });
+    if(_userId && _quoteId){
+      return Order.find({
+        user_id: _userId,
+        quote_id: _quoteId
+      }).sort({'created_at': -1}).exec((err, res) => {
+        if (err) reject(err);
+        else resolve(res);
+      });
+    } else {
+      return Order.find({
+        user_id: _userId
+      }).sort({'created_at': -1}).exec((err, res) => {
+        if (err) reject(err);
+        else resolve(res);
+      });
+    }
   });
 };
 
+
 let findAndUpdate = (_userId, _quoteId, _newVals) => {
-  return Order.findOneAndUpdate({
-    user_id: _userId,
-    quote_id: _quoteId
-  }, _newVals);
+  if(_quoteId && _newVals){
+    return Order.findOneAndUpdate({
+      user_id: _userId,
+      quote_id: _quoteId
+    }, _newVals);
+  } else if(!_quoteId && _newVals){
+    return Order.findOneAndUpdate({
+      user_id: _userId
+    }, _newVals);
+  } else {
+    return Order.findOneAndUpdate({
+      user_id: _userId
+    }, _quoteId);
+  }
+
 };
 
 let getExchangeRates = (base = 'USD') => {

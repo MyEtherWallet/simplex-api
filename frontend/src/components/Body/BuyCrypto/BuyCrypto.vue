@@ -133,6 +133,7 @@ export default {
           },
           transaction_details: {
             payment_details: {
+              quote_id: orderInfo.quoteId,
               fiat_total_amount: {
                 currency: orderInfo.fiatCurrency,
                 amount: orderInfo.fiatTotal

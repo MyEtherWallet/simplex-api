@@ -31,6 +31,7 @@ let updateValues = (qChange, {
         const isInvalidFiat = resp.result.fiat_money.total_amount < state.minFiat[state.orderInfo.fiatCurrency] || resp.result.fiat_money.total_amount > state.maxFiat[state.orderInfo.fiatCurrency];
         commit('setInvalidFiatAmount', isInvalidFiat);
         commit('setUserId', resp.result.user_id);
+        commit('setQuoteId', resp.result.quote_id);
         resolve();
       } else {
         console.error(resp.result);

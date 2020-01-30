@@ -18,7 +18,7 @@ let simplex = {
   validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat, // ['USD','EUR'],
   validDigital: process.env.DIGITAL_CURRENCIES.split(',') || crypto, //['BTC', 'ETH'],
   currencyApiKey: process.env.FIXER_APIKEY || '',
-  baseCurrency: process.env.BASE_CURRENCY || 'EUR', // USD
+  baseCurrency: process.env.BASE_CURRENCY || 'USD',
   minBaseCurrency: process.env.FIAT_MIN_USD || 50, // USD
   maxBaseCurrency: process.env.FIAT_MAX_USD || 20000, // USD
   status: {
