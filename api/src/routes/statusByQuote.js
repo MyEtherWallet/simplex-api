@@ -46,6 +46,7 @@ export default (app) => {
           } else {
             response.success(res, {
               user_id: result[0].user_id,
+              quote_id: result[0].quote_id,
               status: result[0].status,
               fiat_total_amount: {
                 currency: result[0].fiat_total_amount.currency,
