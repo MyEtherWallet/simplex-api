@@ -45,7 +45,7 @@ let findAndUpdate = (_userId, _quoteId, _newVals) => {
   if(_quoteId && _newVals){
     return Order.findOneAndUpdate({
       user_id: _userId,
-      quote_id: _quoteId
+      payment_id: _quoteId
     }, _newVals);
   } else if(!_quoteId && _newVals){
     return Order.findOneAndUpdate({
