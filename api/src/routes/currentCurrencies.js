@@ -53,7 +53,7 @@ export default (app) => {
     console.log(simplex.validDigital); // todo remove dev item
     const digital = simplex.validDigital.reduce((acc, curr) => {
       if (baseDigital[curr]) {
-        acc[curr] = baseFiat[curr];
+        acc[curr] = baseDigital[curr];
       } else {
         acc[curr] = {
           symbol: curr,
