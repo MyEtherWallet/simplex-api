@@ -49,7 +49,8 @@ export default (app) => {
       }
       return acc;
     }, {});
-
+    console.log(baseDigital); // todo remove dev item
+    console.log(simplex.validDigital); // todo remove dev item
     const digital = simplex.validDigital.reduce((acc, curr) => {
       if (baseDigital[curr]) {
         acc[curr] = baseFiat[curr];
@@ -61,6 +62,8 @@ export default (app) => {
       }
       return acc;
     }, baseDigital);
+
+    console.log(digital); // todo remove dev item
 
     response.success(res, {
       fiat: fiat,
