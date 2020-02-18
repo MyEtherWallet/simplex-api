@@ -239,7 +239,8 @@ export default {
     },
     canOrder: {
       get () {
-        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount /*&& this.recaptchaResponse*/;
+        return true;
+        // return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount /*&& this.recaptchaResponse*/;
       }
     }
 
