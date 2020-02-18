@@ -83,6 +83,7 @@ function updateItem (recordItem, deleteCallback) {
 }
 
 function processEvent (item, key, callback) {
+  console.log(item); // todo remove dev item
   EventSchema(item)
     .save()
     .then(() => {
