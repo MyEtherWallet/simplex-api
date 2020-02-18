@@ -41,20 +41,20 @@ let getOrderById = (_userId, _quoteId) => {
 };
 
 
-let findAndUpdate = (_userId, _quoteId, _newVals) => {
-  if(_quoteId && _newVals){
+let findAndUpdate = (_userId, _paymentId, _newVals) => {
+  if(_paymentId && _newVals){
     return Order.findOneAndUpdate({
       user_id: _userId,
-      payment_id: _quoteId
+      payment_id: _paymentId
     }, _newVals);
-  } else if(!_quoteId && _newVals){
+  } else if(!_paymentId && _newVals){
     return Order.findOneAndUpdate({
       user_id: _userId
     }, _newVals);
   } else {
     return Order.findOneAndUpdate({
       user_id: _userId
-    }, _quoteId);
+    }, _paymentId); // in this case _paymentId contains the content of _newVals
   }
 
 };
