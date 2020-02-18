@@ -24,6 +24,7 @@ connect().then(() => {
 
 let getEvents = () => {
   return new Promise((resolve, reject) => {
+    console.log('===================== getEvents ======================'); // todo remove dev item
     let options = {
       url: simplex.eventEP,
       headers: {
