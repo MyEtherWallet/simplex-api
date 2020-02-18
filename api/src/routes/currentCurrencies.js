@@ -55,7 +55,7 @@ export default (app) => {
         acc[curr] = baseFiat[curr];
       }
       return acc;
-    }, {});
+    }, baseDigital);
     response.success(res, {
       fiat: fiat,
       digital: digital
