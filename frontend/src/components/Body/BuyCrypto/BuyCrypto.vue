@@ -70,9 +70,9 @@
 
             <!-- .btc-address -->
             <template>
-                                        <div class="recaptcha">
-                                          <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
-                                        </div>
+              <div class="recaptcha">
+                <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
+              </div>
             </template>
             <checkout-form :continueAction='order' :valid-inputs="canOrder" :formData="formData"/>
             <div class="submit-button-container">
@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     onVerify (response) {
-      this.recaptchaResponse = response
+      this.recaptchaResponse = response;
     },
     order (cb) {
       let success = () => {
@@ -239,7 +239,7 @@ export default {
     },
     canOrder: {
       get () {
-        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse;
+        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount /*&& this.recaptchaResponse*/;
       }
     }
 

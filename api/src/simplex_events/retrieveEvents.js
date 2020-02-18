@@ -78,7 +78,6 @@ function updateItem (recordItem, deleteCallback) {
   }).catch((err) => {
     logger.error(err);
   });
-
 }
 
 function processEvent (item, key, callback) {
