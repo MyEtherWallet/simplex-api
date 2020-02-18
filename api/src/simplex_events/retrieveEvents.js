@@ -64,6 +64,7 @@ function updateItem (recordItem, deleteCallback) {
   findAndUpdate(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
   }).then(resp => {
+    console.log(resp); // todo remove dev item
     if (resp) {
       let options = {
         url: `${simplex.eventEP}/${recordItem.event_id}`,
