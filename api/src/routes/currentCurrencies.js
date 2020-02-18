@@ -61,7 +61,7 @@ export default (app) => {
         }
       }
       return acc;
-    }, baseDigital);
+    }, {});
 
     console.log(digital); // todo remove dev item
 
