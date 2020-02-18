@@ -62,9 +62,12 @@ let getEvents = () => {
 };
 
 function updateItem (recordItem, deleteCallback) {
+  console.log("updateItem: "); // todo remove dev item
+  console.log(recordItem); // todo remove dev item
   findAndUpdate(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
   }).then(resp => {
+    console.log("Item Found: "); // todo remove dev item
     console.log(resp); // todo remove dev item
     if (resp) {
       let options = {
@@ -83,7 +86,6 @@ function updateItem (recordItem, deleteCallback) {
 }
 
 function processEvent (item, key, callback) {
-  console.log(item); // todo remove dev item
   EventSchema(item)
     .save()
     .then(() => {
