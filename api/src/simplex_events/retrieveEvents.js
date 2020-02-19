@@ -1,6 +1,7 @@
 import {
   connect,
   findAndUpdate,
+  findAndUpdateStatus,
   EventSchema
 } from '../mangodb';
 import eachOfSeries from 'async/eachOfSeries';
@@ -64,7 +65,7 @@ let getEvents = () => {
 function updateItem (recordItem, deleteCallback) {
   console.log('updateItem: '); // todo remove dev item
   console.log(recordItem); // todo remove dev item
-  findAndUpdate(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
+  findAndUpdateStatus(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
   }).then(resp => {
     console.log('Item Found: '); // todo remove dev item
