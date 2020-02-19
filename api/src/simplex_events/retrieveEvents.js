@@ -63,13 +63,9 @@ let getEvents = () => {
 };
 
 function updateItem (recordItem, deleteCallback) {
-  console.log('updateItem: '); // todo remove dev item
-  console.log(recordItem); // todo remove dev item
   findAndUpdateStatus(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
   }).then(resp => {
-    console.log('Item Found: '); // todo remove dev item
-    console.log(resp); // todo remove dev item
     if (resp) {
       let options = {
         url: `${simplex.eventEP}/${recordItem.event_id}`,
@@ -84,8 +80,6 @@ function updateItem (recordItem, deleteCallback) {
       findAndUpdate(recordItem.payment.partner_end_user_id, {
         status: recordItem.payment.status
       }).then(resp => {
-        console.log('Item Found: '); // todo remove dev item
-        console.log(resp); // todo remove dev item
         if (resp) {
           let options = {
             url: `${simplex.eventEP}/${recordItem.event_id}`,
