@@ -52,10 +52,16 @@ export default (app) => {
 
     const digital = simplex.validDigital.reduce((acc, curr) => {
       if (baseDigital[curr]) {
-        acc[curr] = baseFiat[curr];
+        acc[curr] = baseDigital[curr];
+      } else {
+        acc[curr] = {
+          symbol: curr,
+          name: curr
+        }
       }
       return acc;
     }, {});
+
     response.success(res, {
       fiat: fiat,
       digital: digital
