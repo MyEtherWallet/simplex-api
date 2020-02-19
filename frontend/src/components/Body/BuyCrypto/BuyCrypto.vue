@@ -70,9 +70,9 @@
 
             <!-- .btc-address -->
             <template>
-              <div class="recaptcha">
-<!--                <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>-->
-              </div>
+<!--              <div class="recaptcha">
+                <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
+              </div>-->
             </template>
             <checkout-form :continueAction='order' :valid-inputs="canOrder" :formData="formData"/>
             <div class="submit-button-container">
