@@ -53,6 +53,16 @@ let schema = {
   },
   transaction_details: {
     payment_details: {
+      quote_id: {
+        type: String,
+        // required: true,
+        match: /^[a-zA-Z0-9-_]+$/,
+        length: {
+          min: 12,
+          max: 64
+        },
+        message: 'app_end_user_id required min:12 max:64'
+      },
       fiat_total_amount: {
         currency: {
           type: String,
@@ -119,8 +129,9 @@ export default (app) => {
         response.error(res, errors.map(_err => _err.message))
       } else {
         let userId = req.body.account_details.app_end_user_id
-        getOrderById(userId).then((savedOrder) => {
-          let quoteId = savedOrder[0].quote_id
+        let quoteId = req.body.transaction_details.payment_details.quote_id;
+        getOrderById(userId, quoteId).then((savedOrder) => {
+          let quoteId =  quoteId || savedOrder[0].quote_id
           let paymentId = uuidv4()
           let orderId = uuidv4()
           let acceptLanguage = env.mode === 'development' ? env.dev.accept_language : req.headers['accept-language']
@@ -151,7 +162,7 @@ export default (app) => {
               }
             }
           }
-          findAndUpdate(userId, {
+          findAndUpdate(userId, quoteId, {
             payment_id: paymentId,
             order_id: orderId,
             status: simplex.status.sentToSimplex

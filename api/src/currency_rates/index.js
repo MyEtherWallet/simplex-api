@@ -1,17 +1,17 @@
-import getEvents from './retrieveEvents'
+import getRates from './retrieveCurrencyRates'
 import cron from 'node-cron'
 
 import createLogger from 'logging'
-const logger = createLogger('simplex_events/index.js')
+const logger = createLogger('currency_rates/index.js')
 
 const runCron = () => {
-  console.log('cron setup for simplex events')
-  const cronTime = '* * * * *'
+  console.log('cron setup for exchange rates')
+  const cronTime = '0 * * * *'
   return cron.schedule(cronTime, () => {
     try {
-      getEvents()
+      getRates()
         .then(() => {
-          logger.info('Simplex Events Retrieved')
+          logger.info('FixerIO Rates Retrieved')
         })
         .catch(_error => {
           logger.error(_error)

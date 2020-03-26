@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import createLogger from 'logging'
 import debugLogger from 'debug'
 import retrieveEvents from './simplex_events'
+import retrieveRates from './currency_rates'
 
 import cors from 'cors'
 import routes from './routes'
@@ -14,7 +15,7 @@ import {
   mangodb
 } from './config'
 
-const debugRequest = debugLogger('')
+const debugRequest = debugLogger('index.js')
 const logger = createLogger('index.js')
 let app = express()
 
@@ -27,6 +28,7 @@ dbConnect().then(() => {
   logger.error(`mangodb error: ${err}`)
 })
 retrieveEvents()
+retrieveRates()
 let server = app.listen(network.port, () => {
   debugRequest(`DEBUG ACTIVE ${process.env.DEBUG}`)
   logger.info(`app running on port: ${server.address().port}`)

@@ -12,8 +12,12 @@ let getOrder = (reqObj) => {
 let getStatus = (userId) => {
   return axios.get(`${host.url}/status/${userId}`)
 }
+let exchangeRates = (userId) => {
+  return axios.get(`${host.url}/exchange-rates/`)
+}
 export {
   getQuote,
   getOrder,
-  getStatus
+  getStatus,
+  exchangeRates
 }

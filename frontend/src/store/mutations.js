@@ -1,4 +1,10 @@
 export default {
+  setMinFiat (state, _minFiat) {
+    state.minFiat = _minFiat
+  },
+  setMaxFiat (state, _maxFiat) {
+    state.maxFiat = _maxFiat
+  },
   setFiatCurrency (state, _fiatCurrency) {
     state.orderInfo.fiatCurrency = _fiatCurrency
   },
@@ -31,6 +37,9 @@ export default {
   },
   setUserId (state, _id) {
     state.orderInfo.userId = _id
+  },
+  setQuoteId (state, _id) {
+    state.orderInfo.quoteId = _id
   },
   saveQueryValue (state, newQuery) {
     state.linkQuery = newQuery
