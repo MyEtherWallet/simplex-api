@@ -1,42 +1,42 @@
-import createLogger from 'logging'
-import wav from 'wallet-address-validator'
-import uuidv4 from 'uuid/v4'
+import createLogger from 'logging';
+import wav from 'wallet-address-validator';
+import uuidv4 from 'uuid/v4';
 import {
   getOrder
-} from '../simplex'
-import Validator from '../validator'
-import response from '../response'
+} from '../simplex';
+import Validator from '../validator';
+import response from '../response';
 import {
   simplex,
   env
-} from '../config'
+} from '../config';
 import {
   getOrderById,
   findAndUpdate
-} from '../mangodb'
+} from '../mangodb';
 
 import {
   getIP
-} from '../common'
+} from '../common';
 
-import sourceValidate from '../sourceValidate'
-import debugLogger from 'debug'
+import sourceValidate from '../sourceValidate';
+import debugLogger from 'debug';
 
-const logger = createLogger('order.js')
-const catchLogger = createLogger('order.js - catch')
-const debugRequest = debugLogger('request:routes-order')
-const debugResponse = debugLogger('response:routes-order')
-const validationErrors = debugLogger('errors:validation')
+const logger = createLogger('order.js');
+const catchLogger = createLogger('order.js - catch');
+const debugRequest = debugLogger('request:routes-order');
+const debugResponse = debugLogger('response:routes-order');
+const validationErrors = debugLogger('errors:validation');
 
 const validateMinMax = val => {
-  return !(simplex.minFiat > +val || simplex.maxFiat < +val)
-}
+  return !(simplex.minFiat > +val || simplex.maxFiat < +val);
+};
 const validateAddress = val => {
   const maybeValid = simplex.validDigital.filter(cryptoSymbol => {
-    return wav.validate(val, cryptoSymbol)
-  })
-  return maybeValid.length > 0
-}
+    return wav.validate(val, cryptoSymbol);
+  });
+  return maybeValid.length > 0;
+};
 
 let schema = {
   account_details: {
@@ -110,33 +110,45 @@ let schema = {
       }
     }
   }
-}
-let validator = Validator(schema)
+};
+let validator = Validator(schema);
+
+const valueMatchCheck = (bodyVals, dbVals) => {
+  const mustAllMatch = [];
+  mustAllMatch.push(bodyVals.fiat_total_amount.amount === dbVals.fiat_total_amount.amount);
+  mustAllMatch.push(bodyVals.fiat_total_amount.currency === dbVals.fiat_total_amount.currency);
+  mustAllMatch.push(bodyVals.requested_digital_amount.amount === dbVals.requested_digital_amount.amount);
+  mustAllMatch.push(bodyVals.requested_digital_amount.currency === dbVals.requested_digital_amount.currency);
+  return mustAllMatch.every(value => value);
+};
 
 export default (app) => {
   app.post('/order', sourceValidate(), (req, res) => {
     try {
-      let errors = validator.validate(req.body)
-      validationErrors(errors)
+      let errors = validator.validate(req.body);
+      validationErrors(errors);
       if (env.mode !== 'development' && req.recaptcha.error) {
-        logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
-        logger.error(errors)
-        logger.error(req.recaptcha.error)
-        response.error(res, req.recaptcha.error)
+        logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error');
+        logger.error(errors);
+        logger.error(req.recaptcha.error);
+        response.error(res, req.recaptcha.error);
       } else if (errors.length) {
-        logger.error('Validation Error')
-        logger.error(errors)
-        response.error(res, errors.map(_err => _err.message))
+        logger.error('Validation Error');
+        logger.error(errors);
+        response.error(res, errors.map(_err => _err.message));
       } else {
-        let userId = req.body.account_details.app_end_user_id
+        let userId = req.body.account_details.app_end_user_id;
         let quoteId = req.body.transaction_details.payment_details.quote_id;
         getOrderById(userId, quoteId).then((savedOrder) => {
-          let quoteId =  quoteId || savedOrder[0].quote_id
-          let paymentId = uuidv4()
-          let orderId = uuidv4()
-          let acceptLanguage = env.mode === 'development' ? env.dev.accept_language : req.headers['accept-language']
-          let ip = env.mode === 'development' ? env.dev.ip : getIP(req)
-          let userAgent = env.mode === 'development' ? env.dev.user_agent : req.headers['user-agent']
+          let quoteId = quoteId || savedOrder[0].quote_id;
+          let paymentId = uuidv4();
+          let orderId = uuidv4();
+          let acceptLanguage = env.mode === 'development' ? env.dev.accept_language : req.headers['accept-language'];
+          let ip = env.mode === 'development' ? env.dev.ip : getIP(req);
+          let userAgent = env.mode === 'development' ? env.dev.user_agent : req.headers['user-agent'];
+          if(!valueMatchCheck(req.body.transaction_details.payment_details, savedOrder[0])){
+            throw Error('Mismatch between quoted values and order submission values');
+          }
           let reqObj = {
             account_details: {
               ...req.body.account_details,
@@ -161,18 +173,18 @@ export default (app) => {
                 original_http_ref_url: req.header('Referer')
               }
             }
-          }
+          };
           findAndUpdate(userId, quoteId, {
             payment_id: paymentId,
             order_id: orderId,
             status: simplex.status.sentToSimplex
           }).catch((err) => {
-            logger.error('findAndUpdate catch error')
-            logger.error(err)
-          })
-          debugRequest(reqObj)
+            logger.error('findAndUpdate catch error');
+            logger.error(err);
+          });
+          debugRequest(reqObj);
           getOrder(reqObj).then((result) => {
-            debugResponse(result)
+            debugResponse(result);
             if ('is_kyc_update_required' in result) {
               response.success(res, {
                 payment_post_url: simplex.paymentEP.replace(/\u200B/g, ''),
@@ -188,25 +200,25 @@ export default (app) => {
                 fiat_total_amount_currency: reqObj.transaction_details.payment_details.fiat_total_amount.currency,
                 digital_total_amount_amount: reqObj.transaction_details.payment_details.requested_digital_amount.amount,
                 digital_total_amount_currency: reqObj.transaction_details.payment_details.requested_digital_amount.currency
-              })
+              });
             } else {
-              logger.error('is_kyc_update_required error')
-              logger.error(result)
-              response.error(res, result)
+              logger.error('is_kyc_update_required error');
+              logger.error(result);
+              response.error(res, result);
             }
           }).catch((error) => {
-            logger.error('getOrder catch error')
-            logger.error(error)
-            response.error(res, error)
-          })
+            logger.error('getOrder catch error');
+            logger.error(error);
+            response.error(res, error);
+          });
         }).catch((err) => {
-          logger.error('getOrderById catch error')
-          logger.error(err)
-          response.error(res, 'Invalid userId')
-        })
+          logger.error('getOrderById catch error');
+          logger.error(err);
+          response.error(res, 'Invalid userId');
+        });
       }
     } catch (e) {
-      catchLogger.error(e)
+      catchLogger.error(e);
     }
-  })
+  });
 }

@@ -21,8 +21,8 @@ var Schema = _mongoose2.default.Schema;
 var orderSchema = new Schema({
   user_id: {
     type: String,
-    required: true,
-    unique: true
+    required: true
+    // unique: true
   },
   quote_id: {
     type: String,

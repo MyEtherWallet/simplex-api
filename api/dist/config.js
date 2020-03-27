@@ -3,9 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.productValidation = exports.env = exports.recaptcha = exports.mangodb = exports.simplex = exports.network = undefined;
+
+var _currencyConfig = require('../currencyConfig');
+
 require('dotenv').config({
   path: '../../.env'
 });
+
 var network = {
   port: process.env.PORT || 8080
 };
@@ -17,15 +22,18 @@ var simplex = {
   eventEP: process.env.EVENT_EP || '',
   apiKey: process.env.SIMPLEX_APIKEY || '',
   apiVersion: '1',
-  validFiat: ['EUR', 'USD'],
-  validDigital: ['BTC', 'ETH'],
+  validFiat: process.env.FIAT_CURRENCIES ? process.env.FIAT_CURRENCIES.split(',') : _currencyConfig.fiat, // ['USD','EUR'],
+  validDigital: process.env.DIGITAL_CURRENCIES ? process.env.DIGITAL_CURRENCIES.split(',') : _currencyConfig.crypto, //['BTC', 'ETH'],
+  currencyApiKey: process.env.FIXER_APIKEY || '',
+  baseCurrency: process.env.BASE_CURRENCY || 'USD',
+  minBaseCurrency: process.env.FIAT_MIN_USD || 50, // USD
+  maxBaseCurrency: process.env.FIAT_MAX_USD || 20000, // USD
   status: {
     initiated: 'INITIATED',
     sentToSimplex: 'SENT_TO_SIMPLEX',
     deniedSimplex: 'DENIED_SIMPLEX',
     processingSimplex: 'PROCESSING_SIMPPLEX',
     successSimplex: 'SUCCESS_SIMPLEX'
-
   }
 };
 var mangodb = {
@@ -51,7 +59,7 @@ var productValidation = {
   apiKeys: process.env.API_KEY ? [process.env.API_KEY] : ['321654987', 'abcdefg'],
   referrerAppleiOS: process.env.IOS_REFERER || 'iOS',
   referrerAndroid: process.env.ANDROID_REFERER || 'Android',
-  specialWebOrigins: process.env.SPECIAL_WEB_ORIGINS ? process.env.SPECIAL_WEB_ORIGINS.split(' ') : []
+  specialWebOrigins: process.env.SPECIAL_WEB_ORIGINS ? process.env.SPECIAL_WEB_ORIGINS.split(',') : []
 };
 
 exports.network = network;

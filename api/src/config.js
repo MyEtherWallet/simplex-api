@@ -15,8 +15,8 @@ let simplex = {
   eventEP: process.env.EVENT_EP || '',
   apiKey: process.env.SIMPLEX_APIKEY || '',
   apiVersion: '1',
-  validFiat: process.env.FIAT_CURRENCIES.split(',') || fiat, // ['USD','EUR'],
-  validDigital: process.env.DIGITAL_CURRENCIES.split(',') || crypto, //['BTC', 'ETH'],
+  validFiat: process.env.FIAT_CURRENCIES ? process.env.FIAT_CURRENCIES.split(',') : fiat, // ['USD','EUR'],
+  validDigital: process.env.DIGITAL_CURRENCIES ? process.env.DIGITAL_CURRENCIES.split(',') : crypto, //['BTC', 'ETH'],
   currencyApiKey: process.env.FIXER_APIKEY || '',
   baseCurrency: process.env.BASE_CURRENCY || 'USD',
   minBaseCurrency: process.env.FIAT_MIN_USD || 50, // USD

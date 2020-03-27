@@ -24,6 +24,7 @@ let updateValues = (qChange, {
     let onSuccess = (result) => {
       const resp = result.data;
       if (!resp.error) {
+        console.log(result); // todo remove dev item
         commit('setDigitalAmount', resp.result.digital_money.amount);
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);

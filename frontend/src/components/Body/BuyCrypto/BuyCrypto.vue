@@ -70,9 +70,9 @@
 
             <!-- .btc-address -->
             <template>
-                                        <div class="recaptcha">
-                                          <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
-                                        </div>
+              <div class="recaptcha">
+                <vue-recaptcha :sitekey="r_site_key" @verify="onVerify"></vue-recaptcha>
+              </div>
             </template>
             <checkout-form :continueAction='order' :valid-inputs="canOrder" :formData="formData"/>
             <div class="submit-button-container">
@@ -121,11 +121,15 @@ export default {
   },
   methods: {
     onVerify (response) {
-      this.recaptchaResponse = response
+      this.recaptchaResponse = response;
     },
     order (cb) {
       let success = () => {
         const orderInfo = this.$store.state.orderInfo;
+        const isInvalidFiat = orderInfo.fiatTotal < this.$store.state.minFiat[this.$store.state.orderInfo.fiatCurrency] || orderInfo.fiatTotal > this.$store.state.maxFiat[this.$store.state.orderInfo.fiatCurrency];
+        if (isInvalidFiat) {
+          return Promise.reject(Error('Invalid fiat amount provided when attempting to create order'));
+        }
         getOrder({
           'g-recaptcha-response': this.recaptchaResponse,
           account_details: {
@@ -193,7 +197,7 @@ export default {
         this.$store.dispatch('setFiatAmount', value).finally(() => {
           this.loading = false;
         });
-      }, 500)
+      }, 750)
     },
     digitalAmount: {
       get () {
@@ -204,7 +208,7 @@ export default {
         this.$store.dispatch('setDigitalAmount', value).finally(() => {
           this.loading = false;
         });
-      }, 500)
+      }, 750)
     },
     fiatCurrency: {
       get () {
@@ -239,7 +243,8 @@ export default {
     },
     canOrder: {
       get () {
-        return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse;
+        return true;
+        // return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse;
       }
     }
 
