@@ -8,7 +8,7 @@ let Schema = mongoose.Schema
 var orderSchema = new Schema({
   user_id: {
     type: String,
-    required: true,
+    required: true
     // unique: true
   },
   quote_id: {

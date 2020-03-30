@@ -10,7 +10,7 @@ var ExchangeRateSchema = new Schema({
   },
   base_currency: {
     type: String,
-    required: true,
+    required: true
   },
   rate_currency: {
     type: String,

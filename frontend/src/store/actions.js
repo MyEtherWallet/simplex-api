@@ -24,7 +24,6 @@ let updateValues = (qChange, {
     let onSuccess = (result) => {
       const resp = result.data;
       if (!resp.error) {
-        console.log(result); // todo remove dev item
         commit('setDigitalAmount', resp.result.digital_money.amount);
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);
@@ -44,7 +43,6 @@ let updateValues = (qChange, {
       reject(err);
     };
     if (canQuote(state)) {
-      console.log('state.orderInfo', state.orderInfo); // todo remove dev item
       switch (qChange) {
         case quoteChanges.fiat_amount:
           commit('setRequestedCurrency', state.orderInfo.fiatCurrency);

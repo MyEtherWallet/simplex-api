@@ -3,8 +3,8 @@ import orderRoute from './order'
 import infoRoute from './info'
 import statusByQuoteRoute from './statusByQuote'
 import statusRoute from './status'
-import exchangeRates from './exchangeRates';
-import currentCurrencies from './currentCurrencies';
+import exchangeRates from './exchangeRates'
+import currentCurrencies from './currentCurrencies'
 export default (app) => {
   quoteRoute(app)
   orderRoute(app)

@@ -1,15 +1,15 @@
-import response from '../response';
-import debugLogger from 'debug';
-import {getExchangeRates} from '../mangodb';
+import response from '../response'
+import debugLogger from 'debug'
+import {getExchangeRates} from '../mangodb'
 import {
   simplex
-} from '../config';
+} from '../config'
 
-const debugRequest = debugLogger('request:info');
+const debugRequest = debugLogger('request:info')
 
 export default (app) => {
   app.get('/exchange-rates', (req, res) => {
-    debugRequest('Exchange Rates Request Received');
+    debugRequest('Exchange Rates Request Received')
     getExchangeRates(simplex.baseCurrency)
       .then(rates => {
         const cleanedRates = rates.map(item => {
@@ -23,12 +23,11 @@ export default (app) => {
           }
         })
         response.success(res, {
-          rates: cleanedRates,
-        });
+          rates: cleanedRates
+        })
       })
       .catch((error) => {
-        response.error(res, error);
-      });
-
-  });
+        response.error(res, error)
+      })
+  })
 }

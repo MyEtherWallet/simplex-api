@@ -1,14 +1,14 @@
-import response from '../response';
-import debugLogger from 'debug';
+import response from '../response'
+import debugLogger from 'debug'
 import {
   simplex
-} from '../config';
+} from '../config'
 
-const debugRequest = debugLogger('request:info');
+const debugRequest = debugLogger('request:info')
 
 export default (app) => {
   app.get('/current-currencies', (req, res) => {
-    debugRequest('Current Currencies Request Received');
+    debugRequest('Current Currencies Request Received')
     const baseFiat = {
       USD: {
         symbol: 'USD',
@@ -26,7 +26,7 @@ export default (app) => {
         symbol: 'JPY',
         name: 'Japanese Yen'
       }
-    };
+    }
     const baseDigital = {
       BTC: {
         symbol: 'BTC',
@@ -36,36 +36,35 @@ export default (app) => {
         symbol: 'ETH',
         name: 'Ether'
       }
-    };
+    }
 
     const fiat = simplex.validFiat.reduce((acc, curr) => {
       if (baseFiat[curr]) {
-        acc[curr] = baseFiat[curr];
+        acc[curr] = baseFiat[curr]
       } else {
         acc[curr] = {
           symbol: curr,
           name: curr
         }
       }
-      return acc;
-    }, {});
+      return acc
+    }, {})
 
     const digital = simplex.validDigital.reduce((acc, curr) => {
       if (baseDigital[curr]) {
-        acc[curr] = baseDigital[curr];
+        acc[curr] = baseDigital[curr]
       } else {
         acc[curr] = {
           symbol: curr,
           name: curr
         }
       }
-      return acc;
-    }, {});
+      return acc
+    }, {})
 
     response.success(res, {
       fiat: fiat,
       digital: digital
-    });
-
-  });
+    })
+  })
 }

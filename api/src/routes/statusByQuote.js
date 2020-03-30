@@ -34,7 +34,7 @@ let schema = {
 let validator = Validator(schema)
 export default (app) => {
   app.get('/status/:userId/:quoteId', (req, res) => {
-    let errors = validator.validate({user_id: req.params.userId, quote_id: req.params.quoteId});
+    let errors = validator.validate({user_id: req.params.userId, quote_id: req.params.quoteId})
     if (errors.length) {
       response.error(res, 'invalid user or quote id')
     } else {
