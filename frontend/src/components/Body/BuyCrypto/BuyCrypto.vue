@@ -215,7 +215,10 @@ export default {
         return this.$store.state.orderInfo.fiatCurrency;
       },
       set (value) {
-        this.$store.dispatch('setFiatCurrency', value);
+        this.loading = true;
+        this.$store.dispatch('setFiatCurrency', value).finally(() => {
+          this.loading = false;
+        });
       }
     },
     digitalCurrency: {
@@ -223,7 +226,10 @@ export default {
         return this.$store.state.orderInfo.digitalCurrency;
       },
       set (value) {
-        this.$store.dispatch('setDigitalCurrency', value);
+        this.loading = true;
+        this.$store.dispatch('setDigitalCurrency', value).finally(() => {
+          this.loading = false;
+        });
       }
     },
     isInvalidFiatAmount: {
