@@ -21,7 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var logger = (0, _logging2.default)('simplex_events/index.js');
 
 var runCron = function runCron() {
-  console.log('cronning');
+  console.log('cron setup for simplex events');
   var cronTime = '* * * * *';
   return _nodeCron2.default.schedule(cronTime, function () {
     try {

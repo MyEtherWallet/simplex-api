@@ -24,6 +24,7 @@ let updateValues = (qChange, {
     let onSuccess = (result) => {
       const resp = result.data;
       if (!resp.error) {
+        console.log(result); // todo remove dev item
         commit('setDigitalAmount', resp.result.digital_money.amount);
         commit('setFiatAmount', resp.result.fiat_money.base_amount);
         commit('setFiatTotal', resp.result.fiat_money.total_amount);
@@ -43,15 +44,24 @@ let updateValues = (qChange, {
       reject(err);
     };
     if (canQuote(state)) {
+      console.log('state.orderInfo', state.orderInfo); // todo remove dev item
       switch (qChange) {
         case quoteChanges.fiat_amount:
-        case quoteChanges.fiat_currency:
           commit('setRequestedCurrency', state.orderInfo.fiatCurrency);
           getQuote({
             digital_currency: state.orderInfo.digitalCurrency,
             fiat_currency: state.orderInfo.fiatCurrency,
             requested_currency: state.orderInfo.fiatCurrency,
             requested_amount: state.orderInfo.fiatAmount
+          }).then(onSuccess).catch(onError);
+          break;
+        case quoteChanges.fiat_currency:
+          commit('setRequestedCurrency', state.orderInfo.fiatCurrency);
+          getQuote({
+            digital_currency: state.orderInfo.digitalCurrency,
+            fiat_currency: state.orderInfo.fiatCurrency,
+            requested_currency: state.orderInfo.digitalCurrency,
+            requested_amount: state.orderInfo.digitalAmount
           }).then(onSuccess).catch(onError);
           break;
         case quoteChanges.digital_amount:

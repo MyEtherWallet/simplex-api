@@ -45,6 +45,9 @@ var debugResponse = (0, _debug2.default)('response:routes-quote');
 var validationErrors = (0, _debug2.default)('errors:validation');
 
 var schema = {
+  user_id: {
+    type: String
+  },
   digital_currency: {
     type: String,
     required: true,
@@ -82,9 +85,9 @@ exports.default = function (app) {
         return _err.message;
       }));
     } else {
-      var newUserId = (0, _v2.default)();
+      var userId = req.body.user_id ? req.body.user_id : (0, _v2.default)();
       var reqObj = Object.assign(req.body, {
-        'end_user_id': newUserId,
+        'end_user_id': userId,
         'wallet_id': _config.simplex.walletID,
         'client_ip': _config.env.mode === 'development' ? _config.env.dev.ip : (0, _common.getIP)(req)
       });
@@ -92,7 +95,7 @@ exports.default = function (app) {
       (0, _simplex.getQuote)(reqObj).then(function (result) {
         debugResponse(result);
         (0, _mangodb.Order)({
-          user_id: newUserId,
+          user_id: userId,
           quote_id: result.quote_id,
           fiat_total_amount: {
             currency: result.fiat_money.currency,

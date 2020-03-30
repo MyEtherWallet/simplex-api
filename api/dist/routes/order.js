@@ -75,6 +75,16 @@ var schema = {
   },
   transaction_details: {
     payment_details: {
+      quote_id: {
+        type: String,
+        // required: true,
+        match: /^[a-zA-Z0-9-_]+$/,
+        length: {
+          min: 12,
+          max: 64
+        },
+        message: 'app_end_user_id required min:12 max:64'
+      },
       fiat_total_amount: {
         currency: {
           type: String,
@@ -125,6 +135,17 @@ var schema = {
 };
 var validator = (0, _validator2.default)(schema);
 
+var valueMatchCheck = function valueMatchCheck(bodyVals, dbVals) {
+  var mustAllMatch = [];
+  mustAllMatch.push(bodyVals.fiat_total_amount.amount === dbVals.fiat_total_amount.amount);
+  mustAllMatch.push(bodyVals.fiat_total_amount.currency === dbVals.fiat_total_amount.currency);
+  mustAllMatch.push(bodyVals.requested_digital_amount.amount === dbVals.requested_digital_amount.amount);
+  mustAllMatch.push(bodyVals.requested_digital_amount.currency === dbVals.requested_digital_amount.currency);
+  return mustAllMatch.every(function (value) {
+    return value;
+  });
+};
+
 exports.default = function (app) {
   app.post('/order', (0, _sourceValidate2.default)(), function (req, res) {
     try {
@@ -143,13 +164,17 @@ exports.default = function (app) {
         }));
       } else {
         var userId = req.body.account_details.app_end_user_id;
-        (0, _mangodb.getOrderById)(userId).then(function (savedOrder) {
-          var quoteId = savedOrder[0].quote_id;
+        var quoteId = req.body.transaction_details.payment_details.quote_id;
+        (0, _mangodb.getOrderById)(userId, quoteId).then(function (savedOrder) {
+          var quoteId = quoteId || savedOrder[0].quote_id;
           var paymentId = (0, _v2.default)();
           var orderId = (0, _v2.default)();
           var acceptLanguage = _config.env.mode === 'development' ? _config.env.dev.accept_language : req.headers['accept-language'];
           var ip = _config.env.mode === 'development' ? _config.env.dev.ip : (0, _common.getIP)(req);
           var userAgent = _config.env.mode === 'development' ? _config.env.dev.user_agent : req.headers['user-agent'];
+          if (!valueMatchCheck(req.body.transaction_details.payment_details, savedOrder[0])) {
+            throw Error('Mismatch between quoted values and order submission values');
+          }
           var reqObj = {
             account_details: _extends({}, req.body.account_details, {
               app_provider_id: _config.simplex.walletID,
@@ -173,7 +198,7 @@ exports.default = function (app) {
               })
             }
           };
-          (0, _mangodb.findAndUpdate)(userId, {
+          (0, _mangodb.findAndUpdate)(userId, quoteId, {
             payment_id: paymentId,
             order_id: orderId,
             status: _config.simplex.status.sentToSimplex

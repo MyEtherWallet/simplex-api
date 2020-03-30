@@ -38,6 +38,7 @@ var debugRequest = (0, _debug2.default)('calls:Events');
 
 var getEvents = function getEvents() {
   return new Promise(function (resolve, reject) {
+    console.log('===================== getEvents ======================'); // todo remove dev item
     var options = {
       url: _config.simplex.eventEP,
       headers: {
@@ -75,20 +76,45 @@ var getEvents = function getEvents() {
 };
 
 function updateItem(recordItem, deleteCallback) {
-  (0, _mangodb.findAndUpdate)(recordItem.payment.partner_end_user_id, {
+  (0, _mangodb.findAndUpdateStatus)(recordItem.payment.partner_end_user_id, recordItem.payment.id, {
     status: recordItem.payment.status
+  }).then(function (resp) {
+    console.log("response 1: ", resp); // todo remove dev item
+    if (resp) {
+      var options = {
+        url: _config.simplex.eventEP + '/' + recordItem.event_id,
+        headers: {
+          'Authorization': 'ApiKey ' + _config.simplex.apiKey
+        },
+        method: 'DELETE',
+        json: true
+      };
+      (0, _request2.default)(options, deleteCallback);
+    } else {
+      (0, _mangodb.findAndUpdate)(recordItem.payment.partner_end_user_id, {
+        status: recordItem.payment.status
+      }).then(function (resp) {
+        console.log("response 2: ", resp); // todo remove dev item
+        if (resp) {
+          var _options = {
+            url: _config.simplex.eventEP + '/' + recordItem.event_id,
+            headers: {
+              'Authorization': 'ApiKey ' + _config.simplex.apiKey
+            },
+            method: 'DELETE',
+            json: true
+          };
+          (0, _request2.default)(_options, deleteCallback);
+        } else {
+          console.log("Unknown IDs: ", recordItem.payment.partner_end_user_id, recordItem.payment.id); // todo remove dev item
+        }
+      }).catch(function (err) {
+        logger.error(err);
+      });
+    }
   }).catch(function (err) {
     logger.error(err);
   });
-  var options = {
-    url: _config.simplex.eventEP + '/' + recordItem.event_id,
-    headers: {
-      'Authorization': 'ApiKey ' + _config.simplex.apiKey
-    },
-    method: 'DELETE',
-    json: true
-  };
-  (0, _request2.default)(options, deleteCallback);
 }
 
 function processEvent(item, key, callback) {
