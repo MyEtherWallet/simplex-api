@@ -147,12 +147,22 @@ export default {
     commit('setFiatAmount', amount);
     if (amount >= state.minFiat[state.orderInfo.fiatCurrency] && amount <= state.maxFiat[state.orderInfo.fiatCurrency]) {
       commit('setInvalidFiatAmount', false);
+      commit('setInvalidFiatAbove', false);
+      commit('setInvalidFiatBelow', false);
       return updateValues(quoteChanges.fiat_amount, {
         commit,
         state
       });
     } else {
       commit('setInvalidFiatAmount', true);
+      if (amount >= state.maxFiat[state.orderInfo.fiatCurrency]) {
+        commit('setInvalidFiatAbove', true);
+        commit('setInvalidFiatBelow', false);
+      }
+      if (amount <= state.minFiat[state.orderInfo.fiatCurrency]) {
+        commit('setInvalidFiatBelow', true);
+        commit('setInvalidFiatAbove', false);
+      }
       return Promise.resolve();
     }
   },

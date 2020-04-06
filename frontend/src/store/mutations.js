@@ -29,6 +29,12 @@ export default {
   setInvalidFiatAmount (state, _isInvalid) {
     state.status.invalidFiatAmount = _isInvalid
   },
+  setInvalidFiatAbove (state, _isInvalidAbove) {
+    state.status.invalidFiatAbove = _isInvalidAbove
+  },
+  setInvalidFiatBelow (state, _isInvalidBelow) {
+    state.status.invalidFiatBelow = _isInvalidBelow
+  },
   setInvalidDigitalAmount (state, _isInvalid) {
     state.status.invalidDigitalAmount = _isInvalid
   },

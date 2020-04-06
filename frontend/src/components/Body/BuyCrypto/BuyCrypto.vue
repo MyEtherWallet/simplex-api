@@ -37,6 +37,8 @@
                     </select>
                   </div>
                 </div>
+                <span v-if="isInvalidFiatBelow" style="color: red;">Entered Value Below Minimum</span>
+                <span v-if="isInvalidFiatAbove" style="color: red;">Entered Value Above Maximum</span>
               </div>
               <div class="amount">
                 <h4>Amount</h4>
@@ -57,10 +59,10 @@
             </div>
             <!-- .price-amount -->
             <div class="btc-address">
-              <h4 v-if="digitalCurrency === 'BTC'">BTC Address <span><a href="https://www.myetherwallet.com"
+              <h4 v-if="digitalCurrency === 'BTC'">BTC Address <span><a href="https://www.myetherwallet.com" target="_blank"
                                                                         style="text-decoration: none">Don't have one?</a></span>
               </h4>
-              <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span><a href="https://www.myetherwallet.com"
+              <h4 v-if="digitalCurrency === 'ETH'">ETH Address <span><a href="https://www.myetherwallet.com/create-wallet" target="_blank"
                                                                         style="text-decoration: none">Don't have one?</a></span>
               </h4>
               <input v-model="digitalAddress" type="text" name="" placeholder="Please enter the address"
@@ -235,6 +237,16 @@ export default {
     isInvalidFiatAmount: {
       get () {
         return this.$store.state.status.invalidFiatAmount;
+      }
+    },
+    isInvalidFiatAbove: {
+      get () {
+        return this.$store.state.status.invalidFiatAbove;
+      }
+    },
+    isInvalidFiatBelow: {
+      get () {
+        return this.$store.state.status.invalidFiatBelow;
       }
     },
     isInvalidDigitalAmount: {
