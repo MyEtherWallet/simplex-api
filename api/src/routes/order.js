@@ -125,8 +125,8 @@ const valueMatchCheck = (bodyVals, dbVals) => {
 export default (app) => {
   app.post('/order', sourceValidate(), (req, res) => {
     try {
-      console.log(req.body); // todo remove dev item
-      let errors = validator.validate(req.body.payment_details.destination_wallet)
+      console.log(req.body.payment_details); // todo remove dev item
+      let errors = validator.validate(req.body)
       validationErrors(errors)
       if (env.mode !== 'development' && req.recaptcha.error) {
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
