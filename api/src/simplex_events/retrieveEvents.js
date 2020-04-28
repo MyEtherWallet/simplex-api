@@ -90,7 +90,7 @@ function updateItem (recordItem, deleteCallback) {
           }
           request(options, deleteCallback)
         } else {
-          console.log('Unknown IDs: ', recordItem.payment.partner_end_user_id, recordItem.payment.id) // todo remove dev item
+          console.log('Unknown IDs - payment.partner_end_user_id:  ', recordItem.payment.partner_end_user_id, 'payment.id', recordItem.payment.id) // todo remove dev item
         }
       }).catch((err) => {
         logger.error(err)

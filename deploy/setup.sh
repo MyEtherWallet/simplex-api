@@ -237,7 +237,9 @@ if [ $FROM_BRANCH = "true" ]; then
   git checkout origin/${BRANCH_NAME};
   git checkout -b ${BRANCH_NAME};
 fi
-
+touch ../lastUpdated
+date >> ../lastUpdated
+git rev-parse HEAD >> ../lastUpdated
 if [ -f "nginx.conf" ]; then
  echo "copying nginx config files"
  cp ./nginx.conf ./simplex-api/deploy/nginx
