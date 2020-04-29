@@ -63,6 +63,7 @@ export default (app) => {
       response.error(res, errors.map(_err => _err.message))
     } else {
       let userId = req.body.user_id ? req.body.user_id : uuidv4()
+      console.log(getIP(req)); // todo remove dev item
       let reqObj = Object.assign(req.body, {
         'end_user_id': userId,
         'wallet_id': simplex.walletID,

@@ -129,6 +129,7 @@ export default (app) => {
       let errors = validator.validate(req.body)
       validationErrors(errors)
       if (env.mode !== 'development' && req.recaptcha.error) {
+
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
         logger.error(errors)
         logger.error(req.recaptcha.error)
