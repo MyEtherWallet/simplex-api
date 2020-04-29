@@ -32,7 +32,6 @@ const validateMinMax = val => {
   return !(simplex.minFiat > +val || simplex.maxFiat < +val)
 }
 const validateAddress = val => {
-  console.log(val); // todo remove dev item
   const maybeValid = simplex.validDigital.filter(cryptoSymbol => {
     return wav.validate(val, cryptoSymbol)
   })
