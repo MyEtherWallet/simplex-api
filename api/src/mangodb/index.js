@@ -6,6 +6,7 @@ import Order from './schema'
 import EventSchema from './event_schema'
 import ExchangeRateSchema from './exchange_rate_schema'
 
+
 let connect = () => {
   return new Promise((resolve, reject) => {
     mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name)
@@ -16,6 +17,16 @@ let connect = () => {
     db.once('open', () => {
       resolve()
     })
+  })
+}
+
+let removeOldOrders = () => {
+  return new Promise((resolve, reject) => {
+    const sixMonths = (1000*60*60*24)*10
+    const valOld = new Date(Date.now() - sixMonths)
+    // see: https://mongoosejs.com/docs/tutorials/dates.html
+      //.toISOString().replace(/T.*/, '')
+    return Order.find({status: "INITIATED"}).where('createdDate').gt(valOld)
   })
 }
 
