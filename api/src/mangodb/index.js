@@ -94,5 +94,6 @@ export {
   findAndUpdateExchangeRates,
   getOrderById,
   findAndUpdate,
-  findAndUpdateStatus
+  findAndUpdateStatus,
+  removeOldOrders
 }

@@ -1,5 +1,6 @@
 import {
   connect,
+  removeOldOrders
 } from './index'
 import createLogger from 'logging'
 import {
@@ -9,16 +10,30 @@ import {
 import cron from 'node-cron'
 
 import createLogger from 'logging'
+import mongoose from 'mongoose';
 const logger = createLogger('currency_rates/index.js')
 
 const runCron = () => {
   console.log('cron setup for exchange rates')
-  const cronTime = '0 * * * *'
+  const cronTime = '0 10 1 * *'
   return cron.schedule(cronTime, () => {
     try {
-      getRates()
+
+      let connect = () => {
+        return new Promise((resolve, reject) => {
+          mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name)
+          var db = mongoose.connection
+          db.once('error', (error) => {
+            reject(error)
+          })
+          db.once('open', () => {
+            resolve()
+          })
+        })
+      }
+      removeOldOrders()
         .then(() => {
-          logger.info('FixerIO Rates Retrieved')
+          logger.info('Old Order Entries Removed')
         })
         .catch(_error => {
           logger.error(_error)
