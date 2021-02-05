@@ -13,6 +13,8 @@ import createLogger from 'logging'
 import mongoose from 'mongoose';
 const logger = createLogger('currency_rates/index.js')
 
+// To clean old entries because the server drive ended up full last month.  So do a monthly and possibly yearly cleaning.
+// Monthly clean of all quotes that were not followed through with, and possibly yearly for all those over a year old.
 const runCron = () => {
   console.log('cron setup for exchange rates')
   const cronTime = '0 10 1 * *'
