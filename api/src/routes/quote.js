@@ -53,11 +53,15 @@ let schema = {
   }
 }
 
+console.log('TESTTTTTT')
+
 let validator = Validator(schema)
 export default (app) => {
   app.post('/quote', sourceValidate(), (req, res) => {
+    console.log('1')
     let errors = validator.validate(req.body)
     validationErrors(errors)
+    console.log('2')
     if (errors.length) {
       validationLogger.error(errors)
       response.error(res, errors.map(_err => _err.message))
@@ -69,6 +73,7 @@ export default (app) => {
         'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
       })
       debugRequest(reqObj)
+      console.log('3')
       getQuote(reqObj).then((result) => {
         console.log('result', result)
         debugResponse(result)
