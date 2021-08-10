@@ -23,7 +23,7 @@ var simplex = {
   apiKey: process.env.SIMPLEX_APIKEY || '',
   apiVersion: '1',
   validFiat: process.env.FIAT_CURRENCIES ? process.env.FIAT_CURRENCIES.split(',') : _currencyConfig.fiat, // ['USD','EUR'],
-  validDigital: process.env.DIGITAL_CURRENCIES ? process.env.DIGITAL_CURRENCIES.split(',') : _currencyConfig.crypto, //['BTC', 'ETH'],
+  validDigital: process.env.DIGITAL_CURRENCIES ? process.env.DIGITAL_CURRENCIES.split(',') : _currencyConfig.crypto, // ['BTC', 'ETH'],
   currencyApiKey: process.env.FIXER_APIKEY || '',
   baseCurrency: process.env.BASE_CURRENCY || 'USD',
   minBaseCurrency: process.env.FIAT_MIN_USD || 50, // USD

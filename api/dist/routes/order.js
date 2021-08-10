@@ -164,9 +164,9 @@ exports.default = function (app) {
         }));
       } else {
         var userId = req.body.account_details.app_end_user_id;
-        var quoteId = req.body.transaction_details.payment_details.quote_id;
-        (0, _mangodb.getOrderById)(userId, quoteId).then(function (savedOrder) {
-          var quoteId = quoteId || savedOrder[0].quote_id;
+        var quoteIdOrig = req.body.transaction_details.payment_details.quote_id;
+        (0, _mangodb.getOrderById)(userId, quoteIdOrig).then(function (savedOrder) {
+          var quoteId = quoteIdOrig || savedOrder[0].quote_id;
           var paymentId = (0, _v2.default)();
           var orderId = (0, _v2.default)();
           var acceptLanguage = _config.env.mode === 'development' ? _config.env.dev.accept_language : req.headers['accept-language'];

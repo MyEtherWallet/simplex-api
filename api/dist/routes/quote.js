@@ -73,12 +73,16 @@ var schema = {
   }
 };
 
+logger.info('TESTTTTTT');
+
 var validator = (0, _validator2.default)(schema);
 
 exports.default = function (app) {
   app.post('/quote', (0, _sourceValidate2.default)(), function (req, res) {
+    logger.info('1');
     var errors = validator.validate(req.body);
     validationErrors(errors);
+    logger.info('2');
     if (errors.length) {
       validationLogger.error(errors);
       _response2.default.error(res, errors.map(function (_err) {
@@ -92,7 +96,9 @@ exports.default = function (app) {
         'client_ip': _config.env.mode === 'development' ? _config.env.dev.ip : (0, _common.getIP)(req)
       });
       debugRequest(reqObj);
+      logger.info('3');
       (0, _simplex.getQuote)(reqObj).then(function (result) {
+        logger.info('result', result);
         debugResponse(result);
         (0, _mangodb.Order)({
           user_id: userId,
