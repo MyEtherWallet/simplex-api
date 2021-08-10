@@ -70,6 +70,7 @@ export default (app) => {
       })
       debugRequest(reqObj)
       getQuote(reqObj).then((result) => {
+        console.log('result', result)
         debugResponse(result)
         Order({
           user_id: userId,
