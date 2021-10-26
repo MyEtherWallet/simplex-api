@@ -37,6 +37,10 @@ export default app => {
       ETH: {
         symbol: "ETH",
         name: "Ether"
+      },
+      MATIC: {
+        symbol: "MATIC",
+        name: "Polygon"
       }
     };
 

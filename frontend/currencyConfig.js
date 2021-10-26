@@ -18,7 +18,7 @@ const fiat = [
   "ZAR",
   "HUF"
 ];
-const crypto = ["ETH", "BTC", "BSC", "DAI", "USDT"];
+const crypto = ["BTC", "ETH", "BNB", "MATIC"];
 
 const handler = function(defaultValue = 42) {
   return {

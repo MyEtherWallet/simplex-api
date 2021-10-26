@@ -33,7 +33,7 @@ const validateMinMax = val => {
 }
 const validateAddress = val => {
   const maybeValid = simplex.validDigital.filter(cryptoSymbol => {
-    cryptoSymbol = cryptoSymbol === "BNB" ? "ETH" : cryptoSymbol;
+    cryptoSymbol = cryptoSymbol === "BNB" || cryptoSymbol === "MATIC" ? "ETH" : cryptoSymbol;
     return wav.validate(val, cryptoSymbol)
   })
   return maybeValid.length > 0
