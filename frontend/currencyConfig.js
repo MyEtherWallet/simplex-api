@@ -16,15 +16,15 @@ const fiat = [
   "SEK",
   "TRY",
   "ZAR",
-  "HUF"
+  "HUF",
 ];
 const crypto = ["BTC", "ETH", "BNB", "MATIC"];
 
-const handler = function(defaultValue = 42) {
+const handler = function (defaultValue = 42) {
   return {
-    get: function(target, name) {
+    get: function (target, name) {
       return target.hasOwnProperty(name) ? target[name] : defaultValue;
-    }
+    },
   };
 };
 
