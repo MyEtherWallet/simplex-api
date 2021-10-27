@@ -97,8 +97,8 @@
               <h4
                 v-if="
                   digitalCurrency === 'ETH' ||
-                  digitalCurrency === 'BNB' ||
-                  digitalCurrency === 'MATIC'
+                    digitalCurrency === 'BNB' ||
+                    digitalCurrency === 'MATIC'
                 "
               >
                 {{ digitalCurrency }} Address
@@ -162,68 +162,66 @@
   </div>
 </template>
 <script>
-import _ from "lodash";
-import { getOrder } from "@/simplex-api";
-import { simplex, recaptcha } from "@/config";
-import VueRecaptcha from "vue-recaptcha";
+import _ from 'lodash';
+import { getOrder } from '@/simplex-api';
+import { simplex, recaptcha } from '@/config';
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
-  name: "BuyCrypto",
-  data() {
+  name: 'BuyCrypto',
+  data () {
     return {
       validFiat: simplex.validFiat,
       validDigital: simplex.validDigital,
       loading: false,
       formData: null,
       r_site_key: recaptcha.siteKey,
-      recaptchaResponse: "",
+      recaptchaResponse: ''
     };
   },
   methods: {
-    onVerify(response) {
+    onVerify (response) {
       this.recaptchaResponse = response;
     },
-    order(cb) {
+    order (cb) {
       let success = () => {
         const orderInfo = this.$store.state.orderInfo;
         const isInvalidFiat =
           orderInfo.fiatTotal <
-            this.$store.state.minFiat[
-              this.$store.state.orderInfo.fiatCurrency
-            ] ||
+            this.$store.state.minFiat[ this.$store.state.orderInfo.fiatCurrency ] ||
           orderInfo.fiatTotal >
             this.$store.state.maxFiat[this.$store.state.orderInfo.fiatCurrency];
         if (isInvalidFiat) {
           return Promise.reject(
             Error(
-              "Invalid fiat amount provided when attempting to create order"
+              'Invalid fiat amount provided when attempting to create order'
             )
           );
         }
         getOrder({
-          "g-recaptcha-response": this.recaptchaResponse,
+          'g-recaptcha-response': this.recaptchaResponse,
           account_details: {
-            app_end_user_id: orderInfo.userId,
+            app_end_user_id: orderInfo.userId
           },
           transaction_details: {
             payment_details: {
               quote_id: orderInfo.quoteId,
               fiat_total_amount: {
                 currency: orderInfo.fiatCurrency,
-                amount: orderInfo.fiatTotal,
+                amount: orderInfo.fiatTotal
               },
               requested_digital_amount: {
                 currency: orderInfo.digitalCurrency,
-                amount: orderInfo.digitalAmount,
+                amount: orderInfo.digitalAmount
               },
               destination_wallet: {
                 currency: orderInfo.digitalCurrency,
-                address: orderInfo.digitalAddress,
-              },
-            },
-          },
+                address: orderInfo.digitalAddress
+              }
+            }
+          }
         })
-          .then((resp) => {
+          .then(resp => {
             resp = resp.data;
             if (!resp.error) {
               this.formData = resp.result;
@@ -232,11 +230,11 @@ export default {
               });
             } else console.log(resp);
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
           });
       };
-      let failed = (err) => console.log(err);
+      let failed = err => console.log(err);
       if (this.canOrder) {
         if (
           simplex.validFiat.includes(
@@ -244,111 +242,111 @@ export default {
           )
         ) {
           this.$store
-            .dispatch("setFiatAmount", this.$store.state.orderInfo.fiatTotal)
+            .dispatch('setFiatAmount', this.$store.state.orderInfo.fiatTotal)
             .then(success)
             .catch(failed);
         } else {
           this.$store
             .dispatch(
-              "setDigitalAmount",
+              'setDigitalAmount',
               this.$store.state.orderInfo.digitalAmount
             )
             .then(success)
             .catch(failed);
         }
       }
-    },
+    }
   },
-  mounted() {
-    this.$store.dispatch("setCurrencyMaxAndMins");
-    this.$store.dispatch("setDigitalAmount", 1);
+  mounted () {
+    this.$store.dispatch('setCurrencyMaxAndMins');
+    this.$store.dispatch('setDigitalAmount', 1);
   },
   computed: {
     digitalAddress: {
-      get() {
+      get () {
         return this.$store.state.orderInfo.digitalAddress;
       },
-      set(value) {
-        this.$store.dispatch("setDigitalAddress", value);
-      },
+      set (value) {
+        this.$store.dispatch('setDigitalAddress', value);
+      }
     },
     fiatAmount: {
-      get() {
+      get () {
         return this.$store.state.orderInfo.fiatTotal;
       },
       set: _.debounce(function (value) {
         this.loading = true;
-        this.$store.dispatch("setFiatAmount", value).finally(() => {
+        this.$store.dispatch('setFiatAmount', value).finally(() => {
           this.loading = false;
         });
-      }, 750),
+      }, 750)
     },
     digitalAmount: {
-      get() {
+      get () {
         return this.$store.state.orderInfo.digitalAmount;
       },
       set: _.debounce(function (value) {
         this.loading = true;
-        this.$store.dispatch("setDigitalAmount", value).finally(() => {
+        this.$store.dispatch('setDigitalAmount', value).finally(() => {
           this.loading = false;
         });
-      }, 750),
+      }, 750)
     },
     fiatCurrency: {
-      get() {
+      get () {
         return this.$store.state.orderInfo.fiatCurrency;
       },
-      set(value) {
+      set (value) {
         this.loading = true;
-        this.$store.dispatch("setFiatCurrency", value).finally(() => {
+        this.$store.dispatch('setFiatCurrency', value).finally(() => {
           this.loading = false;
         });
-      },
+      }
     },
     digitalCurrency: {
-      get() {
+      get () {
         return this.$store.state.orderInfo.digitalCurrency;
       },
-      set(value) {
+      set (value) {
         this.loading = true;
-        this.$store.dispatch("setDigitalCurrency", value).finally(() => {
+        this.$store.dispatch('setDigitalCurrency', value).finally(() => {
           this.loading = false;
         });
-      },
+      }
     },
     isInvalidFiatAmount: {
-      get() {
+      get () {
         return this.$store.state.status.invalidFiatAmount;
-      },
+      }
     },
     isInvalidFiatAbove: {
-      get() {
+      get () {
         return this.$store.state.status.invalidFiatAbove;
-      },
+      }
     },
     isInvalidFiatBelow: {
-      get() {
+      get () {
         return this.$store.state.status.invalidFiatBelow;
-      },
+      }
     },
     isInvalidDigitalAmount: {
-      get() {
+      get () {
         return this.$store.state.status.invalidDigitalAmount;
-      },
+      }
     },
     isInvalidAddress: {
-      get() {
+      get () {
         return this.$store.state.status.invalidAddress;
-      },
+      }
     },
     canOrder: {
-      get() {
+      get () {
         return true;
         // return !this.isInvalidAddress && !this.isInvalidDigitalAmount && !this.isInvalidFiatAmount && this.recaptchaResponse;
-      },
-    },
+      }
+    }
   },
-  components: { VueRecaptcha },
+  components: { VueRecaptcha }
 };
 </script>
 <style lang="scss" scoped>
