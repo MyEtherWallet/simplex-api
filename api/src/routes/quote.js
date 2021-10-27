@@ -59,7 +59,6 @@ let validator = Validator(schema)
 export default (app) => {
   app.post('/quote', sourceValidate(), (req, res) => {
     logger.info('1')
-    if (result.error) throw new Error(result.error);
     let errors = validator.validate(req.body)
     validationErrors(errors)
     logger.info('2')
@@ -78,6 +77,7 @@ export default (app) => {
       getQuote(reqObj).then((result) => {
         logger.info('result', result)
         debugResponse(result)
+        if (result.error) throw new Error(result.error);
         Order({
           user_id: userId,
           quote_id: result.quote_id,
