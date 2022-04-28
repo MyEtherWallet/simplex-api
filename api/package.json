@@ -32,7 +32,7 @@
     },
     "homepage": "https://github.com/MyEtherWallet/simplex-api#readme",
     "dependencies": {
-        "async": "^2.6.1",
+        "async": "^2.6.4",
         "body-parser": "^1.18.3",
         "cors": "^2.8.4",
         "debug": "^4.1.1",
