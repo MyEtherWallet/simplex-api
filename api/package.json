@@ -40,7 +40,7 @@
         "express": "^4.16.3",
         "express-recaptcha": "^4.0.2",
         "logging": "^3.2.0",
-        "mongoose": "^5.5.10",
+        "mongoose": "^5.7.5",
         "mongoose-timestamp": "^0.6.0",
         "node-cron": "^2.0.3",
         "request": "^2.87.0",
